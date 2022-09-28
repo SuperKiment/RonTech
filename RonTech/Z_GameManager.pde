@@ -10,7 +10,7 @@ class GameManager {
   GameState state;
 
   GameManager() {
-    state = GameState.Play;
+    state = GameState.Title;
   }
 
   void setState(GameState s) {

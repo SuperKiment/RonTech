@@ -89,19 +89,29 @@ class InventoryHUD {
   }
 
   void Update() {
-  }
-
-  class ThreadInventaire extends Thread {
-    
-    
-    
-    void run() {
+    while (true) {
       if (p != null) {
+
         nbCasesX = p.inventaire.grille.length;
         nbCasesY = p.inventaire.grille[0].length;
         tailleCase = ((width/2) / nbCasesX);
+
+        posXM = int(mouseX/tailleCase);
+        posYM = int(mouseY/tailleCase);
+
         println("ah");
       }
     }
   }
+
+  class ThreadInventaire extends Thread {
+
+    void run() {
+      Update();
+    }
+  }
+}
+
+
+void LateStartInventory() {
 }

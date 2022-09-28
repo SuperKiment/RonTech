@@ -5,12 +5,12 @@ enum GameState {
   Pause, Play, Title, Inventory;
 }
 
-class GameManager {
+public class GameManager {
 
   GameState state;
 
   GameManager() {
-    state = GameState.Title;
+    state = GameState.Play;
   }
 
   void setState(GameState s) {

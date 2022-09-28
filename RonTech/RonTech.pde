@@ -10,13 +10,14 @@ void setup() {
   imageMode(CENTER);
   strokeWeight(3);
 
+  mapActif = new Map();
+  camera = new Camera();
+
   gameManager = new GameManager();
   time = new Time();
   hud = new HUD();
 
 
-  mapActif = new Map();
-  camera = new Camera();
 
   mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 50, PI, 1, 1));
   mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 20, 0, 2, 1));
@@ -26,10 +27,6 @@ void setup() {
   mapActif.AllMurs.add(new Mur(10, 5));
   mapActif.AllMurs.add(new Mur(10, 10));
   mapActif.AllMurs.add(new Mur(10, 7));
-
-  for (int i=0; i<20; i++) {
-    mapActif.AllPlayers.get(0).inventaire.add(new Loot());
-  }
 
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));

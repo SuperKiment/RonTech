@@ -1,5 +1,5 @@
 void setup() { 
-  size(1900, 1000);
+  size(1500, 1000);
   frameRate(200);
   surface.setTitle("RonTech");
   surface.setResizable(true);
@@ -10,14 +10,12 @@ void setup() {
   imageMode(CENTER);
   strokeWeight(3);
 
-  mapActif = new Map();
-  camera = new Camera();
-
   gameManager = new GameManager();
   time = new Time();
   hud = new HUD();
 
-
+  mapActif = new Map();
+  camera = new Camera();
 
   mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 50, PI, 1, 1));
   mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 20, 0, 2, 1));

@@ -8,6 +8,9 @@ class Map {
   int tailleCase = 50;
   float tailleBlocs = 20;
 
+  ThreadUpdate threadUpdate;
+  int timeThreadUpdate = 1;
+
 
   Map() {
     AllPlayers = new ArrayList<Player>();    
@@ -18,6 +21,9 @@ class Map {
     e.controllable = true;
 
     AllPlayers.add(e);
+
+    threadUpdate = new ThreadUpdate();
+    threadUpdate.start();
   }
 
   void Display() {
@@ -38,9 +44,10 @@ class Map {
   }
 
   void Update() {
-    for (Player e : AllPlayers) {
-      e.Update();
+    for (Player p : AllPlayers) {
+      p.Update();
     }
+
     for (Loot l : AllLoot) {
       l.Update();
     }
@@ -68,5 +75,17 @@ class Map {
       pop();
     }
     pop();
+  }
+
+  class ThreadUpdate extends Thread {
+
+    void run() {
+      while (true) {
+        if (gameManager.isPlay()) {
+          Update();
+          delay(timeThreadUpdate);
+        }
+      }
+    }
   }
 }

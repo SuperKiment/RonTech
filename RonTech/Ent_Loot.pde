@@ -5,13 +5,17 @@ class Loot {
   float speed, taille;
   color couleur;
 
+  ThreadUpdate threadUpdate;
+
   Loot() {
     Constructor();
   }
+
   Loot(float x, float y) {
     Constructor();
     setPos(x, y);
   }
+
   Loot(float x, float y, String n) {
     Constructor();
     setPos(x, y);
@@ -25,6 +29,9 @@ class Loot {
     speed = 5;
     couleur = color(random(20, 255), random(20, 255), random(20, 255));
     taille = 10;
+
+    threadUpdate = new ThreadUpdate();
+    threadUpdate.start();
   }
 
   void Update() {
@@ -54,5 +61,12 @@ class Loot {
   void setPos(float x, float y) {
     pos = new PVector(x, y);
     posC = new PVector(x, y);
+  }
+
+
+  class ThreadUpdate extends Thread {
+    void run() {
+      Update();
+    }
   }
 }

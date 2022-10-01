@@ -36,11 +36,6 @@ void draw() {
 
   gameManager.PreUpdate();
 
-  if (gameManager.isPlay()) {    
-    //Physics (à threader)
-    mapActif.Update();
-  }
-
   if (!gameManager.isTitle()) {
     //Display
 

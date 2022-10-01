@@ -34,6 +34,10 @@ class ModuleTest implements IModule {
     pos.lerp(p, speed * time.getDeltaFrames());
   }
 
+  void Utiliser() {
+    couleur = 0;
+  }
+
   void Display() {
 
     if (player != null) {
@@ -73,9 +77,28 @@ class ModuleTest implements IModule {
     posS.mult(mapActif.tailleCase);
     return posS;
   }
-  
-  int getTaille(){return 0;}
+
+  int getTaille() {
+    return 0;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface IModule {
 
@@ -83,6 +106,8 @@ interface IModule {
   void Update(PVector p);
   void Display();
   PVector PosOnScr();
+
+  void Utiliser();
 
   int getTaille();
 }

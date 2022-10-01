@@ -7,10 +7,8 @@ class Player {
   float HP = 100, stamina = 100;
   Inventaire inventaire;
 
-  ArrayList<ModuleTest> AllModules = new ArrayList<ModuleTest>();
+  ArrayList<IModule> AllModules = new ArrayList<IModule>();
 
-  ThreadUpdate threadUpdate = new ThreadUpdate();
-  ThreadLateStart threadLateStart = new ThreadLateStart();
 
   Player() {
     Constructor();
@@ -30,13 +28,12 @@ class Player {
     taille = new PVector(50, 50);
     inventaire = new Inventaire();
 
-    threadUpdate.start();
     //threadLateStart.start();
   }
 
   void Display() {
 
-    for (ModuleTest m : AllModules) {
+    for (IModule m : AllModules) {
       m.Display();
     }
 
@@ -53,8 +50,12 @@ class Player {
     RecupLoot();
 
     for (int i = 0; i < AllModules.size(); i++) {
-      ModuleTest m = AllModules.get(i);
+      IModule m = AllModules.get(i);
       m.Update(pos);
+
+      if (inputControl.space) {
+
+      }
     }
   }
 
@@ -62,7 +63,7 @@ class Player {
     dirCible = inputControl.keyDir; 
 
     vel = dirCible; 
-    vel.setMag(speed * time.getDeltaFrames()); 
+    vel.setMag(speed * mapActif.timeThreadUpdate/300); 
 
     pos.add(vel);
 
@@ -106,20 +107,6 @@ class Player {
         inventaire.add(l);
         mapActif.AllLoot.remove(i);
       }
-    }
-  }
-
-  class ThreadUpdate extends Thread {
-    void run() {
-      Update();
-    }
-  }
-
-  class ThreadLateStart extends Thread {
-
-    void run() {
-      delay(1000);
-      threadUpdate.run();
     }
   }
 }

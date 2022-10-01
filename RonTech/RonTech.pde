@@ -17,10 +17,10 @@ void setup() {
   mapActif = new Map();
   camera = new Camera();
 
-  mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 50, PI, 1, 1));
-  mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 20, 0, 2, 1));
-  mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 40, PI/2, 7, 2));
-  mapActif.AllPlayers.get(0).AllModules.add(new Module(mapActif.AllPlayers.get(0), 100, PI*3/4, 0.5, 3));
+  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 50, PI, 1, 1));
+  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI/2, 7, 2));
+  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI*3/4, 0.5, 3));
+  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 2, 1));
 
   mapActif.AllMurs.add(new Mur(10, 5));
   mapActif.AllMurs.add(new Mur(10, 10));

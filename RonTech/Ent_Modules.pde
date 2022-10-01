@@ -1,4 +1,4 @@
-class Module {
+class ModuleTest implements IModule {
 
   PVector pos;
   Player player;
@@ -72,4 +72,16 @@ class Module {
     posS.mult(mapActif.tailleCase);
     return posS;
   }
+}
+
+interface IModule {
+
+int taille;
+
+    void Constructor();
+    void Update();
+    void Display();
+    PVector PosOnScr();
+
+    int getTaille();
 }

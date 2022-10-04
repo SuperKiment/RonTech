@@ -60,8 +60,10 @@ void keyPressed() {
 
     if (gameManager.isPlay()) {
       gameManager.setInventory();
+      println("inv");
     } else if (gameManager.isInventory()) {
       gameManager.setPlay();
+      println("play");
     }
   }
 }

@@ -41,22 +41,25 @@ class InventoryHUD {
   int nbCasesX, nbCasesY;
   float tailleCase;
   int posXM, posYM;
-  ThreadInventaire threadInventaire;
 
   InventoryHUD() {
-    threadInventaire = new ThreadInventaire();
-    threadInventaire.start();
   }
 
   void Display() {
     p = camera.focus;
+
+    nbCasesX = p.inventaire.grille.length;
+    nbCasesY = p.inventaire.grille[0].length;
+    tailleCase = ((width / 2) / nbCasesX);
+
+    posXM = int(mouseX / tailleCase);
+    posYM = int(mouseY / tailleCase);
 
     push();
 
     rectMode(CORNER);
     fill(125, 125, 125, 100);
     noStroke();
-
     rect(0, 0, width / 2, tailleCase * nbCasesY);   //Fond
 
     push();
@@ -92,22 +95,8 @@ class InventoryHUD {
     while (true) {
       if (p != null) {
 
-        nbCasesX = p.inventaire.grille.length;
-        nbCasesY = p.inventaire.grille[0].length;
-        tailleCase = ((width / 2) / nbCasesX);
-
-        posXM = int(mouseX / tailleCase);
-        posYM = int(mouseY / tailleCase);
-
         println("ah");
       }
-    }
-  }
-
-  class ThreadInventaire extends Thread {
-
-    void run() {
-      Update();
     }
   }
 }

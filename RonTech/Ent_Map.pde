@@ -83,8 +83,8 @@ class Map {
       while (true) {
         if (gameManager.isPlay()) {
           Update();
-          delay(timeThreadUpdate);
         }
+        delay(timeThreadUpdate);
       }
     }
   }

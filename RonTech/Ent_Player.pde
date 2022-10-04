@@ -27,8 +27,6 @@ class Player {
     acc = new PVector();
     taille = new PVector(50, 50);
     inventaire = new Inventaire();
-
-    //threadLateStart.start();
   }
 
   void Display() {

@@ -76,6 +76,8 @@ void mousePressed() {
     if (e.IsOnPlayer(mouseX, mouseY)) {
       camera.SwitchFocus(e);
     }
+
+  thread("ClickTestEverything");
 }
 
 void mouseReleased() {
@@ -84,4 +86,13 @@ void mouseReleased() {
   }
 
   if (gameManager.isInventory()) hud.inventoryHUD.ClickG();
+}
+
+void ClickTestEverything() {
+  for (Loot l : mapActif.AllLoot) {
+    if (dist(MousePosScreenGr().x, MousePosScreenGr().y, 
+      l.pos.x, l.pos.y) <= SnToGr(l.taille)) {
+      println("Loot clicked : " + l.nom);
+    }
+  }
 }

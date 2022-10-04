@@ -1,4 +1,4 @@
-class Player {
+class Player implements Entity{
 
   PVector pos, vel, dirCible, dir, acc, taille;
   boolean controllable = false;
@@ -105,5 +105,10 @@ class Player {
         mapActif.AllLoot.remove(i);
       }
     }
+  }
+
+  //INTERFACE ENTITY
+  PVector getPos() {
+    return pos;
   }
 }

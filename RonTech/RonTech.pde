@@ -2,7 +2,7 @@ int timeFactor = 300;
 
 void setup() { 
   size(1500, 1000);
-  frameRate(30);
+  frameRate(200);
   surface.setTitle("RonTech");
   surface.setResizable(true);
   surface.setIcon(loadImage("icon.png"));
@@ -50,7 +50,6 @@ void draw() {
     mapActif.Display();
 
     rectMode(CORNER);
-
 
     pop();
   }

@@ -6,6 +6,14 @@ float SnToGr(float x) {
   return x / mapActif.tailleCase;
 }
 
+PVector GrToSn(PVector v) {
+  return new PVector(v.x * mapActif.tailleCase, v.y * mapActif.tailleCase);
+}
+
+PVector SnToGr(PVector v) {
+  return new PVector(v.x / mapActif.tailleCase, v.y / mapActif.tailleCase);
+}
+
 PVector Rotate(PVector v, float a) {
   PVector r = new PVector();
 
@@ -24,4 +32,16 @@ boolean isTouch(Player p, Loot l) {
     return true;
   }
   return false;
+}
+
+PVector MousePosScreen() {
+  PVector pos = new PVector(mouseX, mouseY);
+  
+  pos.sub(camera.translate);
+  
+  return pos;
+}
+
+PVector MousePosScreenGr() {
+  return SnToGr(MousePosScreen());
 }

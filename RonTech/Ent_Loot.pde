@@ -1,4 +1,4 @@
-class Loot {
+class Loot implements Entity {
 
   String nom;
   PVector pos, posC;
@@ -68,5 +68,10 @@ class Loot {
     void run() {
       Update();
     }
+  }
+
+  //INTERFACE ENTITY
+  PVector getPos() {
+    return pos;
   }
 }

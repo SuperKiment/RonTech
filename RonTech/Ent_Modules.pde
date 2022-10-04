@@ -85,21 +85,6 @@ class ModuleTest implements IModule {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 interface IModule {
 
   void Constructor();

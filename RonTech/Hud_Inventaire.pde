@@ -46,14 +46,7 @@ class InventoryHUD {
   }
 
   void Display() {
-    p = camera.focus;
-
-    nbCasesX = p.inventaire.grille.length;
-    nbCasesY = p.inventaire.grille[0].length;
-    tailleCase = ((width / 2) / nbCasesX);
-
-    posXM = int(mouseX / tailleCase);
-    posYM = int(mouseY / tailleCase);
+    Update();
 
     push();
 
@@ -86,21 +79,35 @@ class InventoryHUD {
     if (x < nbCasesX && y < nbCasesY) {
 
       Loot l = p.inventaire.grille[x][y];    
-
-      println("coord sur inventory : " + x, y + " / Loot : " + l.nom);
-    }
-  }
-
-  void Update() {
-    while (true) {
-      if (p != null) {
-
-        println("ah");
+      if (l != null) {
+        println("coord sur inventory : " + x, y + " / Loot : " + l.nom + " : jeté");
+        LootItem(l, x, y);
+      } else {
+        println("coord sur inventory : " + x, y + " / Pas de loot");
       }
     }
   }
-}
 
+  void LootItem(Loot l, int x, int y) {
+    PVector posJete = new PVector(p.pos.x , p.pos.y);
+    PVector taille = PVector.random2D();
+    taille.setMag(SnToGr(p.taille.x));
+    posJete.add(taille);
+    
+    println("coord jeté : " + posJete);
+    l.setPos(posJete.x, posJete.y);
+    mapActif.AllLoot.add(l);
+    p.inventaire.grille[x][y] = null;
+  }
 
-void LateStartInventory() {
+  void Update() {
+    p = camera.focus;
+
+    nbCasesX = p.inventaire.grille.length;
+    nbCasesY = p.inventaire.grille[0].length;
+    tailleCase = ((width / 2) / nbCasesX);
+
+    posXM = int(mouseX / tailleCase);
+    posYM = int(mouseY / tailleCase);
+  }
 }

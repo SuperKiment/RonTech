@@ -17,10 +17,10 @@ class Map {
     AllMurs = new ArrayList<Mur>();
     AllLoot = new ArrayList<Loot>();
 
-    Player e = new Player(5, 5);
-    e.controllable = true;
+    Player player = new Player(5, 5);
+    player.controllable = true;
 
-    AllPlayers.add(e);
+    AllPlayers.add(player);
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
@@ -34,8 +34,8 @@ class Map {
       m.Display();
     }
 
-    for (Player e : AllPlayers) {
-      e.Display();
+    for (Player p : AllPlayers) {
+      p.Display();
     }
 
     for (Loot l : AllLoot) {

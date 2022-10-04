@@ -31,7 +31,7 @@ class ModuleTest implements IModule {
   }
 
   void Update(PVector p) {
-    pos.lerp(p, speed * time.getDeltaFrames());
+    pos.lerp(p, speed * mapActif.timeThreadUpdate/timeFactor);
   }
 
   void Utiliser() {

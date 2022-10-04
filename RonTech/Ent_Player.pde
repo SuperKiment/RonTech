@@ -52,7 +52,6 @@ class Player {
       m.Update(pos);
 
       if (inputControl.space) {
-
       }
     }
   }
@@ -61,7 +60,7 @@ class Player {
     dirCible = inputControl.keyDir; 
 
     vel = dirCible; 
-    vel.setMag(speed * mapActif.timeThreadUpdate/300); 
+    vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor); 
 
     pos.add(vel);
 

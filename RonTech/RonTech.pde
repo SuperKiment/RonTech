@@ -1,6 +1,8 @@
+int timeFactor = 300;
+
 void setup() { 
   size(1500, 1000);
-  frameRate(200);
+  frameRate(30);
   surface.setTitle("RonTech");
   surface.setResizable(true);
   surface.setIcon(loadImage("icon.png"));

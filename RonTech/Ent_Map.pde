@@ -2,6 +2,8 @@ Map mapActif;
 
 class Map {
 
+  color GroundGrille[][];
+
   ArrayList<Player> AllPlayers;
   ArrayList<Mur> AllMurs;
   ArrayList<Loot> AllLoot;
@@ -10,9 +12,14 @@ class Map {
 
   ThreadUpdate threadUpdate;
   int timeThreadUpdate = 1;
+  
+  MapLoader mapLoader;
 
 
   Map() {
+    mapLoader = new MapLoader();
+    mapLoader.LoadMap("map1.png");
+    
     AllPlayers = new ArrayList<Player>();    
     AllMurs = new ArrayList<Mur>();
     AllLoot = new ArrayList<Loot>();
@@ -28,7 +35,8 @@ class Map {
 
   void Display() {
 
-    LignesDisplay();
+    DisplayGrille();
+
 
     for (Mur m : AllMurs) {
       if (m.isDisplay) {
@@ -83,29 +91,6 @@ class Map {
     }
   }
 
-  void LignesDisplay() {
-    push();
-    stroke(255);
-    strokeWeight(0.1);
-    for (int x = 1; x <=  10 * tailleCase; x += tailleCase) {
-      line(x, 0, x, 10000);
-      push();
-      fill(255);
-      textSize(10);
-      text(x - 1 + " , " + x / tailleCase, x, 0);
-      pop();
-    }
-
-    for (int y = 1; y <=  10 * tailleCase; y += tailleCase) {      
-      line(0, y, 10000, y);
-      push();
-      fill(255);
-      textSize(10);
-      text(y - 1 + " , " + y / tailleCase, 0, y);
-      pop();
-    }
-    pop();
-  }
 
   class ThreadUpdate extends Thread {
 
@@ -116,6 +101,41 @@ class Map {
           UpdateDisplay();
         }
         delay(timeThreadUpdate);
+      }
+    }
+  }
+
+  void DisplayGrille() {
+    if (GroundGrille != null) {
+      for (int x=0; x<GroundGrille.length; x++) {
+        for (int y=0; y<GroundGrille[0].length; y++) {
+          push();
+          fill(GroundGrille[x][y]);
+          noStroke();
+          rect(x*tailleCase, y*tailleCase, tailleCase, tailleCase);
+          pop();
+        }
+      }
+    }
+  }
+
+  class MapLoader {
+    MapLoader() {
+    }
+
+    PImage mapImage;
+    String basePath = "Map/";
+
+    void LoadMap(String path) {
+      mapImage = loadImage(basePath + path);
+      GroundGrille = new color[mapImage.width][mapImage.height];
+      
+      println("Loaded Map : " + mapImage.width,"/", mapImage.height);
+
+      for (int x=0; x<GroundGrille.length; x++) {
+        for (int y=0; y<GroundGrille[0].length; y++) {
+          GroundGrille[x][y] = mapImage.get(x, y);
+        }
       }
     }
   }

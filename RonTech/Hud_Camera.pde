@@ -17,7 +17,7 @@ class Camera {
   }
 
   void Update() {
-    distanceRendu = SnToGr(width/4);
+    distanceRendu = SnToGr(width/2);
     
     cible = new PVector( -focus.pos.x * mapActif.tailleCase + width / 2, -focus.pos.y * mapActif.tailleCase + height / 2);
 

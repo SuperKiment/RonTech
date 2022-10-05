@@ -57,7 +57,7 @@ class Map {
     push();
     stroke(255);
     strokeWeight(0.1);
-    for (int x = 1; x <=  50 * tailleCase; x += tailleCase) {
+    for (int x = 1; x <=  10 * tailleCase; x += tailleCase) {
       line(x, 0, x, 10000);
       push();
       fill(255);
@@ -66,7 +66,7 @@ class Map {
       pop();
     }
 
-    for (int y = 1; y <=  50 * tailleCase; y += tailleCase) {      
+    for (int y = 1; y <=  10 * tailleCase; y += tailleCase) {      
       line(0, y, 10000, y);
       push();
       fill(255);

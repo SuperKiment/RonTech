@@ -31,15 +31,23 @@ class Map {
     LignesDisplay();
 
     for (Mur m : AllMurs) {
-      m.Display();
+      if (m.isDisplay) {
+        m.Display();
+      }
     }
 
     for (Player p : AllPlayers) {
-      p.Display();
+      if (p.isDisplay) {
+        p.Display();
+      }
     }
 
     for (Loot l : AllLoot) {
-      l.Display();
+      if (l.isDisplay) {
+        if (l.isDisplay) {
+          l.Display();
+        }
+      }
     }
   }
 
@@ -50,6 +58,28 @@ class Map {
 
     for (Loot l : AllLoot) {
       l.Update();
+    }
+  }
+
+  void UpdateDisplay() {
+    if (camera != null) {
+      for (Loot l : AllLoot) {
+        if (camera.isOnScreen(l, AllPlayers.get(0))) {
+          l.isDisplay = true;
+        } else l.isDisplay = false;
+      }
+
+      for (Mur m : AllMurs) {
+        if (camera.isOnScreen(m, AllPlayers.get(0))) {
+          m.isDisplay = true;
+        } else m.isDisplay = false;
+      }
+
+      for (Player p : AllPlayers) {
+        if (camera.isOnScreen(p, AllPlayers.get(0))) {
+          p.isDisplay = true;
+        } else p.isDisplay = false;
+      }
     }
   }
 
@@ -83,6 +113,7 @@ class Map {
       while (true) {
         if (gameManager.isPlay()) {
           Update();
+          UpdateDisplay();
         }
         delay(timeThreadUpdate);
       }

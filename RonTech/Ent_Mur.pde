@@ -1,9 +1,9 @@
-class Mur {
+class Mur implements Entity {
 
   PVector pos;
   float taille;
   color couleur;
-  
+
   Mur() {
     Constructor(10, 5);
   }
@@ -26,5 +26,11 @@ class Mur {
     translate(GrToSn(pos.x), GrToSn(pos.y));
     ellipse(0, 0, taille, taille);
     pop();
+  }
+
+  //INTERFACE ENTITY
+  boolean isDisplay = false;
+  PVector getPos() {
+    return pos;
   }
 }

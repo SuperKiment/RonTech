@@ -71,6 +71,7 @@ class Loot implements Entity {
   }
 
   //INTERFACE ENTITY
+  boolean isDisplay = false;
   PVector getPos() {
     return pos;
   }

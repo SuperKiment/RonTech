@@ -108,6 +108,7 @@ class Player implements Entity{
   }
 
   //INTERFACE ENTITY
+  boolean isDisplay = false;
   PVector getPos() {
     return pos;
   }

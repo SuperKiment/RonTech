@@ -24,9 +24,9 @@ void setup() {
   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));
 
-  mapActif.AllMurs.add(new Mur(10, 5));
-  mapActif.AllMurs.add(new Mur(10, 10));
-  mapActif.AllMurs.add(new Mur(10, 7));
+  mapActif.AllSolides.add(new Solide(10, 5));
+  mapActif.AllSolides.add(new Solide(10, 10));
+  mapActif.AllSolides.add(new Solide(10, 7));
 
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));

@@ -68,7 +68,7 @@ class Player implements Entity{
   }
 
   void CollisionMur() {
-    for (Mur m : mapActif.AllMurs) {
+    for (Solide m : mapActif.AllSolides) {
       if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < taille.x / 2 + m.taille / 2) {      
         PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
         colOri.setMag(speed * time.getDeltaFrames());

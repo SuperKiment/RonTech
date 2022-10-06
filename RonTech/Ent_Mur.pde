@@ -1,13 +1,13 @@
-class Mur implements Entity {
+class Solide implements Entity {
 
   PVector pos;
   float taille;
   color couleur;
 
-  Mur() {
+  Solide() {
     Constructor(10, 5);
   }
-  Mur(float x, float y) {
+  Solide(float x, float y) {
     Constructor(x, y);
   }
 

@@ -5,7 +5,7 @@ class Map {
   color GroundGrille[][];
 
   ArrayList<Player> AllPlayers;
-  ArrayList<Mur> AllMurs;
+  ArrayList<Solide> AllSolides;
   ArrayList<Loot> AllLoot;
   int tailleCase = 50;
   float tailleBlocs = 20;
@@ -21,7 +21,7 @@ class Map {
     mapLoader.LoadMap("map1.png");
     
     AllPlayers = new ArrayList<Player>();    
-    AllMurs = new ArrayList<Mur>();
+    AllSolides = new ArrayList<Solide>();
     AllLoot = new ArrayList<Loot>();
 
     Player player = new Player(5, 5);
@@ -38,7 +38,7 @@ class Map {
     DisplayGrille();
 
 
-    for (Mur m : AllMurs) {
+    for (Solide m : AllSolides) {
       if (m.isDisplay) {
         m.Display();
       }
@@ -77,7 +77,7 @@ class Map {
         } else l.isDisplay = false;
       }
 
-      for (Mur m : AllMurs) {
+      for (Solide m : AllSolides) {
         if (camera.isOnScreen(m, AllPlayers.get(0))) {
           m.isDisplay = true;
         } else m.isDisplay = false;

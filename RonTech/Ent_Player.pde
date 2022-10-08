@@ -1,4 +1,4 @@
-class Player implements Entity{
+class Player implements Entity {
 
   PVector pos, vel, dirCible, dir, acc, taille;
   boolean controllable = false;
@@ -49,7 +49,7 @@ class Player implements Entity{
 
     for (int i = 0; i < AllModules.size(); i++) {
       IModule m = AllModules.get(i);
-      m.Update(pos);
+      m.Update(this);
 
       if (inputControl.space) {
       }
@@ -105,6 +105,146 @@ class Player implements Entity{
         mapActif.AllLoot.remove(i);
       }
     }
+  }
+
+  void LeftClick() {
+    for (IModule m : AllModules) {
+      m.Utiliser();
+    }
+  }
+
+  //INTERFACE ENTITY
+  boolean isDisplay = false;
+  PVector getPos() {
+    return pos;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Inventaire {
+
+  Loot[][] grille;
+
+  Inventaire() {
+    Constructor();
+  }
+
+  void Constructor() {
+    grille = new Loot[5][5];
+  }
+
+  void add(Loot l) {
+    boolean added = false;
+
+    for (int x = 0; x < grille.length; x++) {
+      for (int y = 0; y < grille[0].length; y++) {
+        if (grille[x][y] == null) {
+          grille[x][y] = l;
+          added = true;
+          println("ajout a l'inventaire en " + x, y + " de " + l.nom);
+          break;
+        }
+        if (added) break;
+      }
+      if (added) break;
+    }
+
+    if (!added) {
+      println("Pas de place dans l'inventaire");
+      mapActif.AllLoot.add(l);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Loot implements Entity {
+
+  String nom;
+  PVector pos, posC;
+  float speed, taille;
+  color couleur;
+
+
+  Loot() {
+    Constructor();
+  }
+
+  Loot(float x, float y) {
+    Constructor();
+    setPos(x, y);
+  }
+
+  Loot(float x, float y, String n) {
+    Constructor();
+    setPos(x, y);
+    nom = n;
+  }
+
+  void Constructor() {
+    nom = "NoName";
+    pos = new PVector(2, 5);
+    posC = new PVector(2, 5);
+    speed = 5;
+    couleur = color(random(20, 255), random(20, 255), random(20, 255));
+    taille = 10;
+  }
+
+  void Update() {
+    //Lerp vers la position voulue
+    pos.lerp(posC, speed * time.getDeltaFrames());
+  }
+
+  //Display sur la map avec le POS;
+  void Display() {
+    push();
+    fill(couleur);
+    translate(GrToSn(pos.x), GrToSn(pos.y));
+
+    ellipse(0, 0, taille, taille);
+
+    pop();
+  }
+
+  //Display dans l'inventaire donc sur l'écran
+  void DisplayOnScreen(float x, float y) {
+    push();
+
+    fill(couleur);
+    translate(x - taille, y - taille);
+    ellipse(0, 0, taille * 5, taille * 5);
+
+    pop();
+  }
+
+  void setPos(float x, float y) {
+    pos = new PVector(x, y);
+    posC = new PVector(x, y);
   }
 
   //INTERFACE ENTITY

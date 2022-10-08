@@ -77,7 +77,9 @@ void mousePressed() {
       camera.SwitchFocus(e);
     }
 
-  thread("ClickTestEverything");
+  if (mouseButton == LEFT) {
+    thread("ClickLeftMouse");
+  }
 }
 
 void mouseReleased() {
@@ -95,4 +97,8 @@ void ClickTestEverything() {
       println("Loot clicked : " + l.nom);
     }
   }
+}
+
+void ClickLeftMouse() {
+  mapActif.AllPlayers.get(0).LeftClick();
 }

@@ -1,6 +1,11 @@
 int timeFactor = 300;
 
 void setup() { 
+
+  println("==============");  
+  println("RONTECH SETUP");
+  println("==============");
+
   size(1500, 1000);
   frameRate(200);
   surface.setTitle("RonTech");
@@ -19,10 +24,12 @@ void setup() {
   mapActif = new Map();
   camera = new Camera();
 
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 50, PI, 4, 1));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));
+  /*mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));
+   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
+   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));*/
+   
+  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
+
 
   mapActif.AllSolides.add(new Solide(10, 5));
   mapActif.AllSolides.add(new Solide(10, 10));
@@ -31,6 +38,10 @@ void setup() {
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));
+
+  println("==============");  
+  println("RONTECH SETUP END");
+  println("==============");
 }
 
 void draw() {
@@ -48,9 +59,6 @@ void draw() {
     }
 
     mapActif.Display();
-
-    rectMode(CORNER);
-
     pop();
   }
 

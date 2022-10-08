@@ -7,35 +7,50 @@ class Map {
   ArrayList<Player> AllPlayers;
   ArrayList<Solide> AllSolides;
   ArrayList<Loot> AllLoot;
+  ArrayList<Attack> AllAttacks;
+  ArrayList<Entity> AllEntities;
   int tailleCase = 50;
-  float tailleBlocs = 20;
+
 
   ThreadUpdate threadUpdate;
   int timeThreadUpdate = 1;
-  
+
+
   MapLoader mapLoader;
 
 
   Map() {
+    println();
+    println("Map Creation :");
+
     mapLoader = new MapLoader();
     mapLoader.LoadMap("map1.png");
-    
+
     AllPlayers = new ArrayList<Player>();    
     AllSolides = new ArrayList<Solide>();
     AllLoot = new ArrayList<Loot>();
+    AllAttacks = new ArrayList<Attack>();
+    AllEntities = new ArrayList<Entity>();
 
-    Player player = new Player(5, 5);
+    int xP = 20, yP = 20;
+    Player player = new Player(xP, yP);
     player.controllable = true;
-
+    player.name = "Player0";
     AllPlayers.add(player);
+
+    println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
+
+
+    println("Map Thread lance");
+    println();
   }
 
   void Display() {
 
-    DisplayGrille();
+    DisplayGrille(AllPlayers.get(0));
 
 
     for (Solide m : AllSolides) {
@@ -57,7 +72,23 @@ class Map {
         }
       }
     }
+
+    for (Attack a : AllAttacks) {
+      a.Display();
+    }
+
+    for (Entity e : AllEntities) {
+      push();
+      fill(0, 0, 0, 0);
+      stroke(255, 0, 0);
+      ellipse(e.getPos().x, e.getPos().y, 50, 50);
+      pop();
+    }
   }
+
+
+
+
 
   void Update() {
     for (Player p : AllPlayers) {
@@ -67,7 +98,20 @@ class Map {
     for (Loot l : AllLoot) {
       l.Update();
     }
+
+    for (Solide s : AllSolides) {
+      s.Update();
+    }
+
+    for (int i=0; i<AllAttacks.size(); i++) {
+      Attack a = AllAttacks.get(i);
+      a.Update();
+      if (a.isMort()) AllAttacks.remove(i);
+    }
   }
+
+
+
 
   void UpdateDisplay() {
     if (camera != null) {
@@ -92,6 +136,21 @@ class Map {
   }
 
 
+  void UpdateData() {
+    AllEntities.clear();
+
+    for (Loot l : AllLoot) {
+      AllEntities.add(l);
+    }
+    for (Solide m : AllSolides) {      
+      AllEntities.add(m);
+    }
+    for (Player p : AllPlayers) {
+      AllEntities.add(p);
+    }
+  }
+
+
   class ThreadUpdate extends Thread {
 
     void run() {
@@ -105,15 +164,22 @@ class Map {
     }
   }
 
-  void DisplayGrille() {
+
+
+  void DisplayGrille(Player p) {
     if (GroundGrille != null) {
-      for (int x=0; x<GroundGrille.length; x++) {
-        for (int y=0; y<GroundGrille[0].length; y++) {
-          push();
-          fill(GroundGrille[x][y]);
-          noStroke();
-          rect(x*tailleCase, y*tailleCase, tailleCase, tailleCase);
-          pop();
+      for (int x=int(p.pos.x-camera.distanceRendu/2); x<p.pos.x+camera.distanceRendu/2; x++) {
+        for (int y=int(p.pos.y-camera.distanceRendu/2); y<p.pos.y+camera.distanceRendu/2; y++) {
+
+          if (x>=0 && x<GroundGrille.length &&
+            y>=0 && y<GroundGrille[0].length) {
+
+            push();
+            fill(GroundGrille[x][y]);
+            noStroke();
+            rect(x*tailleCase, y*tailleCase, tailleCase, tailleCase);
+            pop();
+          }
         }
       }
     }
@@ -129,8 +195,8 @@ class Map {
     void LoadMap(String path) {
       mapImage = loadImage(basePath + path);
       GroundGrille = new color[mapImage.width][mapImage.height];
-      
-      println("Loaded Map : " + mapImage.width,"/", mapImage.height);
+
+      println("Map Loaded : " + mapImage.width, "/", mapImage.height);
 
       for (int x=0; x<GroundGrille.length; x++) {
         for (int y=0; y<GroundGrille[0].length; y++) {

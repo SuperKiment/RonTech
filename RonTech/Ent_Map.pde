@@ -73,7 +73,9 @@ class Map {
       }
     }
 
-    for (Attack a : AllAttacks) {
+    ArrayList<Attack> copy = AllAttacks;
+    
+    for (Attack a : copy) {
       a.Display();
     }
 

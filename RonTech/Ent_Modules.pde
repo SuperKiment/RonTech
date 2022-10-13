@@ -32,7 +32,7 @@ class ModuleSocleTourelle implements IModule {
     speed = 5;
     couleur = color(255, 255, 255);
     distance = 2;
-    tourelle = new Tourelle(this);
+    tourelle = new Tourelle(this, player);
   }
 
   void Constructor() {
@@ -43,7 +43,7 @@ class ModuleSocleTourelle implements IModule {
     speed = 5;
     couleur = color(255, 255, 255);
     distance = 2;
-    tourelle = new Tourelle(this);
+    tourelle = new Tourelle(this, player);
   }
 
   void Update(Player p) {
@@ -53,11 +53,10 @@ class ModuleSocleTourelle implements IModule {
   }
 
   void Utiliser() {
-    Projectile p = new Projectile(player, tourelle.pos, tourelle.ori);
-    
-    mapActif.AllAttacks.add(p);
-    
-    
+
+    tourelle.Utiliser();
+
+
     println("Tir de "+player.name +" / Module : "+ this.getClass());
   }
 
@@ -86,7 +85,7 @@ class ModuleSocleTourelle implements IModule {
     fill(0);
     text(taille + " " + PosOnScr().x + " " + PosOnScr().y, PosOnScr().x, PosOnScr().y);
     pop();
-    
+
     tourelle.Display();
   }
 
@@ -225,18 +224,27 @@ class ModuleBase implements IModule {
 class Tourelle {
 
   IModule module;
-  PVector pos, ori;
-  float taille = 20, widthCanon = 10;
+  PVector pos, ori, oriC;
+  float taille = 20, widthCanon = 10, canonSpeed = 1;
+  Player player;
 
-  Tourelle(IModule m) {
+  Tourelle(IModule m, Player p) {
     module = m;
     pos = m.PosOnScr().copy();
     ori = new PVector();
+    player = p;
   }
 
   void Update() {
     pos = module.PosOnScr().copy();
-    ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    oriC.setMag(taille);
+    
+    ori.x = lerp(ori.x, oriC.x, canonSpeed);
+    ori.y = lerp(ori.y, oriC.y, canonSpeed);
+    
+    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    
     ori.setMag(taille);
   }
 
@@ -246,5 +254,10 @@ class Tourelle {
     strokeWeight(widthCanon);
     line(0, 0, ori.x, ori.y);
     pop();
+  }
+
+  void Utiliser() {
+    Projectile p = new Projectile(player, pos, ori);
+    mapActif.AllAttacks.add(p);
   }
 }

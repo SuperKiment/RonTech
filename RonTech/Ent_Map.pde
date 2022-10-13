@@ -20,7 +20,6 @@ class Map {
 
 
   Map() {
-    println();
     println("Map Creation :");
 
     mapLoader = new MapLoader();
@@ -45,7 +44,6 @@ class Map {
 
 
     println("Map Thread lance");
-    println();
   }
 
   void Display() {
@@ -73,10 +71,12 @@ class Map {
       }
     }
 
-    ArrayList<Attack> copy = AllAttacks;
-    
-    for (Attack a : copy) {
-      a.Display();
+    try {
+      for (Attack a : AllAttacks) {
+        a.Display();
+      }
+    } 
+    catch (Exception e) {
     }
 
     for (Entity e : AllEntities) {
@@ -170,8 +170,8 @@ class Map {
 
   void DisplayGrille(Player p) {
     if (GroundGrille != null) {
-      for (int x=int(p.pos.x-camera.distanceRendu/2); x<p.pos.x+camera.distanceRendu/2; x++) {
-        for (int y=int(p.pos.y-camera.distanceRendu/2); y<p.pos.y+camera.distanceRendu/2; y++) {
+      for (int x=int(p.pos.x-camera.ground_rd/2); x<p.pos.x+camera.ground_rd/2; x++) {
+        for (int y=int(p.pos.y-camera.ground_rd/2); y<p.pos.y+camera.ground_rd/2; y++) {
 
           if (x>=0 && x<GroundGrille.length &&
             y>=0 && y<GroundGrille[0].length) {

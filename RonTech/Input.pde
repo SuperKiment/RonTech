@@ -77,7 +77,7 @@ void mousePressed() {
       camera.SwitchFocus(e);
     }
 
-  if (mouseButton == LEFT) {
+  if (mouseButton == LEFT && gameManager.isPlay()) {
     thread("ClickLeftMouse");
   }
 }

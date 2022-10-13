@@ -9,8 +9,8 @@ class Projectile implements Attack {
 
   Projectile(Entity e, PVector p, PVector o) {
     origine = e;
-    pos = p;
-    ori = o;
+    pos = p.copy();
+    ori = o.copy();
     ori.setMag(speed);
     timeOnStart = millis();
   }

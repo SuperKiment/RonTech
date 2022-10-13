@@ -18,11 +18,13 @@ void setup() {
   strokeWeight(3);
 
   gameManager = new GameManager();
+  gameManager.optionsManager.Setup("options.options");
   time = new Time();
   hud = new HUD();
 
   mapActif = new Map();
   camera = new Camera();
+  
 
   /*mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));
    mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));

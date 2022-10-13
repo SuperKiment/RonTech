@@ -8,9 +8,11 @@ enum GameState {
 public class GameManager {
 
   GameState state;
+  OptionsManager optionsManager;
 
   GameManager() {
     state = GameState.Play;
+    optionsManager = new OptionsManager();
   }
 
   void setState(GameState s) {
@@ -56,7 +58,29 @@ public class GameManager {
 
   void PostUpdate() {
   }
+
+  class OptionsManager {
+    
+    int ground_rd;
+    int entities_rd;
+
+    OptionsManager() {
+    }
+
+    void Setup(String path) {
+      JSONObject json = loadJSONObject(path);
+
+      ground_rd = json.getInt("ground_rd", 5);
+      entities_rd = json.getInt("entities_rd", 5);
+      
+      println("Opt Setup :");
+      println("Opt ground_rd : "+ground_rd);
+      println("Opt entities_rd : "+entities_rd);
+    }
+  }
 }
+
+//=================================================================
 
 class Time {
 

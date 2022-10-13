@@ -225,7 +225,7 @@ class Tourelle {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, canonSpeed = 1;
+  float taille = 20, widthCanon = 10, speed = 1;
   Player player;
 
   Tourelle(IModule m, Player p) {
@@ -240,8 +240,7 @@ class Tourelle {
     oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
     oriC.setMag(taille);
     
-    ori.x = lerp(ori.x, oriC.x, canonSpeed);
-    ori.y = lerp(ori.y, oriC.y, canonSpeed);
+    ori.lerp(oriC, speed*time.getDeltaFrames());
     
     //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
     

@@ -3,7 +3,8 @@ class ModuleSocleTourelle implements IModule {
   int taillePuissance;
   PVector pos;
   Player player;
-  float speed, taille, distance = 50, ori;
+  float speed = 5, taille, distance = 50, ori;
+  float speedRange = 1.5;
   color couleur;
   Tourelle tourelle;
 
@@ -16,7 +17,7 @@ class ModuleSocleTourelle implements IModule {
     player = p;
     taille = t;
     ori = o;
-    speed = s;
+    speed = random(s/speedRange, s*speedRange);
     distance = d;
     pos.x = p.pos.x;
     pos.y = p.pos.y;
@@ -29,7 +30,7 @@ class ModuleSocleTourelle implements IModule {
     pos.y = player.pos.y;    
     ori = random(-PI*2, PI*2);
     taille = 50;
-    speed = 5;
+    speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
     distance = 2;
     tourelle = new Tourelle(this, player);
@@ -40,7 +41,7 @@ class ModuleSocleTourelle implements IModule {
     pos.y = player.pos.y;    
     ori = random(-PI*2, PI*2);
     taille = 50;
-    speed = 5;
+    speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
     distance = 2;
     tourelle = new Tourelle(this, player);
@@ -225,7 +226,8 @@ class Tourelle {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, speed = 1;
+  float taille = 20, widthCanon = 10, speed = 1, cooldown = 1000, timer = 0,
+  cooldownRange = 5;
   Player player;
 
   Tourelle(IModule m, Player p) {
@@ -239,11 +241,11 @@ class Tourelle {
     pos = module.PosOnScr().copy();
     oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
     oriC.setMag(taille);
-    
+
     ori.lerp(oriC, speed*time.getDeltaFrames());
-    
+
     //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-    
+
     ori.setMag(taille);
   }
 
@@ -256,7 +258,16 @@ class Tourelle {
   }
 
   void Utiliser() {
-    Projectile p = new Projectile(player, pos, ori);
-    mapActif.AllAttacks.add(p);
+    boolean tir = false;
+
+    if (millis() - timer >= random(cooldown/cooldownRange, cooldown*cooldownRange)) {
+      tir = true;
+      timer = millis();
+    } 
+
+    if (tir) {
+      Projectile p = new Projectile(player, pos, ori);
+      mapActif.AllAttacks.add(p);
+    }
   }
 }

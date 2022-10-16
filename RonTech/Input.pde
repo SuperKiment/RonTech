@@ -4,6 +4,7 @@ class InputControl {
 
   PVector keyDir;
   boolean z = false, q = false, s = false, d = false, space = false, b = false;
+  boolean leftClickUtiliser = false;
 
   InputControl() {
     keyDir = new PVector();
@@ -78,7 +79,7 @@ void mousePressed() {
     }
 
   if (mouseButton == LEFT && gameManager.isPlay()) {
-    thread("ClickLeftMouse");
+    inputControl.leftClickUtiliser = true;
   }
 }
 
@@ -88,6 +89,10 @@ void mouseReleased() {
   }
 
   if (gameManager.isInventory()) hud.inventoryHUD.ClickG();
+  
+  if (mouseButton == LEFT && gameManager.isPlay()) {
+    inputControl.leftClickUtiliser = false;
+  }
 }
 
 void ClickTestEverything() {
@@ -97,8 +102,4 @@ void ClickTestEverything() {
       println("Loot clicked : " + l.nom);
     }
   }
-}
-
-void ClickLeftMouse() {
-  mapActif.AllPlayers.get(0).LeftClick();
 }

@@ -11,7 +11,6 @@ class Map {
   ArrayList<Entity> AllEntities;
   int tailleCase = 50;
 
-
   ThreadUpdate threadUpdate;
   int timeThreadUpdate = 1;
 
@@ -93,8 +92,13 @@ class Map {
 
 
   void Update() {
+
     for (Player p : AllPlayers) {
       p.Update();
+
+      if (inputControl.leftClickUtiliser) {
+        p.LeftClick();
+      }
     }
 
     for (Loot l : AllLoot) {

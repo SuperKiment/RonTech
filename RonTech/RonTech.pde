@@ -39,6 +39,7 @@ void setup() {
   mapActif.AllSolides.add(new Solide(10, 5));
   mapActif.AllSolides.add(new Solide(10, 10));
   mapActif.AllSolides.add(new Solide(10, 7));
+  mapActif.AllSolides.add(new Solide(20, 13));
 
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));

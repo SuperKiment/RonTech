@@ -43,9 +43,6 @@ class ModuleSocleTourelle implements IModule {
   void Utiliser() {
 
     tourelle.Utiliser();
-
-
-    println("Tir de "+player.name +" / Module : "+ this.getClass());
   }
 
   void Display() {
@@ -161,11 +158,7 @@ class ModuleBouclier implements IModule {
   }
 
   void Utiliser() {
-
     bouclier.Utiliser();
-
-
-    println("Tir de "+player.name +" / Module : "+ this.getClass());
   }
 
   void Display() {
@@ -255,11 +248,12 @@ class Tourelle {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, speed = 1, cooldown = 1000, timer = 0, 
-    cooldownRange = 5;
+  float taille = 20, widthCanon = 10, speed = 1, cooldown = 100, timer = 0, 
+    cooldownRange = 5, imprecision;
   Player player;
 
   Tourelle(IModule m, Player p) {
+    imprecision = 1-(cooldown/1000);
     module = m;
     pos = m.PosOnScr().copy();
     ori = new PVector();
@@ -269,11 +263,11 @@ class Tourelle {
   void Update() {
     pos = module.PosOnScr().copy();
     oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
     oriC.setMag(taille);
 
     ori.lerp(oriC, speed*time.getDeltaFrames());
 
-    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
 
     ori.setMag(taille);
   }
@@ -295,8 +289,13 @@ class Tourelle {
     } 
 
     if (tir) {
-      Projectile p = new Projectile(player, pos, ori);
+      PVector a = player.vel.copy();
+      a = GrToSn(a);
+      ori.lerp(PVector.random2D(), imprecision);
+      Projectile p = new Projectile(player, SnToGr(pos), ori, a);
       mapActif.AllAttacks.add(p);
+      println(player.vel);    
+      println("Tir de "+player.name +" / Module : "+ this.getClass());
     }
   }
 }

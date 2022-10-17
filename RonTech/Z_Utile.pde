@@ -36,12 +36,20 @@ boolean isTouch(Player p, Loot l) {
 
 PVector MousePosScreen() {
   PVector pos = new PVector(mouseX, mouseY);
-  
+
   pos.sub(camera.translate);
-  
+
   return pos;
 }
 
 PVector MousePosScreenGr() {
   return SnToGr(MousePosScreen());
+}
+
+float OrientationFromVector(PVector ori) {
+  float x = 0;
+  
+  
+  
+  return x;
 }

@@ -30,17 +30,10 @@ void setup() {
    mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
    mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));*/
    
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
-  mapActif.AllPlayers.get(0).AllModules.add(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
+  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
+  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
+  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)));
+  mapActif.AllPlayers.get(0).addModule(new ModuleBouclier(mapActif.AllPlayers.get(0)));
 
 
   mapActif.AllSolides.add(new Solide(10, 5));

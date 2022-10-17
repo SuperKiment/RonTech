@@ -12,6 +12,7 @@ interface IModule {
   PVector PosOnScr();
 
   void Utiliser();
+  void setOri(float o);
 
   int getTaille();
   PVector getPos();

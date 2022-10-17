@@ -8,7 +8,7 @@ class Player implements Entity {
   Inventaire inventaire;
 
   ArrayList<IModule> AllModules = new ArrayList<IModule>();
-
+  int maxModules = 8;
 
   Player() {
     Constructor();
@@ -110,6 +110,17 @@ class Player implements Entity {
   void LeftClick() {
     for (IModule m : AllModules) {
       m.Utiliser();
+    }
+  }
+
+  void addModule(IModule m) {
+    if (AllModules.size() < maxModules) {
+      AllModules.add(m);
+      AllModules.get(AllModules.size()-1).setOri(
+        (AllModules.size()-1)*(TWO_PI/maxModules)
+        );
+    } else {
+      println("Pla Impossible d'ajouter le module");
     }
   }
 

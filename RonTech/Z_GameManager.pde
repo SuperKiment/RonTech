@@ -9,6 +9,7 @@ public class GameManager {
 
   GameState state;
   OptionsManager optionsManager;
+  boolean debug = false;
 
   GameManager() {
     state = GameState.Play;

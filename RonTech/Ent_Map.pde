@@ -12,7 +12,7 @@ class Map {
   int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
-  int timeThreadUpdate = 1;
+  int timeThreadUpdate = 5;
 
 
   MapLoader mapLoader;

@@ -120,7 +120,7 @@ class ModuleBouclier implements IModule {
   int taillePuissance;
   PVector pos;
   Player player;
-  float speed = 4, taille, distance = 50, ori;
+  float speed = 2, taille, distance = 50, ori;
   float speedRange = 1.5;
   color couleur;
   Bouclier bouclier;
@@ -248,12 +248,12 @@ class Tourelle {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, speed = 1, cooldown = 100, timer = 0, 
-    cooldownRange = 5, imprecision;
+  float taille = 20, widthCanon = 10, speed = 1, cooldown = 500, timer = 0, 
+    cooldownRange = 5, imprecision, nbBalles = 1;
   Player player;
 
   Tourelle(IModule m, Player p) {
-    imprecision = 1-(cooldown/1000);
+    imprecision = 1-(cooldown/10);
     module = m;
     pos = m.PosOnScr().copy();
     ori = new PVector();
@@ -289,13 +289,15 @@ class Tourelle {
     } 
 
     if (tir) {
-      PVector a = player.vel.copy();
-      a = GrToSn(a);
-      ori.lerp(PVector.random2D(), imprecision);
-      Projectile p = new Projectile(player, SnToGr(pos), ori, a);
-      mapActif.AllAttacks.add(p);
-      println(player.vel);    
-      println("Tir de "+player.name +" / Module : "+ this.getClass());
+      for (int i =0; i<nbBalles; i++) {
+        PVector a = player.vel.copy();
+        a = GrToSn(a);
+        ori.lerp(PVector.random2D(), imprecision);
+        Projectile p = new Projectile(player, SnToGr(pos), ori, a);
+        mapActif.AllAttacks.add(p);
+        println(player.vel);    
+        println("Tir de "+player.name +" / Module : "+ this.getClass());
+      }
     }
   }
 }
@@ -317,7 +319,7 @@ class Bouclier {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthBouclier = 10, speed = 1;
+  float taille = 20, widthBouclier = 10, speed = 0.25;
   Player player;
 
   Bouclier(IModule m, Player p) {

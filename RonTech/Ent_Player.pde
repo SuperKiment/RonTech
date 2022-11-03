@@ -113,12 +113,12 @@ class Player implements Entity {
     }
   }
 
-  void addModule(IModule m) {
+  void addModule(IModule m, OnModule om) {
     if (AllModules.size() < maxModules) {
+      m.setOri((AllModules.size()-1) * (TWO_PI/maxModules));
+      om.setModule(m, this);
+      m.setOnModule(om);
       AllModules.add(m);
-      AllModules.get(AllModules.size()-1).setOri(
-        (AllModules.size()-1)*(TWO_PI/maxModules)
-        );
     } else {
       println("Pla Impossible d'ajouter le module");
     }

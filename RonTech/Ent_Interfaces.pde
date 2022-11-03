@@ -13,6 +13,7 @@ interface IModule {
 
   void Utiliser();
   void setOri(float o);
+  void setOnModule(OnModule om);
 
   int getTaille();
   PVector getPos();
@@ -24,4 +25,11 @@ interface Attack {
   void Display();
   void Update();
   boolean isMort();
+}
+
+interface OnModule {
+  void Utiliser();
+  void Display();
+  void Update();
+  void setModule(IModule m, Player p);
 }

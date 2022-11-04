@@ -13,19 +13,19 @@ class InputControl {
   void setInput(char ke, boolean set) {
 
     switch(ke) {
-    case 'z' : 
+    case 'z' :
       z = set;
       break;
 
-    case 'q' : 
-      q = set;  
+    case 'q' :
+      q = set;
       break;
 
-    case 's' : 
-      s = set;  
+    case 's' :
+      s = set;
       break;
 
-    case 'd' : 
+    case 'd' :
       d = set;
       break;
 
@@ -33,8 +33,8 @@ class InputControl {
       space = set;
       break;
 
-    case 'b' : 
-      b = set;  
+    case 'b' :
+      b = set;
       break;
     }
 
@@ -67,6 +67,12 @@ void keyPressed() {
       println("play");
     }
   }
+
+  if (key == 'k') {
+    if (debug) {
+      debug = false;
+    } else debug = true;
+  }
 }
 void keyReleased() {
   inputControl.setInput(key, false);
@@ -89,7 +95,7 @@ void mouseReleased() {
   }
 
   if (gameManager.isInventory()) hud.inventoryHUD.ClickG();
-  
+
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = false;
   }
@@ -97,7 +103,7 @@ void mouseReleased() {
 
 void ClickTestEverything() {
   for (Loot l : mapActif.AllLoot) {
-    if (dist(MousePosScreenGr().x, MousePosScreenGr().y, 
+    if (dist(MousePosScreenGr().x, MousePosScreenGr().y,
       l.pos.x, l.pos.y) <= SnToGr(l.taille)) {
       println("Loot clicked : " + l.nom);
     }

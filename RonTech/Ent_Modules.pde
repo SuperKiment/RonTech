@@ -139,19 +139,75 @@ class ModuleSocleTourelle implements IModule {
 
 
 
-
-
-
-
-
-
-class Tourelle implements OnModule {
+class OnModuleC implements OnModule {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, speed = 1, cooldown = 500, timer = 0, 
-    cooldownRange = 5, imprecision, nbBalles = 1;
+  float taille = 20, widthCanon = 10, speed = 1;
   Player player;
+
+  OnModuleC(IModule m, Player p) {
+    module = m;
+    pos = m.PosOnScr().copy();
+    ori = new PVector();
+    player = p;
+  }
+
+  OnModuleC() {
+    ori = new PVector();
+  }
+
+  void Update() {
+    pos = module.PosOnScr().copy();
+
+    oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
+    oriC.setMag(taille);
+
+    ori.lerp(oriC, speed*time.getDeltaFrames());
+
+    ori.setMag(taille);
+  }
+
+  void Display() {
+    push();
+    translate(pos.x, pos.y);
+    strokeWeight(widthCanon);
+    line(0, 0, ori.x, ori.y);
+    pop();
+  }
+
+  void Utiliser() {
+  }
+
+  void setModule(IModule m, Player p) {
+    module = m;
+    pos = m.PosOnScr().copy();
+    player = p;
+  }
+}
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+class Tourelle extends OnModuleC {
+
+  float cooldown = 500, timer = 0, 
+    cooldownRange = 5, imprecision, nbBalles = 1;
 
   Tourelle(IModule m, Player p) {
     imprecision = 1-(cooldown/10);
@@ -166,25 +222,6 @@ class Tourelle implements OnModule {
     ori = new PVector();
   }
 
-  void Update() {
-    pos = module.PosOnScr().copy();
-    oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-    oriC.setMag(taille);
-
-    ori.lerp(oriC, speed*time.getDeltaFrames());
-
-
-    ori.setMag(taille);
-  }
-
-  void Display() {
-    push();
-    translate(pos.x, pos.y);
-    strokeWeight(widthCanon);
-    line(0, 0, ori.x, ori.y);
-    pop();
-  }
 
   void Utiliser() {
     boolean tir = false;
@@ -206,12 +243,6 @@ class Tourelle implements OnModule {
       }
     }
   }
-
-  void setModule(IModule m, Player p) {
-    module = m;
-    pos = m.PosOnScr().copy();
-    player = p;
-  }
 }
 
 
@@ -227,12 +258,10 @@ class Tourelle implements OnModule {
 
 
 
-class Bouclier implements OnModule {
 
-  IModule module;
-  PVector pos, ori, oriC;
-  float taille = 20, widthBouclier = 10, speed = 0.25;
-  Player player;
+class Bouclier extends OnModuleC {
+
+  float widthBouclier = 10, speed = 0.25;
 
   Bouclier(IModule m, Player p) {
     module = m;
@@ -243,18 +272,6 @@ class Bouclier implements OnModule {
 
   Bouclier() {
     ori = new PVector();
-  }
-
-  void Update() {
-    pos = module.PosOnScr().copy();
-    oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-    oriC.setMag(taille);
-
-    ori.lerp(oriC, speed*time.getDeltaFrames());
-
-    //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-
-    ori.setMag(taille);
   }
 
   void Display() {
@@ -268,11 +285,5 @@ class Bouclier implements OnModule {
   }
 
   void Utiliser() {
-  }
-
-  void setModule(IModule m, Player p) {
-    module = m;
-    pos = m.PosOnScr().copy();
-    player = p;
   }
 }

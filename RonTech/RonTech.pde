@@ -1,8 +1,8 @@
 int timeFactor = 300;
 
-void setup() { 
+void setup() {
 
-  println("==============");  
+  println("==============");
   println("RONTECH SETUP");
   println("==============");
 
@@ -24,12 +24,14 @@ void setup() {
 
   mapActif = new Map();
   camera = new Camera();
-  
+
+  console = new Console();
+
 
   /*mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));
    mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
    mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));*/
-   
+
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Tourelle());
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
@@ -45,7 +47,7 @@ void setup() {
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));
 
-  println("==============");  
+  println("==============");
   println("RONTECH SETUP END");
   println("==============");
 }
@@ -69,6 +71,9 @@ void draw() {
   }
 
   gameManager.PostUpdate();
+
+  console.add(frameRate);
+  console.add(time.getDeltaFrames() * 1000);
 
   hud.Display();
 }

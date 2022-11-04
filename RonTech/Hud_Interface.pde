@@ -1,4 +1,5 @@
 HUD hud;
+boolean debug = true;
 
 enum TitleMode {
   Title, Options, Credits;
@@ -30,11 +31,9 @@ class HUD {
       title.Display();
     }
 
-    push();
-    textAlign(CORNER);
-    text(time.getDeltaFrames() * 1000, 20, 20);
-    text(frameRate, 20, 30);
-    pop();
+    if (debug) {
+      console.Display();
+    }
   }
 
 
@@ -118,7 +117,7 @@ class HUD {
 
     Bouton(String s) {
       pos = new PVector(width / 2, height / 2);
-      taille = new PVector(50, 50);      
+      taille = new PVector(50, 50);
       text = s;
     }
 
@@ -146,9 +145,9 @@ class HUD {
     }
 
     boolean isMouseOn() {
-      if (mouseX <= pos.x + taille.x / 2 && 
-        mouseX  >= pos.x - taille.x / 2 && 
-        mouseY  <= pos.y + taille.y / 2 && 
+      if (mouseX <= pos.x + taille.x / 2 &&
+        mouseX  >= pos.x - taille.x / 2 &&
+        mouseY  <= pos.y + taille.y / 2 &&
         mouseY  >= pos.y - taille.y / 2) {
         return true;
       } else return false;
@@ -159,7 +158,7 @@ class HUD {
 
 
 
-
+//=========================================================================
 
 
 
@@ -208,7 +207,7 @@ class InventoryHUD {
 
     if (x < nbCasesX && y < nbCasesY) {
 
-      Loot l = p.inventaire.grille[x][y];    
+      Loot l = p.inventaire.grille[x][y];
       if (l != null) {
         println("coord sur inventory : " + x, y + " / Loot : " + l.nom + " : jeté");
         LootItem(l, x, y);
@@ -239,5 +238,67 @@ class InventoryHUD {
 
     posXM = int(mouseX / tailleCase);
     posYM = int(mouseY / tailleCase);
+  }
+}
+
+
+
+
+
+
+
+
+
+//=========================================================================
+
+
+
+
+
+
+
+
+
+Console console;
+
+class Console {
+
+  PVector pos;
+  ArrayList<String> tabl;
+  float taillePol = 15, taille;
+
+  Console() {
+    tabl = new ArrayList<String>();
+    pos = new PVector();
+  }
+
+  void Display() {
+    if (taille > 0) {
+      push();
+      rectMode(CORNER);
+      noStroke();
+      fill(0, 0, 0, 70);
+      rect(pos.x, pos.y, width, taille);
+
+      textSize(taillePol);
+      fill(255);
+
+      for (int i=0; i<tabl.size(); i++) {
+        text(tabl.get(i), 50, i*taillePol+taillePol);
+      }
+
+      pop();
+
+      tabl.clear();
+    }
+  }
+
+  void add(String ajout) {
+    tabl.add(ajout);
+    taille = tabl.size() * taillePol;
+  }
+  void add(float ajout) {
+    tabl.add(String.valueOf(ajout));
+    taille = tabl.size() * taillePol;
   }
 }

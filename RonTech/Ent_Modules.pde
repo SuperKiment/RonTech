@@ -1,6 +1,5 @@
 class ModuleSocleTourelle implements IModule {
 
-  int taillePuissance;
   PVector pos;
   Player player;
   float speed = 4, taille, distance = 50, ori;

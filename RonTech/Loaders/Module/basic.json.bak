@@ -1,0 +1,11 @@
+{
+  "taille": "1",
+  "onModules": [
+    "tourelle",
+    "bouclier"
+  ],
+  "speed": "4",
+  "speedRange": "1.5",
+  "couleur": "#FFFFFF"
+  "distance": "50"
+}

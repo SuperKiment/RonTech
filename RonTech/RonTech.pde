@@ -26,6 +26,8 @@ void setup() {
   camera = new Camera();
 
   console = new Console();
+  
+  fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
 
 
   /*mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));

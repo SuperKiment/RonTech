@@ -171,8 +171,9 @@ class OnModuleC implements OnModule {
   void Display() {
     push();
     translate(pos.x, pos.y);
-    strokeWeight(widthCanon);
-    line(0, 0, ori.x, ori.y);
+    //line(0, 0, ori.x, ori.y);
+    rotate(ori.heading());
+    rect(ori.mag(), 0, ori.mag(), 10);
     pop();
   }
 

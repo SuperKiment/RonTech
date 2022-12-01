@@ -12,6 +12,7 @@ class Map {
   int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
+  ThreadUpdatePlayer threadUpdatePlayer;
   int timeThreadUpdate = 1;
 
 
@@ -24,7 +25,7 @@ class Map {
     mapLoader = new MapLoader();
     mapLoader.LoadMap("map1.png");
 
-    AllPlayers = new ArrayList<Player>();    
+    AllPlayers = new ArrayList<Player>();
     AllSolides = new ArrayList<Solide>();
     AllLoot = new ArrayList<Loot>();
     AllAttacks = new ArrayList<Attack>();
@@ -40,6 +41,9 @@ class Map {
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
+    
+    threadUpdatePlayer = new ThreadUpdatePlayer();
+    threadUpdatePlayer.start();
 
 
     println("Map Thread lance");
@@ -74,7 +78,7 @@ class Map {
       for (Attack a : AllAttacks) {
         a.Display();
       }
-    } 
+    }
     catch (Exception e) {
     }
 
@@ -92,15 +96,7 @@ class Map {
 
 
   void Update() {
-
-    for (Player p : AllPlayers) {
-      p.Update();
-
-      if (inputControl.leftClickUtiliser) {
-        p.LeftClick();
-      }
-    }
-
+    
     for (Loot l : AllLoot) {
       l.Update();
     }
@@ -113,6 +109,16 @@ class Map {
       Attack a = AllAttacks.get(i);
       a.Update();
       if (a.isMort()) AllAttacks.remove(i);
+    }
+  }
+
+  void UpdatePlayer() {
+    for (Player p : AllPlayers) {
+      p.Update();
+
+      if (inputControl.leftClickUtiliser) {
+        p.LeftClick();
+      }
     }
   }
 
@@ -148,7 +154,7 @@ class Map {
     for (Loot l : AllLoot) {
       AllEntities.add(l);
     }
-    for (Solide m : AllSolides) {      
+    for (Solide m : AllSolides) {
       AllEntities.add(m);
     }
     for (Player p : AllPlayers) {
@@ -164,6 +170,18 @@ class Map {
         if (gameManager.isPlay()) {
           Update();
           UpdateDisplay();
+        }
+        delay(timeThreadUpdate);
+      }
+    }
+  }
+
+  class ThreadUpdatePlayer extends Thread {
+
+    void run() {
+      while (true) {
+        if (gameManager.isPlay()) {
+          UpdatePlayer();
         }
         delay(timeThreadUpdate);
       }

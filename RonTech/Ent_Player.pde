@@ -1,4 +1,4 @@
-class Player implements Entity {
+class Player implements Entity, Damageable {
 
   PVector pos, vel, dirCible, dir, acc, taille;
   boolean controllable = false;
@@ -57,10 +57,10 @@ class Player implements Entity {
   }
 
   void Deplacement() {
-    dirCible = inputControl.keyDir; 
+    dirCible = inputControl.keyDir;
 
-    vel = dirCible; 
-    vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor); 
+    vel = dirCible;
+    vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor);
 
     pos.add(vel);
 
@@ -69,7 +69,7 @@ class Player implements Entity {
 
   void CollisionMur() {
     for (Solide m : mapActif.AllSolides) {
-      if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < taille.x / 2 + m.taille / 2) {      
+      if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < taille.x / 2 + m.taille / 2) {
         PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
         colOri.setMag(speed * time.getDeltaFrames());
 
@@ -79,18 +79,18 @@ class Player implements Entity {
   }
 
   boolean IsOnPlayer(float x, float y) {
-    float tailleCase = mapActif.tailleCase; 
-    if (x >= pos.x * tailleCase - taille.x / 2 && 
-      x <= pos.x * tailleCase + taille.x / 2 && 
-      y >= pos.y * tailleCase - taille.y / 2 && 
+    float tailleCase = mapActif.tailleCase;
+    if (x >= pos.x * tailleCase - taille.x / 2 &&
+      x <= pos.x * tailleCase + taille.x / 2 &&
+      y >= pos.y * tailleCase - taille.y / 2 &&
       y <= pos.y * tailleCase + taille.y / 2) {
       return true;
     } else return false;
   }
 
   String Print() {
-    String pr = name; 
-    if (pr.equals("")) pr = "NoName"; 
+    String pr = name;
+    if (pr.equals("")) pr = "NoName";
 
     return "Ensemble " + pr + " / Position " + pos;
   }
@@ -128,6 +128,15 @@ class Player implements Entity {
   boolean isDisplay = false;
   PVector getPos() {
     return pos;
+  }
+
+  //INTERFACE DAMAGEABLE
+  void GetDamage(float damage) {
+    HP -= damage;
+  }
+
+  float GetHP() {
+    return HP;
   }
 }
 

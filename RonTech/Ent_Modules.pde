@@ -27,9 +27,9 @@ class ModuleSocleTourelle implements IModule {
 
   void Constructor(Player p, OnModule m) {
     pos = new PVector();
-    player = p;    
+    player = p;
     pos.x = player.pos.x;
-    pos.y = player.pos.y;    
+    pos.y = player.pos.y;
     ori = random(-PI*2, PI*2);
     taille = 50;
     speed = random(speed/speedRange, speed*speedRange);
@@ -40,9 +40,9 @@ class ModuleSocleTourelle implements IModule {
 
   void Constructor(Player p) {
     pos = new PVector();
-    player = p;    
+    player = p;
     pos.x = player.pos.x;
-    pos.y = player.pos.y;    
+    pos.y = player.pos.y;
     ori = random(-PI*2, PI*2);
     taille = 50;
     speed = random(speed/speedRange, speed*speedRange);
@@ -206,19 +206,22 @@ class OnModuleC implements OnModule {
 
 class Tourelle extends OnModuleC {
 
-  float cooldown = 500, timer = 0, 
-    cooldownRange = 5, imprecision, nbBalles = 1;
+  float cooldown = 10, timer = 0,
+    cooldownRange = 2, imprecision = 0.5, nbBalles = 1;
 
   Tourelle(IModule m, Player p) {
-    imprecision = 1-(cooldown/10);
+    Constructor();
     module = m;
     pos = m.PosOnScr().copy();
-    ori = new PVector();
     player = p;
   }
 
   Tourelle() {
-    imprecision = 1-(cooldown/10);
+    Constructor();
+  }
+
+  void Constructor() {
+    if (imprecision == 0) imprecision = 1-(cooldown/10);
     ori = new PVector();
   }
 
@@ -229,18 +232,16 @@ class Tourelle extends OnModuleC {
     if (millis() - timer >= random(cooldown/cooldownRange, cooldown*cooldownRange)) {
       tir = true;
       timer = millis();
-    } 
+    }
 
     if (tir) {
-      for (int i =0; i<nbBalles; i++) {
-        PVector a = player.vel.copy();
-        a = GrToSn(a);
-        ori.lerp(PVector.random2D(), imprecision);
-        Projectile p = new Projectile(player, SnToGr(pos), ori, a);
-        mapActif.AllAttacks.add(p);
-        println(player.vel);    
-        println("Tir de "+player.name +" / Module : "+ this.getClass());
-      }
+      //for (int i =0; i<nbBalles; i++) {
+      PVector a = player.vel.copy();
+      a = GrToSn(a);
+      ori.lerp(PVector.random2D(), imprecision);
+      Projectile p = new Projectile(player, SnToGr(pos), ori, a);
+      mapActif.AllAttacks.add(p);
+      //}
     }
   }
 }

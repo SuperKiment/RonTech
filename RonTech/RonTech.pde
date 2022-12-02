@@ -48,6 +48,8 @@ void setup() {
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));
+  
+  mapActif.AllEnemies.add(new Enemy(15, 10));
 
   println("==============");
   println("RONTECH SETUP END");

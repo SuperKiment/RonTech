@@ -4,6 +4,11 @@ interface Entity {
   PVector getPos();
 }
 
+interface Damageable {
+  void GetDamage(float damage);
+  float GetHP();
+}
+
 interface IModule {
 
   void Constructor(Player p);

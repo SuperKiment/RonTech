@@ -9,6 +9,7 @@ class Map {
   ArrayList<Loot> AllLoot;
   ArrayList<Attack> AllAttacks;
   ArrayList<Entity> AllEntities;
+  ArrayList<Enemy> AllEnemies;
   int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
@@ -30,6 +31,7 @@ class Map {
     AllLoot = new ArrayList<Loot>();
     AllAttacks = new ArrayList<Attack>();
     AllEntities = new ArrayList<Entity>();
+    AllEnemies = new ArrayList<Enemy>();
 
     int xP = 20, yP = 20;
     Player player = new Player(xP, yP);
@@ -41,7 +43,7 @@ class Map {
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
-    
+
     threadUpdatePlayer = new ThreadUpdatePlayer();
     threadUpdatePlayer.start();
 
@@ -63,6 +65,12 @@ class Map {
     for (Player p : AllPlayers) {
       if (p.isDisplay) {
         p.Display();
+      }
+    }
+
+    for (Enemy e : AllEnemies) {
+      if (e.isDisplay) {
+        e.Display();
       }
     }
 
@@ -96,7 +104,7 @@ class Map {
 
 
   void Update() {
-    
+
     for (Loot l : AllLoot) {
       l.Update();
     }
@@ -105,12 +113,19 @@ class Map {
       s.Update();
     }
 
-    for (int i=0; i<AllAttacks.size(); i++) {
-      Attack a = AllAttacks.get(i);
-      a.Update();
-      if (a.isMort()) AllAttacks.remove(i);
+    try {
+      for (int i=0; i<AllAttacks.size(); i++) {
+        Attack a = AllAttacks.get(i);
+        a.Update();
+        if (a.isMort()) AllAttacks.remove(i);
+      }
+    }
+    catch(Exception e) {
+      println("FUCK");
+      AllAttacks.clear();
     }
   }
+
 
   void UpdatePlayer() {
     for (Player p : AllPlayers) {

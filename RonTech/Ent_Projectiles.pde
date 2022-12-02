@@ -1,7 +1,7 @@
 class Projectile implements Attack {
 
   PVector pos, ori, baseSpeed;
-  float damage = 50, speed = 3, taille = 10, 
+  float damage = 50, speed = 4, taille = 10, 
     countdown = 0, timeOnStart, timeLimit = 2000;
   boolean mort = false;
   color couleur = color(255, 0, 0);
@@ -51,6 +51,13 @@ class Projectile implements Attack {
     for (Solide m : mapActif.AllSolides) {
       if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < taille / 2 + m.taille / 2) {
         mort = true;
+      }
+    }
+    
+    for (Enemy e : mapActif.AllEnemies) {
+      if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(e.pos.x), GrToSn(e.pos.y)) < taille / 2 + e.taille / 2) {
+        mort = true;
+        println("touché");
       }
     }
   }

@@ -206,8 +206,8 @@ class OnModuleC implements OnModule {
 
 class Tourelle extends OnModuleC {
 
-  float cooldown = 10, timer = 0,
-    cooldownRange = 2, imprecision = 0.5, nbBalles = 1;
+  float cooldown = 25, timer = 0,
+    cooldownRange = 2, imprecision = 0, nbBalles = 1;
 
   Tourelle(IModule m, Player p) {
     Constructor();
@@ -221,7 +221,7 @@ class Tourelle extends OnModuleC {
   }
 
   void Constructor() {
-    if (imprecision == 0) imprecision = 1-(cooldown/10);
+    if (imprecision == 0) imprecision = 1-(cooldown/100);
     ori = new PVector();
   }
 

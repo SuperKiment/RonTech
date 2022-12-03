@@ -1,5 +1,5 @@
 class Enemy implements Entity, Damageable {
-  float HP = 100, taille;
+  float HP = 100, taille, tempsDepl;
   PVector pos, posC;
   boolean isDisplay = true;
 
@@ -15,7 +15,7 @@ class Enemy implements Entity, Damageable {
 
   void Constructor() {
     pos = new PVector();
-    taille = mapActif.tailleCase/2;
+    taille = mapActif.tailleCase*5;
   }
 
   void Display() {

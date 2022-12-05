@@ -10,6 +10,7 @@ class Map {
   ArrayList<Attack> AllAttacks;
   ArrayList<Entity> AllEntities;
   ArrayList<Enemy> AllEnemies;
+  ArrayList<Particles> AllParticles;
   int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
@@ -32,6 +33,7 @@ class Map {
     AllAttacks = new ArrayList<Attack>();
     AllEntities = new ArrayList<Entity>();
     AllEnemies = new ArrayList<Enemy>();
+    AllParticles = new ArrayList<Particles>();
 
     int xP = 20, yP = 20;
     Player player = new Player(xP, yP);
@@ -97,6 +99,15 @@ class Map {
       ellipse(e.getPos().x, e.getPos().y, 50, 50);
       pop();
     }
+
+    try {
+      for (Particles p : AllParticles) {
+        p.Display();
+      }
+    }
+    catch(Exception e) {
+      println("cassé");
+    }
   }
 
 
@@ -123,6 +134,12 @@ class Map {
     catch(Exception e) {
       println("FUCK");
       AllAttacks.clear();
+    }
+
+    for (int i=0; i<AllEnemies.size(); i++) {
+      Enemy e = AllEnemies.get(i);
+      e.Update();
+      if (e.isMort) AllEnemies.remove(i);
     }
   }
 

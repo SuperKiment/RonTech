@@ -1,7 +1,7 @@
 class Enemy implements Entity, Damageable {
-  float HP = 200, taille, tempsDepl;
+  float HP, baseHP = 200, taille, tempsDepl;
   PVector pos, posC;
-  boolean isDisplay = true;
+  boolean isDisplay = true, isMort = false;
   //la aussi
 
   Enemy() {
@@ -16,6 +16,7 @@ class Enemy implements Entity, Damageable {
   void Constructor() {
     pos = new PVector();
     taille = mapActif.tailleCase*5;
+    HP = baseHP;
   }
 
   void Display() {
@@ -46,6 +47,7 @@ class Enemy implements Entity, Damageable {
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
+    if (HP <= 0) isMort = true;
   }
 
   float GetHP() {
@@ -56,13 +58,14 @@ class Enemy implements Entity, Damageable {
     push();
     rectMode(CENTER);
     
+    float tailleXbase = baseHP*1.5;
     float tailleX = HP*1.5;
     float y = taille*0.75;
     
     translate(0, -y);
     
     fill(0);
-    rect(0, 0, tailleX, 30);
+    rect(0, 0, tailleXbase, 30);
 
     fill(255, 0, 0);
     rect(0, 0, tailleX-3, 30-3);

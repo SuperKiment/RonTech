@@ -133,6 +133,8 @@ class Player implements Entity, Damageable {
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
+    
+    camera.Shake(5);
   }
 
   float GetHP() {

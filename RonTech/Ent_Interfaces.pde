@@ -7,6 +7,7 @@ interface Entity {
 interface Damageable {
   void GetDamage(float damage);
   float GetHP();
+  void DisplayHealthBar();
 }
 
 interface IModule {

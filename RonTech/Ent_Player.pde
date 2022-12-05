@@ -138,6 +138,9 @@ class Player implements Entity, Damageable {
   float GetHP() {
     return HP;
   }
+
+  void DisplayHealthBar() {
+  }
 }
 
 

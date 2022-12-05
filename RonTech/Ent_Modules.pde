@@ -206,7 +206,7 @@ class OnModuleC implements OnModule {
 
 class Tourelle extends OnModuleC {
 
-  float cooldown = 25, timer = 0,
+  float cooldown = 250, timer = 0,
     cooldownRange = 2, imprecision = 0, nbBalles = 1;
 
   Tourelle(IModule m, Player p) {

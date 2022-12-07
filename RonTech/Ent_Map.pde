@@ -11,7 +11,7 @@ class Map {
   ArrayList<Entity> AllEntities;
   ArrayList<Enemy> AllEnemies;
   ArrayList<Particles> AllParticles;
-  int tailleCase = 50;
+  int tailleCase = 25;
 
   ThreadUpdate threadUpdate;
   ThreadUpdatePlayer threadUpdatePlayer;
@@ -54,62 +54,65 @@ class Map {
   }
 
   void Display() {
+    try {
 
-    DisplayGrille(AllPlayers.get(0));
+      DisplayGrille(AllPlayers.get(0));
 
 
-    for (Solide m : AllSolides) {
-      if (m.isDisplay) {
-        m.Display();
-      }
-    }
-
-    for (Player p : AllPlayers) {
-      if (p.isDisplay) {
-        p.Display();
-      }
-    }
-
-    for (Enemy e : AllEnemies) {
-      if (e.isDisplay) {
-        e.Display();
-      }
-    }
-
-    for (Loot l : AllLoot) {
-      if (l.isDisplay) {
-        if (l.isDisplay) {
-          l.Display();
+      for (Solide m : AllSolides) {
+        if (m.isDisplay) {
+          m.Display();
         }
       }
-    }
 
-    try {
-      for (Attack a : AllAttacks) {
-        a.Display();
+      for (Player p : AllPlayers) {
+        if (p.isDisplay) {
+          p.Display();
+        }
+      }
+
+      for (Enemy e : AllEnemies) {
+        if (e.isDisplay) {
+          e.Display();
+        }
+      }
+
+      for (Loot l : AllLoot) {
+        if (l.isDisplay) {
+          if (l.isDisplay) {
+            l.Display();
+          }
+        }
+      }
+
+      try {
+        for (Attack a : AllAttacks) {
+          a.Display();
+        }
+      }
+      catch (Exception e) {
+      }
+
+      for (Entity e : AllEntities) {
+        push();
+        fill(0, 0, 0, 0);
+        stroke(255, 0, 0);
+        ellipse(e.getPos().x, e.getPos().y, 50, 50);
+        pop();
+      }
+
+      try {
+        for (Particles p : AllParticles) {
+          p.Display();
+        }
+      }
+      catch(Exception e) {
+        println("cassé");
       }
     }
     catch (Exception e) {
     }
-
-    for (Entity e : AllEntities) {
-      push();
-      fill(0, 0, 0, 0);
-      stroke(255, 0, 0);
-      ellipse(e.getPos().x, e.getPos().y, 50, 50);
-      pop();
-    }
-
-    try {
-      for (Particles p : AllParticles) {
-        p.Display();
-      }
-    }
-    catch(Exception e) {
-      println("cassé");
-    }
   }
-
 
 
 
@@ -260,5 +263,13 @@ class Map {
         }
       }
     }
+  }
+
+
+  void addParticles(int puissance, PVector p) {
+    AllParticles.add(new Particles(puissance, p));
+  }
+
+  void addPlayer() {
   }
 }

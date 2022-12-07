@@ -12,7 +12,7 @@ public class GameManager {
   boolean debug = false;
 
   GameManager() {
-    state = GameState.Play;
+    state = GameState.Title;
     optionsManager = new OptionsManager();
   }
 

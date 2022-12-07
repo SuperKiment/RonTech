@@ -220,7 +220,7 @@ class InventoryHUD {
   void LootItem(Loot l, int x, int y) {
     PVector posJete = new PVector(p.pos.x, p.pos.y);
     PVector taille = PVector.random2D();
-    taille.setMag(SnToGr(p.taille.x));
+    taille.setMag(SnToGr(p.taille));
     posJete.add(taille);
 
     println("coord jeté : " + posJete);

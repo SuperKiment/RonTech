@@ -27,7 +27,7 @@ boolean isTouch(Player p, Loot l) {
   if (dist(GrToSn(p.pos.x), GrToSn(p.pos.y), 
     GrToSn(l.pos.x), GrToSn(l.pos.y)) 
 
-    <= p.taille.x / 2 + l.taille / 2) {
+    <= p.taille / 2 + l.taille / 2) {
 
     return true;
   }

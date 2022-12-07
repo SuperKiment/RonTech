@@ -2,7 +2,7 @@ class ModuleSocleTourelle implements IModule {
 
   PVector pos;
   Player player;
-  float speed = 4, taille, distance = 50, ori;
+  float speed = 4, taille = 1, distance = 50, ori;
   float speedRange = 1.5;
   color couleur;
   OnModule onModule;
@@ -31,7 +31,6 @@ class ModuleSocleTourelle implements IModule {
     pos.x = player.pos.x;
     pos.y = player.pos.y;
     ori = random(-PI*2, PI*2);
-    taille = 50;
     speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
     distance = 2;
@@ -44,7 +43,6 @@ class ModuleSocleTourelle implements IModule {
     pos.x = player.pos.x;
     pos.y = player.pos.y;
     ori = random(-PI*2, PI*2);
-    taille = 50;
     speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
     distance = 2;
@@ -78,8 +76,8 @@ class ModuleSocleTourelle implements IModule {
     translate(GrToSn(pos.x), GrToSn(pos.y));
     rotate( -ori);
     fill(couleur);  //Rond
-    ellipse(GrToSn(distance), 0, taille, taille);
-    ellipse(GrToSn(distance), 0, taille/2, taille/2);
+    ellipse(GrToSn(distance), 0, GrToSn(taille), GrToSn(taille));
+    ellipse(GrToSn(distance), 0, GrToSn(taille)/2, GrToSn(taille)/2);
     pop();
 
     if (gameManager.debug) {
@@ -206,7 +204,7 @@ class OnModuleC implements OnModule {
 
 class Tourelle extends OnModuleC {
 
-  float cooldown = 25, timer = 0,
+  float cooldown = 250, timer = 0,
     cooldownRange = 2, imprecision = 0, nbBalles = 1;
 
   Tourelle(IModule m, Player p) {

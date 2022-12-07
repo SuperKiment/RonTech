@@ -73,6 +73,9 @@ void keyPressed() {
       debug = false;
     } else debug = true;
   }
+  
+  if (key == '+') mapActif.tailleCase /=1.2;
+  if (key == '-') mapActif.tailleCase *=1.2;
 }
 void keyReleased() {
   inputControl.setInput(key, false);

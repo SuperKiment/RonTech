@@ -1,8 +1,8 @@
 class Player implements Entity, Damageable {
 
-  PVector pos, vel, dirCible, dir, acc, taille;
+  PVector pos, vel, dirCible, dir, acc;
   boolean controllable = false;
-  float speed = 5, rotSpeed = 0.1;
+  float speed = 5, rotSpeed = 0.1, taille = 1;
   String name = "";
   float HP = 100, stamina = 100;
   Inventaire inventaire;
@@ -25,7 +25,6 @@ class Player implements Entity, Damageable {
     dirCible = new PVector();
     dir = new PVector();
     acc = new PVector();
-    taille = new PVector(50, 50);
     inventaire = new Inventaire();
   }
 
@@ -38,7 +37,7 @@ class Player implements Entity, Damageable {
     push();
     translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
 
-    ellipse(0, 0, taille.x, taille.y);
+    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
 
     pop();
   }
@@ -64,26 +63,30 @@ class Player implements Entity, Damageable {
 
     pos.add(vel);
 
-    CollisionMur();
+    CollisionSolide();
   }
 
-  void CollisionMur() {
-    for (Solide m : mapActif.AllSolides) {
-      if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < taille.x / 2 + m.taille / 2) {
-        PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
-        colOri.setMag(speed * time.getDeltaFrames());
+  void CollisionSolide() {
+    try {
+      for (Solide m : mapActif.AllSolides) {
+        if (dist(pos.x, pos.y, m.pos.x, m.pos.y) < taille / 2 + m.taille / 2) {
+          PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
+          colOri.setMag(speed * time.getDeltaFrames());
 
-        pos.add(colOri);
+          pos.add(colOri);
+        }
       }
+    }
+    catch (Exception e) {
     }
   }
 
   boolean IsOnPlayer(float x, float y) {
     float tailleCase = mapActif.tailleCase;
-    if (x >= pos.x * tailleCase - taille.x / 2 &&
-      x <= pos.x * tailleCase + taille.x / 2 &&
-      y >= pos.y * tailleCase - taille.y / 2 &&
-      y <= pos.y * tailleCase + taille.y / 2) {
+    if (x >= pos.x * tailleCase - taille / 2 &&
+      x <= pos.x * tailleCase + taille / 2 &&
+      y >= pos.y * tailleCase - taille / 2 &&
+      y <= pos.y * tailleCase + taille / 2) {
       return true;
     } else return false;
   }
@@ -133,7 +136,7 @@ class Player implements Entity, Damageable {
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
-    
+
     camera.Shake(5);
   }
 

@@ -29,11 +29,6 @@ void setup() {
   
   fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
 
-
-  /*mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 40, PI / 2, 7, 2));
-   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 100, PI * 3 / 4, 2, 3));
-   mapActif.AllPlayers.get(0).AllModules.add(new ModuleTest(mapActif.AllPlayers.get(0), 20, 0, 5, 1));*/
-
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Tourelle());
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
@@ -49,7 +44,9 @@ void setup() {
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));
   
-  mapActif.AllEnemies.add(new Enemy(15, 10));
+  mapActif.AllEnemies.add(new Enemy(15, 20, 5));
+  mapActif.AllEnemies.add(new Enemy(15, 25, 2));
+  mapActif.AllEnemies.add(new Enemy(15, 30, 0.1));
 
   println("==============");
   println("RONTECH SETUP END");

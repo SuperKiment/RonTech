@@ -54,7 +54,7 @@ void setup() {
 }
 
 void draw() {
-  background(#27813D);
+  //background(#27813D);
 
   gameManager.PreUpdate();
 
@@ -75,6 +75,8 @@ void draw() {
 
   console.add(frameRate);
   console.add(time.getDeltaFrames() * 1000);
+  
+  console.add(mapActif.AllPlayers.get(0).vel.toString());
 
   hud.Display();
 }

@@ -24,8 +24,8 @@ PVector Rotate(PVector v, float a) {
 }
 
 boolean isTouch(Player p, Loot l) {
-  if (dist(GrToSn(p.pos.x), GrToSn(p.pos.y), 
-    GrToSn(l.pos.x), GrToSn(l.pos.y)) 
+  if (dist(p.pos.x, p.pos.y, 
+    l.pos.x, l.pos.y) 
 
     <= p.taille / 2 + l.taille / 2) {
 

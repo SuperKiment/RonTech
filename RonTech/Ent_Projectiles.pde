@@ -1,7 +1,7 @@
 class Projectile implements Attack {
 
   PVector pos, ori, baseSpeed;
-  float damage = 5, speed = 0.000001, taille = 0.5,
+  float damage = 5, speed = 0.00001, taille = 0.5,
     countdown = 0, timeOnStart, timeLimit = 2000;
   boolean mort = false;
   color couleur = color(255, 0, 0);
@@ -23,7 +23,7 @@ class Projectile implements Attack {
     ajout.mult(mapActif.tailleCase);
     ajout.div(time.getDeltaFrames());
     pos.add(ajout);
-println(ajout);
+    println(ajout);
 
     if (millis() - timeOnStart >= timeLimit) mort = true;
 
@@ -53,7 +53,7 @@ println(ajout);
 
   void CollisionMur() {
     for (Solide m : mapActif.AllSolides) {
-      if (dist(GrToSn(pos.x), GrToSn(pos.y), GrToSn(m.pos.x), GrToSn(m.pos.y)) < GrToSn(taille) / 2 + GrToSn(m.taille) / 2) {
+      if (dist(pos.x, pos.y, m.pos.x, m.pos.y) < taille / 2 + m.taille / 2) {
         mort = true;
         mapActif.AllParticles.add(new Particles(int(damage/2), pos.copy()));
       }

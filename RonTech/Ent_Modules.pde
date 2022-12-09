@@ -140,7 +140,7 @@ class OnModuleC implements OnModule {
 
   IModule module;
   PVector pos, ori, oriC;
-  float taille = 20, widthCanon = 10, speed = 1;
+  float taille = 0.5, widthCanon = 10, speed = 1;
   Player player;
 
   OnModuleC(IModule m, Player p) {
@@ -159,11 +159,11 @@ class OnModuleC implements OnModule {
 
     oriC = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
     //ori = new PVector(MousePosScreen().x-pos.x, MousePosScreen().y-pos.y);
-    oriC.setMag(taille);
+    oriC.setMag(GrToSn(taille));
 
     ori.lerp(oriC, speed*time.getDeltaFrames());
 
-    ori.setMag(taille);
+    ori.setMag(GrToSn(taille));
   }
 
   void Display() {
@@ -171,7 +171,7 @@ class OnModuleC implements OnModule {
     translate(pos.x, pos.y);
     //line(0, 0, ori.x, ori.y);
     rotate(ori.heading());
-    rect(ori.mag(), 0, ori.mag(), 10);
+    rect(ori.mag(), 0, ori.mag(), ori.mag()/2);
     pop();
   }
 
@@ -234,10 +234,9 @@ class Tourelle extends OnModuleC {
 
     if (tir) {
       //for (int i =0; i<nbBalles; i++) {
-      PVector a = player.vel.copy();
-      a = GrToSn(a);
+      PVector playerVel = player.vel.copy();
       ori.lerp(PVector.random2D(), imprecision);
-      Projectile p = new Projectile(player, SnToGr(pos), ori, a);
+      Projectile p = new Projectile(player, SnToGr(pos), ori, playerVel);
       mapActif.AllAttacks.add(p);
       //}
     }

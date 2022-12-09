@@ -74,8 +74,7 @@ void keyPressed() {
     } else debug = true;
   }
   
-  if (key == '+') mapActif.tailleCase /=1.2;
-  if (key == '-') mapActif.tailleCase *=1.2;
+  if (key == '+' || key == '-') mapActif.Zoom(key);
 }
 void keyReleased() {
   inputControl.setInput(key, false);

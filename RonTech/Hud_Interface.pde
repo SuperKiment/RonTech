@@ -166,7 +166,7 @@ class HUD {
 
 class InventoryHUD {
 
-  Player p;
+  Player player;
   int nbCasesX, nbCasesY;
   float tailleCase;
   int posXM, posYM;
@@ -179,7 +179,7 @@ class InventoryHUD {
 
     push();
 
-    rectMode(CORNER);
+    rectMode(CENTER);
     fill(125, 125, 125, 100);
     noStroke();
     rect(0, 0, width / 2, tailleCase * nbCasesY);   //Fond
@@ -188,12 +188,16 @@ class InventoryHUD {
     stroke(0);
     for (int x = 0; x < nbCasesX; x++) {             //Cases
       for (int y = 0; y < nbCasesY; y++) {
-        rect(tailleCase * x, tailleCase * y, tailleCase * 9 / 10, tailleCase * 9 / 10, 10);
-        if (p.inventaire.grille[x][y] != null) {
+        push();
+        translate(tailleCase * x + tailleCase/2, tailleCase * y + tailleCase/2);
+        rect(0, 0, tailleCase * 9 / 10, tailleCase * 9 / 10, 10);
+        
+        if (player.inventaire.grille[x][y] != null) {
 
-          Loot l = p.inventaire.grille[x][y];        //Dans l'inv
-          l.DisplayOnScreen(x * tailleCase + tailleCase / 2, y * tailleCase + tailleCase / 2);
+          Loot loot = player.inventaire.grille[x][y];        //Dans l'inv
+          loot.DisplayOnScreen(0, 0);
         }
+        pop();
       }
     }
     pop();
@@ -207,7 +211,7 @@ class InventoryHUD {
 
     if (x < nbCasesX && y < nbCasesY) {
 
-      Loot l = p.inventaire.grille[x][y];
+      Loot l = player.inventaire.grille[x][y];
       if (l != null) {
         println("coord sur inventory : " + x, y + " / Loot : " + l.nom + " : jeté");
         LootItem(l, x, y);
@@ -218,22 +222,23 @@ class InventoryHUD {
   }
 
   void LootItem(Loot l, int x, int y) {
-    PVector posJete = new PVector(p.pos.x, p.pos.y);
+    PVector posJete = player.pos.copy();
     PVector taille = PVector.random2D();
-    taille.setMag(SnToGr(p.taille));
+
+    taille.setMag(player.taille);
     posJete.add(taille);
 
     println("coord jeté : " + posJete);
     l.setPos(posJete.x, posJete.y);
     mapActif.AllLoot.add(l);
-    p.inventaire.grille[x][y] = null;
+    player.inventaire.grille[x][y] = null;
   }
 
   void Update() {
-    p = camera.focus;
+    player = camera.focus;
 
-    nbCasesX = p.inventaire.grille.length;
-    nbCasesY = p.inventaire.grille[0].length;
+    nbCasesX = player.inventaire.grille.length;
+    nbCasesY = player.inventaire.grille[0].length;
     tailleCase = ((width / 2) / nbCasesX);
 
     posXM = int(mouseX / tailleCase);
@@ -281,6 +286,7 @@ class Console {
       rect(pos.x, pos.y, width, taille);
 
       textSize(taillePol);
+      textAlign(LEFT);
       fill(255);
 
       for (int i=0; i<tabl.size(); i++) {

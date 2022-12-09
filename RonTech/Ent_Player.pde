@@ -240,7 +240,7 @@ class Loot implements Entity {
     posC = new PVector(2, 5);
     speed = 5;
     couleur = color(random(20, 255), random(20, 255), random(20, 255));
-    taille = 10;
+    taille = 0.5;
   }
 
   void Update() {
@@ -254,7 +254,7 @@ class Loot implements Entity {
     fill(couleur);
     translate(GrToSn(pos.x), GrToSn(pos.y));
 
-    ellipse(0, 0, taille, taille);
+    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
 
     pop();
   }
@@ -264,8 +264,8 @@ class Loot implements Entity {
     push();
 
     fill(couleur);
-    translate(x - taille, y - taille);
-    ellipse(0, 0, taille * 5, taille * 5);
+    translate(x, y);
+    ellipse(0, 0, GrToSn(taille) * 5, GrToSn(taille) * 5);
 
     pop();
   }

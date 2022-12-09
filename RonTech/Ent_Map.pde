@@ -11,7 +11,7 @@ class Map {
   ArrayList<Entity> AllEntities;
   ArrayList<Enemy> AllEnemies;
   ArrayList<Particles> AllParticles;
-  int tailleCase = 25;
+  int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
   ThreadUpdatePlayer threadUpdatePlayer;
@@ -263,6 +263,15 @@ class Map {
         }
       }
     }
+  }
+
+  void Zoom(char k) {
+    if (k == '+') tailleCase *= 1.2;
+    else tailleCase /= 1.2;
+    if (tailleCase <= 6) tailleCase = 6;
+    if (tailleCase >= 105) tailleCase = 105;
+    
+    println("Map tailleCase : "+tailleCase);
   }
 
 

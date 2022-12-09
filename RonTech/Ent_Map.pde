@@ -14,7 +14,6 @@ class Map {
   int tailleCase = 50;
 
   ThreadUpdate threadUpdate;
-  ThreadUpdatePlayer threadUpdatePlayer;
   int timeThreadUpdate = 1;
 
 
@@ -45,9 +44,6 @@ class Map {
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
-
-    threadUpdatePlayer = new ThreadUpdatePlayer();
-    threadUpdatePlayer.start();
 
 
     println("Map Thread lance");
@@ -144,10 +140,7 @@ class Map {
       e.Update();
       if (e.isMort) AllEnemies.remove(i);
     }
-  }
-
-
-  void UpdatePlayer() {
+    
     for (Player p : AllPlayers) {
       p.Update();
 
@@ -210,20 +203,7 @@ class Map {
       }
     }
   }
-
-  class ThreadUpdatePlayer extends Thread {
-
-    void run() {
-      while (true) {
-        if (gameManager.isPlay()) {
-          UpdatePlayer();
-        }
-        delay(timeThreadUpdate);
-      }
-    }
-  }
-
-
+  
 
   void DisplayGrille(Player p) {
     if (GroundGrille != null) {

@@ -7,14 +7,14 @@ class Projectile implements Attack {
   color couleur = color(255, 0, 0);
   Entity origine;
 
-  Projectile(Entity e, PVector p, PVector o, PVector b) {
+  Projectile(Entity e, PVector p, PVector o, PVector baseVel) {
     speed = random(speed/1.5, speed*1.5);
 
     origine = e;
     pos = p.copy();
     ori = o.copy();
     ori.setMag(speed);
-    ori.add(b);
+    baseSpeed = baseVel.copy();
     timeOnStart = millis();
   }
 
@@ -22,8 +22,8 @@ class Projectile implements Attack {
     PVector ajout = ori.copy();
     ajout.mult(mapActif.tailleCase);
     ajout.div(time.getDeltaFrames());
+    ajout.add(baseSpeed);
     pos.add(ajout);
-    println(ajout);
 
     if (millis() - timeOnStart >= timeLimit) mort = true;
 

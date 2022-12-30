@@ -60,7 +60,7 @@ class Player implements Entity, Damageable {
 
     vel = dirCible;
     vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor);
-
+    
     pos.add(vel);
 
     CollisionSolide();

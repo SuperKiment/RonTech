@@ -74,7 +74,6 @@ class Enemy implements Entity, Damageable {
       if (tailleY <= 5) tailleY = 5;
       
       float y = GrToSn(taille)*0.75;
-      println(tailleY);
       
       translate(0, -y);
 

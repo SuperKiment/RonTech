@@ -73,9 +73,14 @@ void keyPressed() {
       debug = false;
     } else debug = true;
   }
-  
+
   if (key == '+' || key == '-') mapActif.Zoom(key);
+  //if (key == 'l') mapActif.mapLoader.SaveEntities();
+  if (key == 'l') {
+    mapActif = new Map("map2");
+  }
 }
+
 void keyReleased() {
   inputControl.setInput(key, false);
 }

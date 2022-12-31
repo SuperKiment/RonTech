@@ -22,11 +22,11 @@ void setup() {
   time = new Time();
   hud = new HUD();
 
-  mapActif = new Map();
+  mapActif = new Map("map1");
   camera = new Camera();
 
   console = new Console();
-  
+
   fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
 
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Tourelle());
@@ -43,7 +43,7 @@ void setup() {
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));
-  
+
   mapActif.AllEnemies.add(new Enemy(15, 20, 5));
   mapActif.AllEnemies.add(new Enemy(15, 25, 2));
   mapActif.AllEnemies.add(new Enemy(15, 30, 0.1));
@@ -75,7 +75,7 @@ void draw() {
 
   console.add(frameRate);
   console.add(time.getDeltaFrames() * 1000);
-  
+
   console.add(mapActif.AllPlayers.get(0).vel.toString());
 
   hud.Display();

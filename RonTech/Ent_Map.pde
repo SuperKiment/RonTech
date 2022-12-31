@@ -13,6 +13,8 @@ class Map {
   ArrayList<Particles> AllParticles;
   int tailleCase = 50;
 
+  String mapName = "";
+
   ThreadUpdate threadUpdate;
   int timeThreadUpdate = 1;
 
@@ -21,10 +23,18 @@ class Map {
 
 
   Map() {
-    println("Map Creation :");
+    mapName = "map1";
+    Constructor();
+  }
 
-    mapLoader = new MapLoader();
-    mapLoader.LoadMap("map1.png");
+  Map(String n) {
+    mapName = n;
+    Constructor();
+  }
+
+  void Constructor() {
+    println();
+    println("Map Creation :");
 
     AllPlayers = new ArrayList<Player>();
     AllSolides = new ArrayList<Solide>();
@@ -33,6 +43,10 @@ class Map {
     AllEntities = new ArrayList<Entity>();
     AllEnemies = new ArrayList<Enemy>();
     AllParticles = new ArrayList<Particles>();
+    
+    mapLoader = new MapLoader();
+    mapLoader.LoadMap();
+    mapLoader.LoadEntities();
 
     int xP = 20, yP = 20;
     Player player = new Player(xP, yP);
@@ -140,7 +154,7 @@ class Map {
       e.Update();
       if (e.isMort) AllEnemies.remove(i);
     }
-    
+
     for (Player p : AllPlayers) {
       p.Update();
 
@@ -203,7 +217,7 @@ class Map {
       }
     }
   }
-  
+
 
   void DisplayGrille(Player p) {
     if (GroundGrille != null) {
@@ -225,23 +239,62 @@ class Map {
   }
 
   class MapLoader {
-    MapLoader() {
-    }
 
     PImage mapImage;
     String basePath = "Map/";
 
-    void LoadMap(String path) {
-      mapImage = loadImage(basePath + path);
+    MapLoader() {
+      basePath += mapName+"/";
+    }
+
+    void LoadMap() {
+      mapImage = loadImage(basePath + "fond.png");
       GroundGrille = new color[mapImage.width][mapImage.height];
 
-      println("Map Loaded : " + mapImage.width, "/", mapImage.height);
+      println("Map Loaded : " + mapImage.width, "/", mapImage.height + ", name : " + mapName);
 
       for (int x=0; x<GroundGrille.length; x++) {
         for (int y=0; y<GroundGrille[0].length; y++) {
           GroundGrille[x][y] = mapImage.get(x, y);
         }
       }
+    }
+
+    void LoadEntities() {
+      JSONObject JSONAllEntities = loadJSONObject(basePath+"entities.json");
+      JSONArray JSONAllSolides = JSONAllEntities.getJSONArray("Solide");
+
+      for (int i=0; i<JSONAllSolides.size(); i++) {
+        Solide s = new Solide();
+        JSONObject solide = JSONAllSolides.getJSONObject(i);
+        s.pos = new PVector(solide.getFloat("pos.x"), solide.getFloat("pos.y"));
+        s.taille = solide.getFloat("taille");
+        s.couleur = solide.getInt("couleur");
+        
+        mapActif.AllSolides.add(s);
+      }
+    }
+
+    void SaveEntities() {
+      JSONObject JSONAllEntities = new JSONObject();
+      JSONArray JSONAllSolides = new JSONArray();
+
+      for (int i=0; i<AllSolides.size(); i++) {
+        Solide s = AllSolides.get(i);
+        JSONObject json = new JSONObject();
+
+        json.setFloat("pos.x", s.pos.x);
+        json.setFloat("pos.y", s.pos.y);
+        json.setFloat("taille", s.taille);
+        json.setInt("couleur", s.couleur);
+
+        JSONAllSolides.setJSONObject(i, json);
+      }
+
+      JSONAllEntities.setJSONArray("Solide", JSONAllSolides);
+      saveJSONObject(JSONAllEntities, basePath + "entities.json");
+      println("Map Saved", mapName, "at", basePath, ":");
+      println(JSONAllEntities);
     }
   }
 
@@ -250,7 +303,7 @@ class Map {
     else tailleCase /= 1.2;
     if (tailleCase <= 6) tailleCase = 6;
     if (tailleCase >= 105) tailleCase = 105;
-    
+
     println("Map tailleCase : "+tailleCase);
   }
 

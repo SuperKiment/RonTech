@@ -7,4 +7,8 @@ Faut aussi cadencer les threads sur le meme rythme et améliorer le tout car on 
 Le pb principal là c'est le load d'entitées par json à cause du nullpointer et jsp comment y rémédier
 Va rig connard t'en en retard
 
+NON JKE VEUX PAS RIG TU M45AS LAISSE AVEC TA MERDE CONNARD
+Ok ce que je suis en train de faire est de tout uniformiser de manière violente genre vraiment
+Je sais pas si ça va fonctionner tho
+Bonne chance gros
 */

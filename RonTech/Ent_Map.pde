@@ -3,14 +3,7 @@ Map mapActif;
 class Map {
 
   color GroundGrille[][];
-
-  ArrayList<Player> AllPlayers;
-  ArrayList<Solide> AllSolides;
-  ArrayList<Loot> AllLoot;
-  ArrayList<Attack> AllAttacks;
-  ArrayList<Entity> AllEntities;
-  ArrayList<Enemy> AllEnemies;
-  ArrayList<Particles> AllParticles;
+  
   int tailleCase = 50;
 
   String mapName = "";
@@ -18,6 +11,7 @@ class Map {
   ThreadUpdate threadUpdate;
   int timeThreadUpdate = 1;
 
+  EntityManager entManager;
 
   MapLoader mapLoader;
 
@@ -36,14 +30,8 @@ class Map {
     println();
     println("Map Creation :");
 
-    AllPlayers = new ArrayList<Player>();
-    AllSolides = new ArrayList<Solide>();
-    AllLoot = new ArrayList<Loot>();
-    AllAttacks = new ArrayList<Attack>();
-    AllEntities = new ArrayList<Entity>();
-    AllEnemies = new ArrayList<Enemy>();
-    AllParticles = new ArrayList<Particles>();
-    
+    entManager = new EntityManager();
+
     mapLoader = new MapLoader();
     mapLoader.LoadMap();
     mapLoader.LoadEntities();
@@ -52,7 +40,7 @@ class Map {
     Player player = new Player(xP, yP);
     player.controllable = true;
     player.name = "Player0";
-    AllPlayers.add(player);
+    entManager.add(player);
 
     println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
 
@@ -66,7 +54,7 @@ class Map {
   void Display() {
     try {
 
-      DisplayGrille(AllPlayers.get(0));
+      DisplayGrille(entManager.get("Player").get(0));
 
 
       for (Solide m : AllSolides) {
@@ -101,14 +89,6 @@ class Map {
         }
       }
       catch (Exception e) {
-      }
-
-      for (Entity e : AllEntities) {
-        push();
-        fill(0, 0, 0, 0);
-        stroke(255, 0, 0);
-        ellipse(e.getPos().x, e.getPos().y, 50, 50);
-        pop();
       }
 
       try {
@@ -190,21 +170,6 @@ class Map {
   }
 
 
-  void UpdateData() {
-    AllEntities.clear();
-
-    for (Loot l : AllLoot) {
-      AllEntities.add(l);
-    }
-    for (Solide m : AllSolides) {
-      AllEntities.add(m);
-    }
-    for (Player p : AllPlayers) {
-      AllEntities.add(p);
-    }
-  }
-
-
   class ThreadUpdate extends Thread {
 
     void run() {
@@ -219,7 +184,8 @@ class Map {
   }
 
 
-  void DisplayGrille(Player p) {
+  void DisplayGrille(Object o) {
+    Player p = Player(o);
     if (GroundGrille != null) {
       for (int x=int(p.pos.x-camera.ground_rd/2); x<p.pos.x+camera.ground_rd/2; x++) {
         for (int y=int(p.pos.y-camera.ground_rd/2); y<p.pos.y+camera.ground_rd/2; y++) {
@@ -237,6 +203,8 @@ class Map {
       }
     }
   }
+
+  //=======================================================================================
 
   class MapLoader {
 
@@ -270,8 +238,8 @@ class Map {
         s.pos = new PVector(solide.getFloat("pos.x"), solide.getFloat("pos.y"));
         s.taille = solide.getFloat("taille");
         s.couleur = solide.getInt("couleur");
-        
-        mapActif.AllSolides.add(s);
+
+        AllSolides.add(s);
       }
     }
 
@@ -297,6 +265,34 @@ class Map {
       println(JSONAllEntities);
     }
   }
+
+  //=======================================================================================
+
+  class EntityManager {
+
+    HashMap<String, ArrayList> AllEntities;
+
+    EntityManager() {
+      AllEntities = new HashMap<String, ArrayList>();
+
+      AllEntities.put("Solide", new ArrayList<Solide>());
+      AllEntities.put("Player", new ArrayList<Player>());
+      AllEntities.put("Loot", new ArrayList<Loot>());
+      AllEntities.put("Attack", new ArrayList<Attack>());
+      AllEntities.put("Enemy", new ArrayList<Enemy>());
+      AllEntities.put("Particles", new ArrayList<Particles>());
+    }
+
+    ArrayList get(String array) {
+      return AllEntities.get(array);
+    }
+
+    void add(Object o) {
+      AllEntities.get(getObjectClassName(o)).add(o);
+    }
+  }
+
+  //=======================================================================================
 
   void Zoom(char k) {
     if (k == '+') tailleCase *= 1.2;

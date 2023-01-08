@@ -2,7 +2,7 @@ float GrToSn(float x) {
   return x * mapActif.tailleCase;
 }
 
-float SnToGr(float x) {  
+float SnToGr(float x) {
   return x / mapActif.tailleCase;
 }
 
@@ -24,8 +24,8 @@ PVector Rotate(PVector v, float a) {
 }
 
 boolean isTouch(Player p, Loot l) {
-  if (dist(p.pos.x, p.pos.y, 
-    l.pos.x, l.pos.y) 
+  if (dist(p.pos.x, p.pos.y,
+    l.pos.x, l.pos.y)
 
     <= p.taille / 2 + l.taille / 2) {
 
@@ -48,8 +48,12 @@ PVector MousePosScreenGr() {
 
 float OrientationFromVector(PVector ori) {
   float x = 0;
-  
-  
-  
+
+
+
   return x;
+}
+
+String getObjectClassName(Object o) {
+  return split(o.getClass().getName(), '$')[1];
 }

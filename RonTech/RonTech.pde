@@ -34,12 +34,6 @@ void setup() {
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
 
-
-  mapActif.AllSolides.add(new Solide(10, 5));
-  mapActif.AllSolides.add(new Solide(10, 10));
-  mapActif.AllSolides.add(new Solide(10, 7));
-  mapActif.AllSolides.add(new Solide(20, 13));
-
   mapActif.AllLoot.add(new Loot());
   mapActif.AllLoot.add(new Loot(2, 6));
   mapActif.AllLoot.add(new Loot(2, 7, "epee"));

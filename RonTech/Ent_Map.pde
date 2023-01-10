@@ -184,11 +184,10 @@ class Map {
   }
 
 
-  void DisplayGrille(Object o) {
-    Player p = Player(o);
+  void DisplayGrille(Entity p) {
     if (GroundGrille != null) {
-      for (int x=int(p.pos.x-camera.ground_rd/2); x<p.pos.x+camera.ground_rd/2; x++) {
-        for (int y=int(p.pos.y-camera.ground_rd/2); y<p.pos.y+camera.ground_rd/2; y++) {
+      for (int x=int(p.getPos().x-camera.ground_rd/2); x<p.getPos().x+camera.ground_rd/2; x++) {
+        for (int y=int(p.getPos().y-camera.ground_rd/2); y<p.getPos().y+camera.ground_rd/2; y++) {
 
           if (x>=0 && x<GroundGrille.length &&
             y>=0 && y<GroundGrille[0].length) {
@@ -268,9 +267,9 @@ class Map {
 
   //=======================================================================================
 
-  class EntityManager {
+  private class EntityManager {
 
-    HashMap<String, ArrayList> AllEntities;
+    private HashMap<String, ArrayList> AllEntities;
 
     EntityManager() {
       AllEntities = new HashMap<String, ArrayList>();

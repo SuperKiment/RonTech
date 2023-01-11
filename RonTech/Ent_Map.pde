@@ -77,9 +77,7 @@ class Map {
 
       for (Loot l : entManager.getLoot()) {
         if (l.isDisplay) {
-          if (l.isDisplay) {
-            l.Display();
-          }
+          l.Display();
         }
       }
 
@@ -146,7 +144,7 @@ class Map {
 
 
 
-
+  //Update le isDisplay de chaque entité
   void UpdateDisplay() {
     if (camera != null) {
       for (Loot l : entManager.getLoot()) {

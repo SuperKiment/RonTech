@@ -3,7 +3,7 @@ Map mapActif;
 class Map {
 
   color GroundGrille[][];
-  
+
   int tailleCase = 50;
 
   String mapName = "";
@@ -40,7 +40,7 @@ class Map {
     Player player = new Player(xP, yP);
     player.controllable = true;
     player.name = "Player0";
-    entManager.add(player);
+    entManager.addPlayer(player);
 
     println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
 
@@ -54,28 +54,28 @@ class Map {
   void Display() {
     try {
 
-      DisplayGrille(entManager.get("Player").get(0));
+      DisplayGrille(entManager.getPlayer(0));
 
 
-      for (Solide m : AllSolides) {
+      for (Solide m : entManager.getSolide()) {
         if (m.isDisplay) {
           m.Display();
         }
       }
 
-      for (Player p : AllPlayers) {
+      for (Player p : entManager.getPlayer()) {
         if (p.isDisplay) {
           p.Display();
         }
       }
 
-      for (Enemy e : AllEnemies) {
+      for (Enemy e : entManager.getEnemy()) {
         if (e.isDisplay) {
           e.Display();
         }
       }
 
-      for (Loot l : AllLoot) {
+      for (Loot l : entManager.getLoot()) {
         if (l.isDisplay) {
           if (l.isDisplay) {
             l.Display();
@@ -84,7 +84,7 @@ class Map {
       }
 
       try {
-        for (Attack a : AllAttacks) {
+        for (Attack a : entManager.getAttack()) {
           a.Display();
         }
       }
@@ -92,7 +92,7 @@ class Map {
       }
 
       try {
-        for (Particles p : AllParticles) {
+        for (Particles p : entManager.getParticles()) {
           p.Display();
         }
       }
@@ -109,33 +109,33 @@ class Map {
 
   void Update() {
 
-    for (Loot l : AllLoot) {
+    for (Loot l : entManager.getLoot()) {
       l.Update();
     }
 
-    for (Solide s : AllSolides) {
+    for (Solide s : entManager.getSolide()) {
       s.Update();
     }
 
     try {
-      for (int i=0; i<AllAttacks.size(); i++) {
-        Attack a = AllAttacks.get(i);
+      for (int i=0; i<entManager.getAttack().size(); i++) {
+        Attack a = entManager.getAttack().get(i);
         a.Update();
-        if (a.isMort()) AllAttacks.remove(i);
+        if (a.isMort()) entManager.getAttack().remove(i);
       }
     }
     catch(Exception e) {
       println("FUCK");
-      AllAttacks.clear();
+      entManager.getAttack().clear();
     }
 
-    for (int i=0; i<AllEnemies.size(); i++) {
-      Enemy e = AllEnemies.get(i);
+    for (int i=0; i<entManager.getEnemy().size(); i++) {
+      Enemy e = entManager.getEnemy().get(i);
       e.Update();
-      if (e.isMort) AllEnemies.remove(i);
+      if (e.isMort) entManager.getEnemy().remove(i);
     }
 
-    for (Player p : AllPlayers) {
+    for (Player p : entManager.getPlayer()) {
       p.Update();
 
       if (inputControl.leftClickUtiliser) {
@@ -149,8 +149,8 @@ class Map {
 
   void UpdateDisplay() {
     if (camera != null) {
-      for (Loot l : AllLoot) {
-        if (camera.isOnScreen(l, AllPlayers.get(0))) {
+      for (Loot l : entManager.getLoot()) {
+        if (camera.isOnScreen(l, entManager.getPlayer().get(0))) {
           l.isDisplay = true;
         } else l.isDisplay = false;
       }
@@ -267,27 +267,98 @@ class Map {
 
   //=======================================================================================
 
-  private class EntityManager {
+  class EntityManager {
 
-    private HashMap<String, ArrayList> AllEntities;
+    ArrayList<Player> AllPlayers;
+    ArrayList<Solide> AllSolides;
+    ArrayList<Loot> AllLoots;
+    ArrayList<Attack> AllAttacks;
+    ArrayList<Entity> AllEntities;
+    ArrayList<Enemy> AllEnemies;
+    ArrayList<Particles> AllParticles;
+
 
     EntityManager() {
-      AllEntities = new HashMap<String, ArrayList>();
-
-      AllEntities.put("Solide", new ArrayList<Solide>());
-      AllEntities.put("Player", new ArrayList<Player>());
-      AllEntities.put("Loot", new ArrayList<Loot>());
-      AllEntities.put("Attack", new ArrayList<Attack>());
-      AllEntities.put("Enemy", new ArrayList<Enemy>());
-      AllEntities.put("Particles", new ArrayList<Particles>());
+      AllPlayers = new ArrayList<Player>();
+      AllSolides = new ArrayList<Solide>();
+      AllLoots = new ArrayList<Loot>();
+      AllAttacks = new ArrayList<Attack>();
+      AllEntities = new ArrayList<Entity>();
+      AllEnemies = new ArrayList<Enemy>();
+      AllParticles = new ArrayList<Particles>();
     }
 
-    ArrayList get(String array) {
-      return AllEntities.get(array);
+    ArrayList<Solide> getSolide() {
+      return AllSolides;
+    }
+    Solide getSolide(int no) {
+      return AllSolides.get(no);
     }
 
-    void add(Object o) {
-      AllEntities.get(getObjectClassName(o)).add(o);
+    ArrayList<Player> getPlayer() {
+      return AllPlayers;
+    }
+    Player getPlayer(int no) {
+      return AllPlayers.get(no);
+    }
+
+    ArrayList<Loot> getLoot() {
+      return AllLoots;
+    }
+    Loot getLoot(int no) {
+      return AllLoots.get(no);
+    }
+
+    ArrayList<Attack> getAttack() {
+      return AllAttacks;
+    }
+    Attack getAttack(int no) {
+      return AllAttacks.get(no);
+    }
+
+    ArrayList<Entity> getEntity() {
+      return AllEntities;
+    }
+    Entity getEntiti(int no) {
+      return AllEntities.get(no);
+    }
+
+    ArrayList<Enemy> getEnemy() {
+      return AllEnemies;
+    }
+    Enemy getEnemy(int no) {
+      return AllEnemies.get(no);
+    }
+
+    ArrayList<Particles> getParticles() {
+      return AllParticles;
+    }
+    Particles getParticle(int no) {
+      return AllParticles.get(no);
+    }
+
+
+
+    void addSolide(Solide e) {
+      getSolide().add(e);
+    }
+    void addPlayer(Player e) {
+      getPlayer().add(e);
+    }
+    void addEnemy(Enemy e) {
+      getEnemy().add(e);
+    }
+    void addParticles(Particles e) {
+      getParticles().add(e);
+    }
+    void addLoot(Loot e) {
+      getLoot().add(e);
+    }
+    void addEntity(Entity e) {
+      getEntity().add(e);
+    }
+    void addAttack(Attack e) {
+      getAttack().add(e);
     }
   }
 

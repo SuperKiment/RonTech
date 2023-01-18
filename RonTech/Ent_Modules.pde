@@ -238,7 +238,7 @@ class Tourelle extends OnModuleC {
       ori.lerp(PVector.random2D(), imprecision);
       Projectile p = new Projectile(player, SnToGr(pos), ori, playerVel);
       //println("Tir :", pos, ori, playerVel);
-      mapActif.AllAttacks.add(p);
+      mapActif.entManager.addEntity(p);
       //}
     }
   }

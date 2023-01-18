@@ -2,6 +2,13 @@
 
 interface Entity {
   PVector getPos();
+  void Update();
+  void Display();
+  boolean isDisplay();
+  boolean isMort();
+  void setIsDisplay(boolean b);
+  JSONObject getJSON();
+  float getTaille();
 }
 
 interface Damageable {

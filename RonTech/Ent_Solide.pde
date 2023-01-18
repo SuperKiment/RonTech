@@ -3,6 +3,7 @@ class Solide implements Entity {
   PVector pos;
   float taille = 4;
   color couleur;
+  boolean isDisplay = false;
 
   Solide() {
     Constructor(10, 5);
@@ -28,8 +29,36 @@ class Solide implements Entity {
   }
 
   //INTERFACE ENTITY
-  boolean isDisplay = false;
+  //INTERFACE ENTITY
+
   PVector getPos() {
     return pos;
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
   }
 }

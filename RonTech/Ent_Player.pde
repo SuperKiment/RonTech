@@ -4,8 +4,9 @@ class Player implements Entity, Damageable {
   boolean controllable = false;
   float speed = 5, rotSpeed = 0.1, taille = 1;
   String name = "";
-  float HP = 100, stamina = 100;
+  float HP = 100, stamina = 100, baseHP = 100;
   Inventaire inventaire;
+  boolean isDisplay = false;
 
   ArrayList<IModule> AllModules = new ArrayList<IModule>();
   int maxModules = 8;
@@ -53,6 +54,8 @@ class Player implements Entity, Damageable {
       if (inputControl.space) {
       }
     }
+
+    if (inputControl.leftClickUtiliser) LeftClick();
   }
 
   void Deplacement() {
@@ -60,17 +63,18 @@ class Player implements Entity, Damageable {
 
     vel = dirCible;
     vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor);
-    
+
     pos.add(vel);
 
-    CollisionSolide();
+    CollisionEntity();
   }
 
-  void CollisionSolide() {
+  void CollisionEntity() {
     try {
-      for (Solide m : mapActif.AllSolides) {
-        if (dist(pos.x, pos.y, m.pos.x, m.pos.y) < taille / 2 + m.taille / 2) {
-          PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
+      for (Entity m : mapActif.entManager.getEntity()) {
+
+        if (dist(pos.x, pos.y, m.getPos().x, m.getPos().y) < taille / 2 + m.getTaille() / 2) {
+          PVector colOri = new PVector(pos.x - m.getPos().x, pos.y - m.getPos().y);
           colOri.setMag(speed * time.getDeltaFrames());
 
           pos.add(colOri);
@@ -81,15 +85,7 @@ class Player implements Entity, Damageable {
     }
   }
 
-  boolean IsOnPlayer(float x, float y) {
-    float tailleCase = mapActif.tailleCase;
-    if (x >= pos.x * tailleCase - taille / 2 &&
-      x <= pos.x * tailleCase + taille / 2 &&
-      y >= pos.y * tailleCase - taille / 2 &&
-      y <= pos.y * tailleCase + taille / 2) {
-      return true;
-    } else return false;
-  }
+  
 
   String Print() {
     String pr = name;
@@ -100,12 +96,15 @@ class Player implements Entity, Damageable {
 
   void RecupLoot() {
 
-    for (int i = 0; i < mapActif.AllLoot.size(); i++) {
-      Loot l = mapActif.AllLoot.get(i);
+    for (int i = 0; i < mapActif.entManager.getEntity().size(); i++) {
+      if (getObjectClassName(mapActif.entManager.getEntity(i)).equals("Loot")) {
+        
+        Entity l = mapActif.entManager.getEntity(i);
 
-      if (isTouch(this, l)) {
-        inventaire.add(l);
-        mapActif.AllLoot.remove(i);
+        if (isTouch(this, l)) {
+          inventaire.add(l);
+          mapActif.entManager.getEntity().remove(i);
+        }
       }
     }
   }
@@ -128,9 +127,38 @@ class Player implements Entity, Damageable {
   }
 
   //INTERFACE ENTITY
-  boolean isDisplay = false;
+
   PVector getPos() {
     return pos;
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+    json.setFloat("HP", HP);
+    json.setFloat("baseHP", baseHP);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
   }
 
   //INTERFACE DAMAGEABLE
@@ -164,7 +192,7 @@ class Player implements Entity, Damageable {
 
 class Inventaire {
 
-  Loot[][] grille;
+  Entity[][] grille;
 
   Inventaire() {
     Constructor();
@@ -174,7 +202,7 @@ class Inventaire {
     grille = new Loot[5][5];
   }
 
-  void add(Loot l) {
+  void add(Entity l) {
     boolean added = false;
 
     for (int x = 0; x < grille.length; x++) {
@@ -182,7 +210,7 @@ class Inventaire {
         if (grille[x][y] == null) {
           grille[x][y] = l;
           added = true;
-          println("ajout a l'inventaire en " + x, y + " de " + l.nom);
+          println("ajout a l'inventaire en " + x, y + " de " + getObjectClassName(l));
           break;
         }
         if (added) break;
@@ -192,7 +220,7 @@ class Inventaire {
 
     if (!added) {
       println("Pas de place dans l'inventaire");
-      mapActif.AllLoot.add(l);
+      mapActif.entManager.addEntity(l);
     }
   }
 }
@@ -217,6 +245,7 @@ class Loot implements Entity {
   PVector pos, posC;
   float speed, taille;
   color couleur;
+  boolean isDisplay = false;
 
 
   Loot() {
@@ -276,8 +305,35 @@ class Loot implements Entity {
   }
 
   //INTERFACE ENTITY
-  boolean isDisplay = false;
+
   PVector getPos() {
     return pos;
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
   }
 }

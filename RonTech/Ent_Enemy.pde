@@ -1,8 +1,7 @@
 class Enemy implements Entity, Damageable {
-  float HP, baseHP = 200, taille, tempsDepl;
+  float HP, baseHP = 200, taille;
   PVector pos, posC;
   boolean isDisplay = true, isMort = false;
-  //la aussi
 
   Enemy() {
     Constructor();
@@ -41,8 +40,39 @@ class Enemy implements Entity, Damageable {
   void RandomMvt() {
   }
 
+  //INTERFACE ENTITY
+
   PVector getPos() {
     return pos;
+  }
+
+  boolean isMort() {
+    return isMort;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+    json.setFloat("HP", HP);
+    json.setFloat("baseHP", baseHP);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
   }
 
   //INTERFACE DAMAGEABLE
@@ -67,14 +97,14 @@ class Enemy implements Entity, Damageable {
       float tailleXbase = baseHP*1.5;
       float tailleX = HP*1.5;
       float tailleY = taille/2;
-      
+
       if (tailleY > mapActif.tailleCase/2) tailleY = mapActif.tailleCase/2;
       else if (tailleY < mapActif.tailleCase/5) tailleY = mapActif.tailleCase/5;
-      
+
       if (tailleY <= 5) tailleY = 5;
-      
+
       float y = GrToSn(taille)*0.75;
-      
+
       translate(0, -y);
 
       fill(0);

@@ -194,7 +194,7 @@ class InventoryHUD {
         
         if (player.inventaire.grille[x][y] != null) {
 
-          Loot loot = player.inventaire.grille[x][y];        //Dans l'inv
+          Loot loot = (Loot)player.inventaire.grille[x][y];        //Dans l'inv
           loot.DisplayOnScreen(0, 0);
         }
         pop();
@@ -211,7 +211,7 @@ class InventoryHUD {
 
     if (x < nbCasesX && y < nbCasesY) {
 
-      Loot l = player.inventaire.grille[x][y];
+      Loot l = (Loot)player.inventaire.grille[x][y];
       if (l != null) {
         println("coord sur inventory : " + x, y + " / Loot : " + l.nom + " : jeté");
         LootItem(l, x, y);
@@ -230,12 +230,12 @@ class InventoryHUD {
 
     println("coord jeté : " + posJete);
     l.setPos(posJete.x, posJete.y);
-    mapActif.AllLoot.add(l);
+    mapActif.entManager.addEntity(l);
     player.inventaire.grille[x][y] = null;
   }
 
   void Update() {
-    player = camera.focus;
+    player = (Player)camera.focus;
 
     nbCasesX = player.inventaire.grille.length;
     nbCasesY = player.inventaire.grille[0].length;

@@ -23,11 +23,9 @@ PVector Rotate(PVector v, float a) {
   return r;
 }
 
-boolean isTouch(Player p, Loot l) {
-  if (dist(p.pos.x, p.pos.y,
-    l.pos.x, l.pos.y)
-
-    <= p.taille / 2 + l.taille / 2) {
+boolean isTouch(Player p, Entity l) {
+  if (dist(  p.pos.x, p.pos.y, l.getPos().x, l.getPos().y  )
+    <= p.taille / 2 + l.getTaille() / 2) {
 
     return true;
   }
@@ -46,14 +44,27 @@ PVector MousePosScreenGr() {
   return SnToGr(MousePosScreen());
 }
 
-float OrientationFromVector(PVector ori) {
-  float x = 0;
-
-
-
-  return x;
-}
-
 String getObjectClassName(Object o) {
   return split(o.getClass().getName(), '$')[1];
+}
+
+boolean IsOnEntity(Entity e, float x, float y) {
+
+  float tailleCase = mapActif.tailleCase;
+
+  PVector dist = e.getPos().copy();
+  dist.sub(MousePosScreenGr());
+
+  /*
+  if (x >= e.getPos().x * tailleCase - e.getTaille() / 2 &&
+   x <= e.getPos().x * tailleCase + e.getTaille() / 2 &&
+   y >= e.getPos().y * tailleCase - e.getTaille() / 2 &&
+   y <= e.getPos().y * tailleCase + e.getTaille() / 2) {
+   
+   return true;
+   } else return false;
+   */
+
+  if (dist.mag() < e.getTaille()/2) return true;
+  return false;
 }

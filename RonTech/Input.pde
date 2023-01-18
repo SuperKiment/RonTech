@@ -81,15 +81,19 @@ void keyPressed() {
   }
 }
 
+
 void keyReleased() {
   inputControl.setInput(key, false);
 }
 
 void mousePressed() {
-  for (Player e : mapActif.AllPlayers)
-    if (e.IsOnPlayer(mouseX, mouseY)) {
+  for (Entity e : mapActif.entManager.getEntity()) {
+    
+    if (IsOnEntity(e, mouseX, mouseY)) {
+      println("switché");
       camera.SwitchFocus(e);
     }
+  }
 
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = true;
@@ -105,14 +109,5 @@ void mouseReleased() {
 
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = false;
-  }
-}
-
-void ClickTestEverything() {
-  for (Loot l : mapActif.AllLoot) {
-    if (dist(MousePosScreenGr().x, MousePosScreenGr().y,
-      l.pos.x, l.pos.y) <= SnToGr(l.taille)) {
-      println("Loot clicked : " + l.nom);
-    }
   }
 }

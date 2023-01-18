@@ -29,18 +29,20 @@ void setup() {
 
   fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
 
+  /*
   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Tourelle());
-  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
-  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
-  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
+   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
+   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
+   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
+   */
+  mapActif.entManager.getEntity().add(new Loot());
+  mapActif.entManager.getEntity().add(new Loot(2, 6));
+  mapActif.entManager.getEntity().add(new Loot(2, 7, "epee"));
 
-  mapActif.AllLoot.add(new Loot());
-  mapActif.AllLoot.add(new Loot(2, 6));
-  mapActif.AllLoot.add(new Loot(2, 7, "epee"));
+  mapActif.entManager.getEntity().add(new Enemy(15, 20, 5));
+  mapActif.entManager.getEntity().add(new Enemy(15, 25, 2));
+  mapActif.entManager.getEntity().add(new Enemy(15, 30, 0.1));
 
-  mapActif.AllEnemies.add(new Enemy(15, 20, 5));
-  mapActif.AllEnemies.add(new Enemy(15, 25, 2));
-  mapActif.AllEnemies.add(new Enemy(15, 30, 0.1));
 
   println("==============");
   println("RONTECH SETUP END");
@@ -70,7 +72,9 @@ void draw() {
   console.add(frameRate);
   console.add(time.getDeltaFrames() * 1000);
 
-  console.add(mapActif.AllPlayers.get(0).vel.toString());
+  //console.add(mapActif.AllPlayers.get(0).vel.toString());
+  
+  console.add(getObjectClassName(mapActif.entManager.getPlayer()));
 
   hud.Display();
 }

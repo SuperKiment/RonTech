@@ -56,7 +56,7 @@ class Map {
   void Display() {
     try {
 
-      DisplayGrille(entManager.getEntity(0));
+      DisplayGrille(camera.focus);
 
       //Try pr ttes les entités
       try {
@@ -108,7 +108,7 @@ class Map {
     if (camera != null) {
 
       for (Entity e : entManager.getEntity()) {
-        if (camera.isOnScreen(e, entManager.getPlayer())) {
+        if (camera.isOnScreen(e)) {
           e.setIsDisplay(true);
         } else e.setIsDisplay(false);
       }

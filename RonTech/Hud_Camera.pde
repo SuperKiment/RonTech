@@ -48,7 +48,8 @@ class Camera {
 
 
 
-  boolean isOnScreen(Entity e, Entity p) {
+  boolean isOnScreen(Entity e) {
+    Entity p = focus;
     PVector posE, posP;
 
     posE = e.getPos().copy();

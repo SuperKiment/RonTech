@@ -90,8 +90,7 @@ void mousePressed() {
   for (Entity e : mapActif.entManager.getEntity()) {
     
     if (IsOnEntity(e, mouseX, mouseY)) {
-      println("switché");
-      camera.SwitchFocus(e);
+      if (gameManager.outil == Outil.SwitchCam) camera.SwitchFocus(e);
     }
   }
 

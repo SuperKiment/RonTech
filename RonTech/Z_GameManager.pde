@@ -5,14 +5,20 @@ enum GameState {
   Pause, Play, Title, Inventory;
 }
 
+enum Outil {
+  SwitchCam, LiaisonModule, Play
+}
+
 public class GameManager {
 
   GameState state;
+  Outil outil;
   OptionsManager optionsManager;
   boolean debug = false;
 
   GameManager() {
     state = GameState.Title;
+    outil = Outil.SwitchCam;
     optionsManager = new OptionsManager();
   }
 
@@ -61,7 +67,7 @@ public class GameManager {
   }
 
   class OptionsManager {
-    
+
     int ground_rd;
     int entities_rd;
 
@@ -73,7 +79,7 @@ public class GameManager {
 
       ground_rd = json.getInt("ground_rd", 5);
       entities_rd = json.getInt("entities_rd", 5);
-      
+
       println("Opt Setup :");
       println("Opt ground_rd : "+ground_rd);
       println("Opt entities_rd : "+entities_rd);

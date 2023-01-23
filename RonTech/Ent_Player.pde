@@ -30,6 +30,7 @@ class Player implements Entity, Damageable {
   }
 
   void Display() {
+    CollisionEntity();
 
     for (IModule m : AllModules) {
       m.Display();
@@ -65,27 +66,31 @@ class Player implements Entity, Damageable {
     vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor);
 
     pos.add(vel);
-
-    CollisionEntity();
   }
 
   void CollisionEntity() {
     try {
       for (Entity m : mapActif.entManager.getEntity()) {
+        float d = dist(pos.x, pos.y, m.getPos().x, m.getPos().y);
+        if (m != this && d < (taille + m.getTaille()) / 2) {
 
-        if (dist(pos.x, pos.y, m.getPos().x, m.getPos().y) < taille / 2 + m.getTaille() / 2) {
           PVector colOri = new PVector(pos.x - m.getPos().x, pos.y - m.getPos().y);
-          colOri.setMag(speed * time.getDeltaFrames());
+          float mag = -(d - (taille + m.getTaille())/2);
+          
+          console.add("Collision : "+getObjectClassName(this)+" / mag : "+mag);
+
+          colOri.setMag(mag);
 
           pos.add(colOri);
         }
       }
     }
     catch (Exception e) {
+      println("fez");
     }
   }
 
-  
+
 
   String Print() {
     String pr = name;
@@ -98,7 +103,7 @@ class Player implements Entity, Damageable {
 
     for (int i = 0; i < mapActif.entManager.getEntity().size(); i++) {
       if (getObjectClassName(mapActif.entManager.getEntity(i)).equals("Loot")) {
-        
+
         Entity l = mapActif.entManager.getEntity(i);
 
         if (isTouch(this, l)) {

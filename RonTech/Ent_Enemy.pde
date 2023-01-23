@@ -45,6 +45,10 @@ class Enemy implements Entity, Damageable {
   PVector getPos() {
     return pos;
   }
+  
+  PVector getVel() {
+    return new PVector();
+  }
 
   boolean isMort() {
     return isMort;

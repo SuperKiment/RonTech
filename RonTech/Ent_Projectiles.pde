@@ -44,6 +44,10 @@ class Projectile implements Attack, Entity {
   PVector getPos() {
     return pos;
   }
+  
+  PVector getVel() {
+    return new PVector();
+  }
 
   boolean isMort() {
     return mort;

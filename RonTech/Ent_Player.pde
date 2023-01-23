@@ -8,8 +8,7 @@ class Player implements Entity, Damageable {
   Inventaire inventaire;
   boolean isDisplay = false;
 
-  ArrayList<IModule> AllModules = new ArrayList<IModule>();
-  int maxModules = 8;
+  ModuleManager moduleManager;
 
   Player() {
     Constructor();
@@ -27,34 +26,31 @@ class Player implements Entity, Damageable {
     dir = new PVector();
     acc = new PVector();
     inventaire = new Inventaire();
+    moduleManager = new ModuleManager(this);
+
+    moduleManager.addModule(new ModuleSocleTourelle(this), new Bouclier());
   }
 
   void Display() {
-    CollisionEntity();
+    if (mapActif != null) {
+      CollisionEntity();
 
-    for (IModule m : AllModules) {
-      m.Display();
+      moduleManager.Display();
+
+      push();
+      translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
+
+      ellipse(0, 0, GrToSn(taille), GrToSn(taille));
+
+      pop();
     }
-
-    push();
-    translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
-
-    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
-
-    pop();
   }
 
   void Update() {
     Deplacement();
     RecupLoot();
 
-    for (int i = 0; i < AllModules.size(); i++) {
-      IModule m = AllModules.get(i);
-      m.Update(this);
-
-      if (inputControl.space) {
-      }
-    }
+    moduleManager.Update();
 
     if (inputControl.leftClickUtiliser) LeftClick();
   }
@@ -76,7 +72,7 @@ class Player implements Entity, Damageable {
 
           PVector colOri = new PVector(pos.x - m.getPos().x, pos.y - m.getPos().y);
           float mag = -(d - (taille + m.getTaille())/2);
-          
+
           console.add("Collision : "+getObjectClassName(this)+" / mag : "+mag);
 
           colOri.setMag(mag);
@@ -115,26 +111,21 @@ class Player implements Entity, Damageable {
   }
 
   void LeftClick() {
-    for (IModule m : AllModules) {
-      m.Utiliser();
-    }
+    moduleManager.Utiliser();
   }
 
   void addModule(IModule m, OnModule om) {
-    if (AllModules.size() < maxModules) {
-      m.setOri((AllModules.size()-1) * (TWO_PI/maxModules));
-      om.setModule(m, this);
-      m.setOnModule(om);
-      AllModules.add(m);
-    } else {
-      println("Pla Impossible d'ajouter le module");
-    }
+    moduleManager.addModule(m, om);
   }
 
   //INTERFACE ENTITY
 
   PVector getPos() {
     return pos;
+  }
+
+  PVector getVel() {
+    return vel;
   }
 
   boolean isMort() {
@@ -313,6 +304,10 @@ class Loot implements Entity {
 
   PVector getPos() {
     return pos;
+  }
+
+  PVector getVel() {
+    return new PVector();
   }
 
   boolean isMort() {

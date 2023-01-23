@@ -2,6 +2,7 @@
 
 interface Entity {
   PVector getPos();
+  PVector getVel();
   void Update();
   void Display();
   boolean isDisplay();
@@ -19,8 +20,8 @@ interface Damageable {
 
 interface IModule {
 
-  void Constructor(Player p);
-  void Update(Player p);
+  void Constructor(Entity p);
+  void Update(Entity p);
   void Display();
   PVector PosOnScr();
 
@@ -44,5 +45,5 @@ interface OnModule {
   void Utiliser();
   void Display();
   void Update();
-  void setModule(IModule m, Player p);
+  void setModule(IModule m, Entity p);
 }

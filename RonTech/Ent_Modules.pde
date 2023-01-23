@@ -1,35 +1,78 @@
+class ModuleManager {
+
+  ArrayList<IModule> AllModules = new ArrayList<IModule>();
+  int maxModules = 8;
+  Entity parent;
+
+  ModuleManager(Entity p) {
+    parent = p;
+  }
+
+  void Update() {
+    for (int i = 0; i < AllModules.size(); i++) {
+      IModule m = AllModules.get(i);
+      m.Update(parent);
+    }
+  }
+
+  void Display() {
+    for (IModule m : AllModules) {
+      m.Display();
+    }
+  }
+
+  void Utiliser() {
+    for (IModule m : AllModules) {
+      m.Utiliser();
+    }
+  }
+
+  void addModule(IModule m, OnModule om) {
+    if (AllModules.size() < maxModules) {
+      m.setOri((AllModules.size()-1) * (TWO_PI/maxModules));
+      om.setModule(m, parent);
+      m.setOnModule(om);
+      AllModules.add(m);
+    } else {
+      println("Pla Impossible d'ajouter le module");
+    }
+  }
+}
+
+//=========================================================================================
+
 class ModuleSocleTourelle implements IModule {
 
   PVector pos;
-  Player player;
-  float speed = 4, taille = 1, distance = 50, ori;
+  Entity parent;
+  float speed = 4, taille = 1, distance = 1, ori;
   float speedRange = 1.5;
   color couleur;
   OnModule onModule;
 
 
-  ModuleSocleTourelle(Player p) {
+  ModuleSocleTourelle(Entity p) {
     Constructor(p);
   }
 
-  ModuleSocleTourelle(Player p, OnModule m) {
+  ModuleSocleTourelle(Entity p, OnModule m) {
     Constructor(p, m);
   }
 
-  ModuleSocleTourelle(Player p, float t, float o, float s, float d, OnModule m) {
+  ModuleSocleTourelle(Entity p, float t, float o, float s, float d, OnModule m) {
     Constructor(p, m);
     taille = t;
     ori = o;
     speed = random(s/speedRange, s*speedRange);
     distance = d;
-    pos = p.pos.copy();
+    pos = p.getPos().copy();
   }
 
-  void Constructor(Player p, OnModule m) {
+  void Constructor(Entity p, OnModule m) {
     pos = new PVector();
-    player = p;
-    pos.x = player.pos.x;
-    pos.y = player.pos.y;
+    parent = p;
+    pos.x = parent.getPos().x;
+    pos.y = parent.getPos().y;
     ori = random(-PI*2, PI*2);
     speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
@@ -37,20 +80,20 @@ class ModuleSocleTourelle implements IModule {
     onModule = m;
   }
 
-  void Constructor(Player p) {
+  void Constructor(Entity p) {
     pos = new PVector();
-    player = p;
-    pos.x = player.pos.x;
-    pos.y = player.pos.y;
+    parent = p;
+    pos.x = parent.getPos().x;
+    pos.y = parent.getPos().y;
     ori = random(-PI*2, PI*2);
     speed = random(speed/speedRange, speed*speedRange);
     couleur = color(255, 255, 255);
     distance = 2;
   }
 
-  void Update(Player p) {
-    player = p;
-    pos.lerp(p.pos, speed * mapActif.timeThreadUpdate/timeFactor);
+  void Update(Entity p) {
+    parent = p;
+    pos.lerp(p.getPos(), speed * mapActif.timeThreadUpdate/timeFactor);
     if (onModule != null) onModule.Update();
   }
 
@@ -61,13 +104,13 @@ class ModuleSocleTourelle implements IModule {
 
   void Display() {
 
-    if (player != null) {
+    if (parent != null) {
       push();
       stroke(0);
       strokeWeight(5);//Ligne
 
-      line(PosOnScr().x, PosOnScr().y, GrToSn(player.pos.x), GrToSn(player.pos.y));
-
+      line(PosOnScr().x, PosOnScr().y, GrToSn(parent.getPos().x), GrToSn(parent.getPos().y));
+      
       pop();
     }
 
@@ -91,16 +134,19 @@ class ModuleSocleTourelle implements IModule {
   }
 
   PVector PosOnScr() {
+    
+    println(frameCount);
+    
     PVector posS = new PVector();
     PVector ajout = new PVector(1, 0);
 
     ajout = Rotate(ajout, -ori);
     ajout.setMag(distance);
 
-    posS = pos.copy();
+    posS = GrToSn(pos.copy());
 
     posS.add(ajout);
-    posS.mult(mapActif.tailleCase);
+    posS.mult(50);
     return posS;
   }
 
@@ -141,13 +187,13 @@ class OnModuleC implements OnModule {
   IModule module;
   PVector pos, ori, oriC;
   float taille = 0.5, widthCanon = 10, speed = 1;
-  Player player;
+  Entity parent;
 
   OnModuleC(IModule m, Player p) {
     module = m;
     pos = m.PosOnScr().copy();
     ori = new PVector();
-    player = p;
+    parent = p;
   }
 
   OnModuleC() {
@@ -178,10 +224,10 @@ class OnModuleC implements OnModule {
   void Utiliser() {
   }
 
-  void setModule(IModule m, Player p) {
+  void setModule(IModule m, Entity p) {
     module = m;
     pos = m.PosOnScr().copy();
-    player = p;
+    parent = p;
   }
 }
 
@@ -211,7 +257,7 @@ class Tourelle extends OnModuleC {
     Constructor();
     module = m;
     pos = m.PosOnScr().copy();
-    player = p;
+    parent = p;
   }
 
   Tourelle() {
@@ -234,9 +280,9 @@ class Tourelle extends OnModuleC {
 
     if (tir) {
       //for (int i =0; i<nbBalles; i++) {
-      PVector playerVel = player.vel.copy();
+      PVector parentVel = parent.getVel().copy();
       ori.lerp(PVector.random2D(), imprecision);
-      Projectile p = new Projectile(player, SnToGr(pos), ori, playerVel);
+      Projectile p = new Projectile(parent, SnToGr(pos), ori, parentVel);
       //println("Tir :", pos, ori, playerVel);
       mapActif.entManager.addEntity(p);
       //}
@@ -266,7 +312,7 @@ class Bouclier extends OnModuleC {
     module = m;
     pos = m.PosOnScr().copy();
     ori = new PVector();
-    player = p;
+    parent = p;
   }
 
   Bouclier() {

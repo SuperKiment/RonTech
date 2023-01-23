@@ -34,6 +34,10 @@ class Solide implements Entity {
   PVector getPos() {
     return pos;
   }
+  
+  PVector getVel() {
+    return new PVector();
+  }
 
   boolean isMort() {
     return false;

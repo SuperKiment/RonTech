@@ -32,6 +32,8 @@ class Player implements Entity, Damageable {
   }
 
   void Display() {
+    
+    
     if (mapActif != null) {
       CollisionEntity();
 
@@ -82,7 +84,7 @@ class Player implements Entity, Damageable {
       }
     }
     catch (Exception e) {
-      println("fez");
+      println("Collision fail");
     }
   }
 

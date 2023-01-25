@@ -1,42 +1,37 @@
-InputControl inputControl = new InputControl();
+InputControl inputControl;
 
 class InputControl {
 
   PVector keyDir;
-  boolean z = false, q = false, s = false, d = false, space = false, b = false;
   boolean leftClickUtiliser = false;
+
+  HashMap<String, Character> keys;
+  HashMap<Character, Boolean> keysInput;
 
   InputControl() {
     keyDir = new PVector();
+    keys = new HashMap<String, Character>();
+    keysInput = new HashMap<Character, Boolean>();
+
+    String[] keysFile = loadStrings("key-binding.options");
+
+    println();
+    println("Key Keys :");
+
+    for (String l : keysFile) {
+      String[] line = split(l, " : ");
+      char c = line[1].toCharArray()[0];
+      println("Key "+l);
+
+      keys.put(line[0], c);
+      keysInput.put(c, false);
+    }
+
+    println();
   }
 
   void setInput(char ke, boolean set) {
-
-    switch(ke) {
-    case 'z' :
-      z = set;
-      break;
-
-    case 'q' :
-      q = set;
-      break;
-
-    case 's' :
-      s = set;
-      break;
-
-    case 'd' :
-      d = set;
-      break;
-
-    case ' ':
-      space = set;
-      break;
-
-    case 'b' :
-      b = set;
-      break;
-    }
+    keysInput.put(ke, set);
 
     UpdateKeyDir();
   }
@@ -44,10 +39,10 @@ class InputControl {
   void UpdateKeyDir() {
     keyDir = new PVector();
 
-    if (z) keyDir.y--;
-    if (s) keyDir.y++;
-    if (q) keyDir.x--;
-    if (d) keyDir.x++;
+    if (keysInput.get(keys.get("up"))) keyDir.y--;
+    if (keysInput.get(keys.get("down"))) keyDir.y++;
+    if (keysInput.get(keys.get("left"))) keyDir.x--;
+    if (keysInput.get(keys.get("right"))) keyDir.x++;
 
     keyDir.normalize();
   }
@@ -57,7 +52,7 @@ class InputControl {
 void keyPressed() {
   inputControl.setInput(key, true);
 
-  if (key == 'b') {
+  if (key == inputControl.keys.get("inventory")) {
 
     if (gameManager.isPlay()) {
       gameManager.setInventory();
@@ -68,13 +63,20 @@ void keyPressed() {
     }
   }
 
-  if (key == 'k') {
-    if (debug) {
-      debug = false;
-    } else debug = true;
+  if (key == inputControl.keys.get("console")) {
+    if (consoleDisplay) {
+      consoleDisplay = false;
+    } else consoleDisplay = true;
+    println("Console Display : "+consoleDisplay);
+  }
+  if (key == inputControl.keys.get("infos")) {
+    if (infosDisplay) {
+      infosDisplay = false;
+    } else infosDisplay = true;
+    println("Infos Display : "+infosDisplay);
   }
 
-  if (key == '+' || key == '-') mapActif.Zoom(key);
+  if (key == inputControl.keys.get("mapZoom") || key == inputControl.keys.get("mapDeZoom")) mapActif.Zoom(key);
   //if (key == 'l') mapActif.mapLoader.SaveEntities();
   if (key == 'l') {
     mapActif = new Map("map2");
@@ -88,7 +90,7 @@ void keyReleased() {
 
 void mousePressed() {
   for (Entity e : mapActif.entManager.getEntity()) {
-    
+
     if (IsOnEntity(e, mouseX, mouseY)) {
       if (gameManager.outil == Outil.SwitchCam) camera.SwitchFocus(e);
     }

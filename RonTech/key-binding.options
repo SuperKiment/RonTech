@@ -1,0 +1,9 @@
+up : z
+down : s
+left : q
+right : d
+inventory : b
+infos : i
+console : c
+mapZoom : +
+mapDeZoom : -

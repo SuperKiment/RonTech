@@ -1,5 +1,6 @@
 HUD hud;
-boolean debug = true;
+boolean consoleDisplay = true;
+boolean infosDisplay = true;
 
 enum TitleMode {
   Title, Options, Credits;
@@ -31,8 +32,37 @@ class HUD {
       title.Display();
     }
 
-    if (debug) {
+    if (consoleDisplay) {
       console.Display();
+    }
+
+    if (infosDisplay) {
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (e.isDisplay()) {
+          push();
+          stroke(255);
+          strokeWeight(1);
+          float xPos = GrToSn(e.getPos().x)+camera.translate.x;
+          float yPos = GrToSn(e.getPos().y)+camera.translate.y;
+          
+          fill(0, 0, 0, 0);
+          rect(xPos, yPos, 100, 100);
+          
+          translate(xPos, yPos);
+          textAlign(CORNER);
+          rectMode(CORNER);
+          noStroke();
+          textSize(10);
+          fill(0, 0, 0, 100);
+          
+          String info = getObjectClassName(e)+" / pos : "+e.getPos();
+          rect(-50, -60, info.length()*5, 10);
+          fill(255);
+          text(info, -50, -52);
+          
+          pop();
+        }
+      }
     }
   }
 
@@ -191,7 +221,7 @@ class InventoryHUD {
         push();
         translate(tailleCase * x + tailleCase/2, tailleCase * y + tailleCase/2);
         rect(0, 0, tailleCase * 9 / 10, tailleCase * 9 / 10, 10);
-        
+
         if (player.inventaire.grille[x][y] != null) {
 
           Loot loot = (Loot)player.inventaire.grille[x][y];        //Dans l'inv

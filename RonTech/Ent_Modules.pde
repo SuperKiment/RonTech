@@ -135,18 +135,16 @@ class ModuleSocleTourelle implements IModule {
 
   PVector PosOnScr() {
     
-    println(frameCount);
     
     PVector posS = new PVector();
     PVector ajout = new PVector(1, 0);
 
     ajout = Rotate(ajout, -ori);
-    ajout.setMag(distance);
-
+    ajout.setMag(GrToSn(distance));
+    
     posS = GrToSn(pos.copy());
 
     posS.add(ajout);
-    posS.mult(50);
     return posS;
   }
 

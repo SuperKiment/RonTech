@@ -31,20 +31,15 @@ class Map {
     println("Map Creation :");
 
     entManager = new EntityManager();
-    
-    int xP = 20, yP = 20;
-    Player player = new Player(xP, yP);
-    player.controllable = true;
-    player.name = "Player0";
-    entManager.addEntity(player);
+
+
 
     mapLoader = new MapLoader();
     mapLoader.LoadMap();
     mapLoader.LoadEntities();
 
-    
 
-    println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
+
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
@@ -87,6 +82,18 @@ class Map {
 
 
   void Update() {
+
+    if (!getObjectClassName(entManager.getPlayer()).equals("Player")) {
+      for (int i=0; i<entManager.getEntity().size(); i++) {
+        Entity e = entManager.getEntity(i);
+        if (getObjectClassName(e).equals("Player")) {
+          Player p = (Player)e;
+          entManager.getEntity().remove(i);
+          entManager.getEntity().add(0, p);
+        }
+      }
+    }
+
     try {
       for (int i=0; i<entManager.getEntity().size(); i++) {
         Entity e = entManager.getEntity().get(i);
@@ -229,6 +236,9 @@ class Map {
     void addEntity(Entity e) {
       getEntity().add(e);
     }
+    void addEntity(int index, Entity e) {
+      getEntity().add(index, e);
+    }
 
     //Particles
 
@@ -243,7 +253,7 @@ class Map {
     void addParticles(Particles p) {
       getParticles().add(p);
     }
-    
+
     //Autres
 
     Entity getPlayer() {
@@ -269,4 +279,23 @@ class Map {
 
   void addPlayer() {
   }
+}
+
+
+
+
+
+
+
+
+void SetupMap(String nameMap) {
+  mapActif = new Map(nameMap);
+
+  int xP = 20, yP = 20;
+  Player player = new Player(xP, yP);
+  player.controllable = true;
+  player.name = "Player0";
+  mapActif.entManager.addEntity(0, player);
+
+  println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
 }

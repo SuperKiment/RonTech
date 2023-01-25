@@ -22,5 +22,7 @@ Choisis :
   
   Okay ça fonctionne
 
-Réctifie la distance de rendu qui focus sur le player et pas sur le focus
+Réctifie la distance de rendu qui focus sur le player et pas sur le focus ok
+
+Onpeut faire un site où plein de gens mettent leurs créations et en font grâce à une création de classe, un arraylist de classes je pense c'est possible
 */

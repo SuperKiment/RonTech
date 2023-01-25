@@ -92,13 +92,7 @@ public class GameManager {
 class Time {
 
   double deltaFrames;
-
-  Time() {
-  }
-
-  void Update() {
-  }
-
+  
   float getDeltaFrames() {
     deltaFrames = 1 / frameRate;
     return(float)deltaFrames;

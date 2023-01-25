@@ -49,9 +49,6 @@ String getObjectClassName(Object o) {
 }
 
 boolean IsOnEntity(Entity e, float x, float y) {
-
-  float tailleCase = mapActif.tailleCase;
-
   PVector dist = e.getPos().copy();
   dist.sub(MousePosScreenGr());
 

@@ -17,12 +17,13 @@ void setup() {
   imageMode(CENTER);
   strokeWeight(3);
 
+  inputControl = new InputControl();
   gameManager = new GameManager();
   gameManager.optionsManager.Setup("options.options");
   time = new Time();
   hud = new HUD();
 
-  mapActif = new Map("map1");
+  SetupMap("map1");
   camera = new Camera();
 
   console = new Console();
@@ -69,12 +70,12 @@ void draw() {
 
   gameManager.PostUpdate();
 
-  console.add(frameRate);
-  console.add(time.getDeltaFrames() * 1000);
+  console.add("FrameRate : "+frameRate);
+  console.add("delta Frames (ms) : "+time.getDeltaFrames() * 1000);
 
   //console.add(mapActif.AllPlayers.get(0).vel.toString());
-  
-  console.add(getObjectClassName(mapActif.entManager.getPlayer()));
+
+  console.add("Objet en [0] Entité (Should be Player) : "+getObjectClassName(mapActif.entManager.getPlayer()));
 
   hud.Display();
 }

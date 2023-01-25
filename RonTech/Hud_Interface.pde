@@ -36,7 +36,7 @@ class HUD {
       console.Display();
     }
 
-    if (infosDisplay) {
+    if (infosDisplay && gameManager.isPlay()) {
       for (Entity e : mapActif.entManager.getEntity()) {
         if (e.isDisplay()) {
           push();

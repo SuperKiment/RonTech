@@ -17,7 +17,7 @@ public class GameManager {
   boolean debug = false;
 
   GameManager() {
-    state = GameState.Title;
+    state = GameState.Play;
     outil = Outil.SwitchCam;
     optionsManager = new OptionsManager();
   }

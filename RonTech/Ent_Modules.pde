@@ -41,6 +41,65 @@ class ModuleManager {
 
 //=========================================================================================
 
+class ModuleSocle implements Entity {
+  PVector pos, vel;
+  float taille = 1, baseHP, HP;
+  boolean isDisplay;
+
+  ModuleSocle() {
+    pos = new PVector(5, 5);
+    vel = new PVector();
+  }
+
+  void Update() {
+  }
+  void Display() {
+    push();
+    translate(GrToSn(pos.x), GrToSn(pos.y));
+    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
+    pop();
+  }
+
+  //INTERFACE ENTITY
+
+  PVector getPos() {
+    return pos;
+  }
+
+  PVector getVel() {
+    return vel;
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+    json.setFloat("HP", HP);
+    json.setFloat("baseHP", baseHP);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
+  }
+}
+
 class ModuleSocleTourelle implements IModule {
 
   PVector pos;
@@ -110,7 +169,7 @@ class ModuleSocleTourelle implements IModule {
       strokeWeight(5);//Ligne
 
       line(PosOnScr().x, PosOnScr().y, GrToSn(parent.getPos().x), GrToSn(parent.getPos().y));
-      
+
       pop();
     }
 
@@ -134,14 +193,14 @@ class ModuleSocleTourelle implements IModule {
   }
 
   PVector PosOnScr() {
-    
-    
+
+
     PVector posS = new PVector();
     PVector ajout = new PVector(1, 0);
 
     ajout = Rotate(ajout, -ori);
     ajout.setMag(GrToSn(distance));
-    
+
     posS = GrToSn(pos.copy());
 
     posS.add(ajout);

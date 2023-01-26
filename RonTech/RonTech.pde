@@ -44,6 +44,7 @@ void setup() {
   mapActif.entManager.getEntity().add(new Enemy(15, 25, 2));
   mapActif.entManager.getEntity().add(new Enemy(15, 30, 0.1));
 
+  mapActif.entManager.addEntity(new ModuleSocle());
 
   println("==============");
   println("RONTECH SETUP END");

@@ -55,9 +55,9 @@ class Map {
 
       //Try pr ttes les entités
       try {
-        for (Entity m : entManager.getEntity()) {
-          if (m.isDisplay()) {
-            m.Display();
+        for (Entity e : entManager.getEntity()) {
+          if (e.isDisplay()) {
+            e.Display();
           }
         }
       }

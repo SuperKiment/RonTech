@@ -1,9 +1,8 @@
-class Projectile implements Attack, Entity {
+class Projectile extends Entity implements Attack{
 
-  PVector pos, ori, baseSpeed;
+  PVector ori, baseSpeed;
   float damage = 5, speed = 0.00001, taille = 0.5,
     countdown = 0, timeOnStart, timeLimit = 2000;
-  boolean mort = false, isDisplay = false;
   color couleur = color(255, 0, 0);
   Entity origine;
 
@@ -37,43 +36,6 @@ class Projectile implements Attack, Entity {
     rectMode(CENTER);
     ellipse(GrToSn(pos.x), GrToSn(pos.y), GrToSn(taille), GrToSn(taille));
     pop();
-  }
-
-  //INTERFACE ENTITY
-
-  PVector getPos() {
-    return pos;
-  }
-  
-  PVector getVel() {
-    return new PVector();
-  }
-
-  boolean isMort() {
-    return mort;
-  }
-
-  boolean isDisplay() {
-    return isDisplay;
-  }
-
-  void setIsDisplay(boolean b) {
-    isDisplay = b;
-  }
-
-  JSONObject getJSON() {
-    JSONObject json = new JSONObject();
-
-    json.setString("Class", getObjectClassName(this));
-    json.setFloat("pos.x", pos.x);
-    json.setFloat("pos.y", pos.y);
-    json.setFloat("taille", taille);
-
-    return json;
-  }
-
-  float getTaille() {
-    return taille;
   }
 
   void CollisionMur() {

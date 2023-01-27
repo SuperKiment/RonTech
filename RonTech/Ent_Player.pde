@@ -1,12 +1,11 @@
-class Player implements Entity, Damageable {
+class Player extends Entity implements Damageable {
 
-  PVector pos, vel, dirCible, dir, acc;
+  PVector dirCible;
   boolean controllable = false;
-  float speed = 5, rotSpeed = 0.1, taille = 1;
+  float speed = 5, taille = 1;
   String name = "";
   float HP = 100, stamina = 100, baseHP = 100;
   Inventaire inventaire;
-  boolean isDisplay = false;
 
   ModuleManager moduleManager;
 
@@ -23,8 +22,6 @@ class Player implements Entity, Damageable {
     pos = new PVector();
     vel = new PVector();
     dirCible = new PVector();
-    dir = new PVector();
-    acc = new PVector();
     inventaire = new Inventaire();
     moduleManager = new ModuleManager(this);
 
@@ -88,8 +85,6 @@ class Player implements Entity, Damageable {
     }
   }
 
-
-
   String Print() {
     String pr = name;
     if (pr.equals("")) pr = "NoName";
@@ -120,54 +115,12 @@ class Player implements Entity, Damageable {
     moduleManager.addModule(m, om);
   }
 
-  //INTERFACE ENTITY
-
-  PVector getPos() {
-    return pos;
-  }
-
-  PVector getVel() {
-    return vel;
-  }
-
-  boolean isMort() {
-    return false;
-  }
-
-  boolean isDisplay() {
-    return isDisplay;
-  }
-
-  void setIsDisplay(boolean b) {
-    isDisplay = b;
-  }
-
-  JSONObject getJSON() {
-    JSONObject json = new JSONObject();
-
-    json.setString("Class", getObjectClassName(this));
-    json.setFloat("pos.x", pos.x);
-    json.setFloat("pos.y", pos.y);
-    json.setFloat("taille", taille);
-    json.setFloat("HP", HP);
-    json.setFloat("baseHP", baseHP);
-
-    return json;
-  }
-
-  float getTaille() {
-    return taille;
-  }
 
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
 
     camera.Shake(5);
-  }
-
-  float GetHP() {
-    return HP;
   }
 
   void DisplayHealthBar() {
@@ -237,7 +190,7 @@ class Inventaire {
 
 
 
-class Loot implements Entity {
+class Loot extends Entity {
 
   String nom;
   PVector pos, posC;

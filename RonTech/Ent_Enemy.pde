@@ -1,7 +1,6 @@
-class Enemy implements Entity, Damageable {
-  float HP, baseHP = 200, taille;
-  PVector pos, posC;
-  boolean isDisplay = true, isMort = false;
+class Enemy extends Entity implements Damageable {
+  float baseHP = 200;
+  PVector posC;
 
   Enemy() {
     Constructor();
@@ -40,45 +39,6 @@ class Enemy implements Entity, Damageable {
   void RandomMvt() {
   }
 
-  //INTERFACE ENTITY
-
-  PVector getPos() {
-    return pos;
-  }
-  
-  PVector getVel() {
-    return new PVector();
-  }
-
-  boolean isMort() {
-    return isMort;
-  }
-
-  boolean isDisplay() {
-    return isDisplay;
-  }
-
-  void setIsDisplay(boolean b) {
-    isDisplay = b;
-  }
-
-  JSONObject getJSON() {
-    JSONObject json = new JSONObject();
-
-    json.setString("Class", getObjectClassName(this));
-    json.setFloat("pos.x", pos.x);
-    json.setFloat("pos.y", pos.y);
-    json.setFloat("taille", taille);
-    json.setFloat("HP", HP);
-    json.setFloat("baseHP", baseHP);
-
-    return json;
-  }
-
-  float getTaille() {
-    return taille;
-  }
-
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
@@ -87,10 +47,6 @@ class Enemy implements Entity, Damageable {
       mapActif.addParticles(int(baseHP), pos);
     }
     if (HP > baseHP) HP = baseHP;
-  }
-
-  float GetHP() {
-    return HP;
   }
 
   void DisplayHealthBar() {

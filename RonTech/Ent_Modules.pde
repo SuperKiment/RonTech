@@ -41,18 +41,30 @@ class ModuleManager {
 
 //=========================================================================================
 
-class ModuleSocle implements Entity {
+class ModuleSocle extends Entity {
   PVector pos, vel;
-  float taille = 1, baseHP, HP;
+  float taille = 1, baseHP, HP, speed = 0.01;
   boolean isDisplay;
+  Entity liaison;
 
   ModuleSocle() {
+    Constructor();
+  }
+
+  void Constructor() {
     pos = new PVector(5, 5);
     vel = new PVector();
+    
+    Player p = new Player();
+    p.pos = new PVector(pos.x, pos.y);
+    
+    liaison = p;
   }
 
   void Update() {
+    pos.lerp(mapActif.entManager.getPlayer().getPos(), speed);
   }
+
   void Display() {
     push();
     translate(GrToSn(pos.x), GrToSn(pos.y));
@@ -99,6 +111,8 @@ class ModuleSocle implements Entity {
     return taille;
   }
 }
+
+//===============================================================DEPRECIE
 
 class ModuleSocleTourelle implements IModule {
 

@@ -1,16 +1,68 @@
-//Interface pour display les Entites à proximite
+class Entity {
+  PVector pos, vel;
+  float baseHP = 50, HP = 50, taille = 1;
+  boolean isDisplay = false, isMort = false;
 
-interface Entity {
-  PVector getPos();
-  PVector getVel();
-  void Update();
-  void Display();
-  boolean isDisplay();
-  boolean isMort();
-  void setIsDisplay(boolean b);
-  JSONObject getJSON();
-  float getTaille();
+  Entity() {
+    pos = new PVector(5, 5);
+    vel = new PVector();
+  }
+
+  void Update() {
+  }
+
+  void Display() {
+    push();
+    translate(GrToSn(pos.x), GrToSn(pos.y));
+    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
+    pop();
+  }
+
+  PVector getPos() {
+    return pos;
+  }
+
+  PVector getVel() {
+    return vel;
+  }
+
+  float getTaille() {
+    return taille;
+  }
+
+  float GetHP() {
+    return HP;
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+    json.setFloat("HP", HP);
+    json.setFloat("baseHP", baseHP);
+
+    return json;
+  }
 }
+
+
+
+//========================INTERFACES
 
 interface Damageable {
   void GetDamage(float damage);

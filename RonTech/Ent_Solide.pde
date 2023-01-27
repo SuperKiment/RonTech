@@ -1,6 +1,6 @@
 class Solide extends Entity {
 
-  float taille = 4;
+  
   color couleur;
 
   Solide() {
@@ -13,6 +13,8 @@ class Solide extends Entity {
   void Constructor(float x, float y) {
     pos = new PVector(x, y);
     couleur = color(#98A3AD);
+    taille = 4;
+    isStatic = true;
   }
 
   void Display() {

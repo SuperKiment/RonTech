@@ -65,3 +65,28 @@ boolean IsOnEntity(Entity e, float x, float y) {
   if (dist.mag() < e.getTaille()/2) return true;
   return false;
 }
+
+
+void CollisionEntity(Entity me, float taille, PVector pos) {
+  try {
+    for (Entity e : mapActif.entManager.getEntity()) {
+
+      float d = dist(pos.x, pos.y, e.getPos().x, e.getPos().y);
+
+      if (e != me && d < (taille + e.getTaille()) / 2) {
+
+        PVector colOri = new PVector(pos.x - e.getPos().x, pos.y - e.getPos().y);
+        float mag = -(d - (taille + e.getTaille())/2);
+
+        //console.add("Collision : "+getObjectClassName(me)+" / "+getObjectClassName(e)+" / pos : "+e.getPos());
+
+        colOri.setMag(mag);
+
+        pos.add(colOri);
+      }
+    }
+  }
+  catch (Exception e) {
+    println("Collision fail");
+  }
+}

@@ -112,13 +112,17 @@ class Map {
 
   //Update le isDisplay de chaque entité
   void UpdateDisplay() {
-    if (camera != null) {
+    try {
+      if (camera != null) {
 
-      for (Entity e : entManager.getEntity()) {
-        if (camera.isOnScreen(e)) {
-          e.setIsDisplay(true);
-        } else e.setIsDisplay(false);
+        for (Entity e : entManager.getEntity()) {
+          if (camera.isOnScreen(e)) {
+            e.setIsDisplay(true);
+          } else e.setIsDisplay(false);
+        }
       }
+    }
+    catch (Exception e) {
     }
   }
 

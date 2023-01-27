@@ -1,7 +1,10 @@
 class Entity {
   PVector pos, vel;
   float baseHP = 50, HP = 50, taille = 1;
-  boolean isDisplay = false, isMort = false;
+  boolean isDisplay = false,
+    isMort = false,
+    isModule = false,
+    isStatic = false;
 
   Entity() {
     pos = new PVector(5, 5);

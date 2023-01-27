@@ -42,9 +42,7 @@ class ModuleManager {
 //=========================================================================================
 
 class ModuleSocle extends Entity {
-  PVector pos, vel;
-  float taille = 1, baseHP, HP, speed = 0.01;
-  boolean isDisplay;
+  float  speed = 0.01;
   Entity liaison;
 
   ModuleSocle() {
@@ -54,15 +52,14 @@ class ModuleSocle extends Entity {
   void Constructor() {
     pos = new PVector(5, 5);
     vel = new PVector();
-    
-    Player p = new Player();
-    p.pos = new PVector(pos.x, pos.y);
-    
-    liaison = p;
+    isModule = true;
   }
 
   void Update() {
-    pos.lerp(mapActif.entManager.getPlayer().getPos(), speed);
+    CollisionEntity(this, taille, pos);
+    if (liaison != null) {
+      pos.lerp(liaison.getPos(), speed);
+    }
   }
 
   void Display() {
@@ -70,45 +67,6 @@ class ModuleSocle extends Entity {
     translate(GrToSn(pos.x), GrToSn(pos.y));
     ellipse(0, 0, GrToSn(taille), GrToSn(taille));
     pop();
-  }
-
-  //INTERFACE ENTITY
-
-  PVector getPos() {
-    return pos;
-  }
-
-  PVector getVel() {
-    return vel;
-  }
-
-  boolean isMort() {
-    return false;
-  }
-
-  boolean isDisplay() {
-    return isDisplay;
-  }
-
-  void setIsDisplay(boolean b) {
-    isDisplay = b;
-  }
-
-  JSONObject getJSON() {
-    JSONObject json = new JSONObject();
-
-    json.setString("Class", getObjectClassName(this));
-    json.setFloat("pos.x", pos.x);
-    json.setFloat("pos.y", pos.y);
-    json.setFloat("taille", taille);
-    json.setFloat("HP", HP);
-    json.setFloat("baseHP", baseHP);
-
-    return json;
-  }
-
-  float getTaille() {
-    return taille;
   }
 }
 

@@ -1,5 +1,4 @@
 class Enemy extends Entity implements Damageable {
-  float baseHP = 200;
   PVector posC;
 
   Enemy() {
@@ -15,6 +14,7 @@ class Enemy extends Entity implements Damageable {
   void Constructor() {
     pos = new PVector();
     taille = mapActif.tailleCase*5;
+    baseHP = 200;
     HP = baseHP;
   }
 
@@ -29,6 +29,7 @@ class Enemy extends Entity implements Damageable {
   }
 
   void Update() {
+    CollisionEntity(this, taille, pos);
     Collisions();
     RandomMvt();
   }

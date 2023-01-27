@@ -29,11 +29,10 @@ class Player extends Entity implements Damageable {
   }
 
   void Display() {
-    
-    
-    if (mapActif != null) {
-      CollisionEntity();
 
+
+    if (mapActif != null) {
+      
       moduleManager.Display();
 
       push();
@@ -46,6 +45,7 @@ class Player extends Entity implements Damageable {
   }
 
   void Update() {
+    CollisionEntity(this, taille, pos);
     Deplacement();
     RecupLoot();
 
@@ -63,6 +63,7 @@ class Player extends Entity implements Damageable {
     pos.add(vel);
   }
 
+/*
   void CollisionEntity() {
     try {
       for (Entity m : mapActif.entManager.getEntity()) {
@@ -84,6 +85,7 @@ class Player extends Entity implements Damageable {
       println("Collision fail");
     }
   }
+  */
 
   String Print() {
     String pr = name;
@@ -126,9 +128,6 @@ class Player extends Entity implements Damageable {
   void DisplayHealthBar() {
   }
 }
-
-
-
 
 
 

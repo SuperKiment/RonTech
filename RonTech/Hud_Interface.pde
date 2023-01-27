@@ -36,32 +36,51 @@ class HUD {
       console.Display();
     }
 
+
+    //=======================================================INFOS
+
     if (infosDisplay && gameManager.isPlay()) {
-      for (Entity e : mapActif.entManager.getEntity()) {
-        if (e.isDisplay()) {
+      try {
+        for (Entity e : mapActif.entManager.getEntity()) {
+
+          String[] keys = loadStrings("key-binding.options");
           push();
-          stroke(255);
-          strokeWeight(1);
-          float xPos = GrToSn(e.getPos().x)+camera.translate.x;
-          float yPos = GrToSn(e.getPos().y)+camera.translate.y;
-          
-          fill(0, 0, 0, 0);
-          rect(xPos, yPos, 100, 100);
-          
-          translate(xPos, yPos);
           textAlign(CORNER);
-          rectMode(CORNER);
-          noStroke();
-          textSize(10);
-          fill(0, 0, 0, 100);
-          
-          String info = getObjectClassName(e)+" / pos : "+e.getPos();
-          rect(-50, -60, info.length()*5, 10);
-          fill(255);
-          text(info, -50, -52);
-          
+          for (int i=0; i<keys.length; i++) {
+            String line = keys[i];
+            text(line, 0, 200+i*15);
+          }
+
+          text("Outil : " + gameManager.outil.toString(), 0, 200+keys.length*15+30);
           pop();
+
+          if (e.isDisplay()) {
+            push();
+            stroke(255);
+            strokeWeight(1);
+            float xPos = GrToSn(e.getPos().x)+camera.translate.x;
+            float yPos = GrToSn(e.getPos().y)+camera.translate.y;
+
+            fill(0, 0, 0, 0);
+            rect(xPos, yPos, 100, 100);
+
+            translate(xPos, yPos);
+            textAlign(CORNER);
+            rectMode(CORNER);
+            noStroke();
+            textSize(10);
+            fill(0, 0, 0, 100);
+
+            String info = getObjectClassName(e)+" / pos : "+e.getPos();
+            rect(-50, -60, info.length()*5, 10);
+            fill(255);
+            text(info, -50, -52);
+
+            pop();
+          }
         }
+      }
+      catch (Exception e) {
       }
     }
   }

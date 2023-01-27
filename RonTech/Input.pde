@@ -1,4 +1,5 @@
 InputControl inputControl;
+OutilsManager outilsManager;
 
 class InputControl {
 
@@ -48,6 +49,58 @@ class InputControl {
   }
 }
 
+//=================OUTILS
+
+
+
+
+
+
+class OutilsManager {
+
+  ModuleSocle clickedModule;
+
+  OutilsManager() {
+    clickedModule = null;
+  }
+
+  void Click() {
+    switch(gameManager.outil) {
+    case SwitchCam:
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (IsOnEntity(e, mouseX, mouseY)) {
+          camera.SwitchFocus(e);
+        }
+      }
+      break;
+
+    case LiaisonModule:
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (IsOnEntity(e, mouseX, mouseY)) {
+
+          if (clickedModule == null && e.isModule) {
+            clickedModule = (ModuleSocle)e;
+            println("Module set");
+          } else if (clickedModule != null) {
+
+            clickedModule.liaison = e;
+            println("Module en "+clickedModule.getPos()+" lié à "+e.getPos());
+            clickedModule = null;
+          }
+        }
+      }
+      break;
+
+    case Play:
+      break;
+    }
+  }
+}
+
+
+
+//======================KEYPRESSED AND SUCH
+
 
 void keyPressed() {
   inputControl.setInput(key, true);
@@ -78,8 +131,20 @@ void keyPressed() {
 
   if (key == inputControl.keys.get("mapZoom") || key == inputControl.keys.get("mapDeZoom")) mapActif.Zoom(key);
   //if (key == 'l') mapActif.mapLoader.SaveEntities();
+  /*
   if (key == 'l') {
-    mapActif = new Map("map2");
+   mapActif = new Map("map2");
+   }
+   */
+
+  if (key == inputControl.keys.get("liaisonModule")) {
+    gameManager.outil = Outil.LiaisonModule;
+  }
+  if (key == inputControl.keys.get("switchCamera")) {
+    gameManager.outil = Outil.SwitchCam ;
+  }
+  if (key == inputControl.keys.get("play")) {
+    gameManager.outil = Outil.Play;
   }
 }
 
@@ -89,13 +154,7 @@ void keyReleased() {
 }
 
 void mousePressed() {
-  for (Entity e : mapActif.entManager.getEntity()) {
-
-    if (IsOnEntity(e, mouseX, mouseY)) {
-      if (gameManager.outil == Outil.SwitchCam) camera.SwitchFocus(e);
-    }
-  }
-
+  outilsManager.Click();
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = true;
   }

@@ -24,7 +24,7 @@ class Projectile extends Entity implements Attack{
     ajout.add(baseSpeed);
     pos.add(ajout);
 
-    if (millis() - timeOnStart >= timeLimit) mort = true;
+    if (millis() - timeOnStart >= timeLimit) isMort = true;
 
     CollisionMur();
   }
@@ -43,7 +43,7 @@ class Projectile extends Entity implements Attack{
     for (Entity e : mapActif.entManager.getEntity()) {
       if (dist(pos.x, pos.y, e.getPos().x, e.getPos().y) < taille / 2 + e.getTaille() / 2 &&
         !getObjectClassName(e).equals("Player") && !getObjectClassName(e).equals("Projectile")) {
-        mort = true;
+        isMort = true;
         //e.GetDamage(damage);
         mapActif.entManager.addParticles(new Particles(int(damage/2), pos.copy()));
       }

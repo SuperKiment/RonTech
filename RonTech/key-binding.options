@@ -7,3 +7,6 @@ infos : i
 console : c
 mapZoom : +
 mapDeZoom : -
+liaisonModule : m
+switchCamera : l
+play : p

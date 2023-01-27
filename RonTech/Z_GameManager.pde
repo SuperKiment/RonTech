@@ -18,7 +18,7 @@ public class GameManager {
 
   GameManager() {
     state = GameState.Play;
-    outil = Outil.SwitchCam;
+    outil = Outil.LiaisonModule;
     optionsManager = new OptionsManager();
   }
 
@@ -92,7 +92,7 @@ public class GameManager {
 class Time {
 
   double deltaFrames;
-  
+
   float getDeltaFrames() {
     deltaFrames = 1 / frameRate;
     return(float)deltaFrames;

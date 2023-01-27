@@ -18,6 +18,7 @@ void setup() {
   strokeWeight(3);
 
   inputControl = new InputControl();
+  outilsManager = new OutilsManager();
   gameManager = new GameManager();
   gameManager.optionsManager.Setup("options.options");
   time = new Time();

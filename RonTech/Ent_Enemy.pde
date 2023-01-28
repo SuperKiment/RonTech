@@ -12,6 +12,7 @@ class Enemy extends Entity implements Damageable {
   }
 
   void Constructor() {
+    super.Constructor();
     pos = new PVector();
     taille = mapActif.tailleCase*5;
     baseHP = 200;

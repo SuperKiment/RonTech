@@ -127,10 +127,11 @@ class OutilsManager {
         }
       }
     } else {
+      //Délier
       if (m.liaison != null && m.liaison.moduleManager.AllModules.size() > 0) {
         m.liaison.moduleManager.suppModule(m);
       }
-      m.liaison = null;
+      m.SuppLiaison();
     }
   }
 }

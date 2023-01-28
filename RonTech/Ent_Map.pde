@@ -83,18 +83,18 @@ class Map {
 
   void Update() {
 
-
-    try {
-      for (int i=0; i<entManager.getEntity().size(); i++) {
-        Entity e = entManager.getEntity().get(i);
+    for (int i=0; i<entManager.getEntity().size(); i++) {
+      Entity e = entManager.getEntity().get(i);
+      try {
 
         e.Update();
 
         if (e.isMort()) entManager.getEntity().remove(i);
       }
-    }
-    catch(Exception e) {
-      println("FUCK");
+      catch(Exception ex) {
+        println("FUCK sur " + getObjectClassName(e) + " en " + e.getPos());
+        println(ex);
+      }
     }
   }
 

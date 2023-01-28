@@ -37,7 +37,7 @@ PVector MousePosScreen() {
 
   pos.sub(camera.translate);
 
-  return pos;
+  return pos.copy();
 }
 
 PVector MousePosScreenGr() {

@@ -11,6 +11,7 @@ class Solide extends Entity {
   }
 
   void Constructor(float x, float y) {
+    super.Constructor();
     pos = new PVector(x, y);
     couleur = color(#98A3AD);
     taille = 4;

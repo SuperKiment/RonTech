@@ -17,6 +17,7 @@ class Player extends Entity implements Damageable {
   }
 
   void Constructor() {
+    super.Constructor();
     pos = new PVector();
     vel = new PVector();
     dirCible = new PVector();
@@ -27,7 +28,7 @@ class Player extends Entity implements Damageable {
   void Display() {
 
     console.add(moduleManager.AllModules.size());
-    
+
     if (mapActif != null) {
 
       push();
@@ -40,6 +41,7 @@ class Player extends Entity implements Damageable {
   }
 
   void Update() {
+    Viser(MousePosScreen());
     CollisionEntity(this, taille, pos);
     Deplacement();
     RecupLoot();
@@ -57,7 +59,7 @@ class Player extends Entity implements Damageable {
 
     pos.add(vel);
   }
-  
+
 
   String Print() {
     String pr = name;

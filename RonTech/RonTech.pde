@@ -40,10 +40,8 @@ void setup() {
   mapActif.entManager.getEntity().add(new Enemy(15, 30, 0.1));
 
   mapActif.entManager.addEntity(new ModuleSocle(15, 19));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 10));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 11));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 12));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 13));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
 
   println("==============");
   println("RONTECH SETUP END");

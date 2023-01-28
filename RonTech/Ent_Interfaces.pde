@@ -1,5 +1,5 @@
 static public class Entity {
-  public PVector pos, vel;
+  public PVector pos, vel, vis;
   public float baseHP = 50, HP = 50, taille = 1;
   public int nbModules = 8;
   public boolean isDisplay = false,
@@ -8,13 +8,34 @@ static public class Entity {
     isStatic = false;
   public ModuleManager moduleManager;
 
+
   public Entity() {
+    Constructor();
   }
+
+  public Entity(float x, float y) {
+    Constructor();
+    pos = new PVector(x, y);
+  }
+
+  public void Constructor() {
+    vis = new PVector();
+    pos = new PVector();
+    vel = new PVector();
+  }
+
 
   public void Update() {
   }
 
   public void Display() {
+  }
+
+  void Viser(float x, float y) {
+    vis = new PVector(x, y);
+  }
+  void Viser(PVector p) {
+    vis = p.copy();
   }
 
   //GET

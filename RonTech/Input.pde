@@ -1,42 +1,38 @@
-InputControl inputControl = new InputControl();
+InputControl inputControl;
+OutilsManager outilsManager;
 
 class InputControl {
 
   PVector keyDir;
-  boolean z = false, q = false, s = false, d = false, space = false, b = false;
   boolean leftClickUtiliser = false;
+
+  HashMap<String, Character> keys;
+  HashMap<Character, Boolean> keysInput;
 
   InputControl() {
     keyDir = new PVector();
+    keys = new HashMap<String, Character>();
+    keysInput = new HashMap<Character, Boolean>();
+
+    String[] keysFile = loadStrings("key-binding.options");
+
+    println();
+    println("Key Keys :");
+
+    for (String l : keysFile) {
+      String[] line = split(l, " : ");
+      char c = line[1].toCharArray()[0];
+      println("Key "+l);
+
+      keys.put(line[0], c);
+      keysInput.put(c, false);
+    }
+
+    println();
   }
 
   void setInput(char ke, boolean set) {
-
-    switch(ke) {
-    case 'z' :
-      z = set;
-      break;
-
-    case 'q' :
-      q = set;
-      break;
-
-    case 's' :
-      s = set;
-      break;
-
-    case 'd' :
-      d = set;
-      break;
-
-    case ' ':
-      space = set;
-      break;
-
-    case 'b' :
-      b = set;
-      break;
-    }
+    keysInput.put(ke, set);
 
     UpdateKeyDir();
   }
@@ -44,20 +40,135 @@ class InputControl {
   void UpdateKeyDir() {
     keyDir = new PVector();
 
-    if (z) keyDir.y--;
-    if (s) keyDir.y++;
-    if (q) keyDir.x--;
-    if (d) keyDir.x++;
+    if (keysInput.get(keys.get("up"))) keyDir.y--;
+    if (keysInput.get(keys.get("down"))) keyDir.y++;
+    if (keysInput.get(keys.get("left"))) keyDir.x--;
+    if (keysInput.get(keys.get("right"))) keyDir.x++;
 
     keyDir.normalize();
   }
 }
 
 
+
+//=================OUTILS
+
+
+
+class OutilsManager {
+
+  ModuleSocle clickedModule;
+
+  OutilsManager() {
+    clickedModule = null;
+  }
+
+  void Display() {
+    if (clickedModule != null) {
+      push();
+      stroke(#20C4E3);
+
+      line(mouseX, mouseY, GrToSn(clickedModule.getPos().x)+camera.translate.x, GrToSn(clickedModule.getPos().y)+camera.translate.y);
+
+      pop();
+    }
+  }
+
+  void Click() {
+    switch(gameManager.outil) {
+    case SwitchCam:
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (IsOnEntity(e, mouseX, mouseY)) {
+          camera.SwitchFocus(e);
+        }
+      }
+      break;
+
+    case LiaisonModule:
+      boolean clickOnEnt = false;
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (IsOnEntity(e, mouseX, mouseY)) {
+
+          clickOnEnt = true;
+
+          if (clickedModule == null && e.isModule) {
+            clickedModule = (ModuleSocle)e;
+          } else if (clickedModule != null) {
+
+            LierModuleEntity(clickedModule, e);
+            clickedModule = null;
+          }
+        }
+      }
+      if (!clickOnEnt && clickedModule != null) {
+        LierModuleEntity(clickedModule, null);
+        clickedModule = null;
+      }
+      break;
+
+    case Play:
+      break;
+    }
+  }
+
+  void LierModuleEntity(ModuleSocle m, Entity e) {
+    if (e != null) {
+      if (e.moduleManager != null) {
+
+        //Supp de l'ancienne liaison
+        if (m.liaison != null && m.liaison.moduleManager.AllModules.size() > 0) {
+          m.liaison.moduleManager.suppModule(m);
+        }
+
+        //Ajout dans l'entité
+        if (e.moduleManager.addModule(m)) {
+          //Ajout dans le module
+          m.setLiaison(e);
+        }
+      }
+    } else {
+      if (m.liaison != null && m.liaison.moduleManager.AllModules.size() > 0) {
+        m.liaison.moduleManager.suppModule(m);
+      }
+      m.liaison = null;
+    }
+  }
+}
+
+
+
+//======================ENTITY ON MOUSE
+
+
+
+class EntityOnMouse extends Entity {
+
+  EntityOnMouse() {
+    moduleManager = new ModuleManager(this);
+    moduleManager.maxModules = 1;
+  }
+
+  void Display() {
+    push();
+    translate(GrToSn(pos.x), GrToSn(pos.y));
+    ellipse(0, 0, 10, 10);
+    pop();
+  }
+
+  void Update() {
+    pos = SnToGr(MousePosScreen().copy());
+  }
+}
+
+
+
+//======================KEYPRESSED AND SUCH
+
+
 void keyPressed() {
   inputControl.setInput(key, true);
 
-  if (key == 'b') {
+  if (key == inputControl.keys.get("inventory")) {
 
     if (gameManager.isPlay()) {
       gameManager.setInventory();
@@ -68,29 +179,45 @@ void keyPressed() {
     }
   }
 
-  if (key == 'k') {
-    if (debug) {
-      debug = false;
-    } else debug = true;
+  if (key == inputControl.keys.get("console")) {
+    if (consoleDisplay) {
+      consoleDisplay = false;
+    } else consoleDisplay = true;
+    println("Console Display : "+consoleDisplay);
+  }
+  if (key == inputControl.keys.get("infos")) {
+    if (infosDisplay) {
+      infosDisplay = false;
+    } else infosDisplay = true;
+    println("Infos Display : "+infosDisplay);
   }
 
-  if (key == '+' || key == '-') mapActif.Zoom(key);
+  if (key == inputControl.keys.get("mapZoom") || key == inputControl.keys.get("mapDeZoom")) mapActif.Zoom(key);
   //if (key == 'l') mapActif.mapLoader.SaveEntities();
+  /*
   if (key == 'l') {
-    mapActif = new Map("map2");
+   mapActif = new Map("map2");
+   }
+   */
+
+  if (key == inputControl.keys.get("liaisonModule")) {
+    gameManager.outil = Outil.LiaisonModule;
+  }
+  if (key == inputControl.keys.get("switchCamera")) {
+    gameManager.outil = Outil.SwitchCam ;
+  }
+  if (key == inputControl.keys.get("play")) {
+    gameManager.outil = Outil.Play;
   }
 }
+
 
 void keyReleased() {
   inputControl.setInput(key, false);
 }
 
 void mousePressed() {
-  for (Player e : mapActif.AllPlayers)
-    if (e.IsOnPlayer(mouseX, mouseY)) {
-      camera.SwitchFocus(e);
-    }
-
+  outilsManager.Click();
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = true;
   }
@@ -105,14 +232,5 @@ void mouseReleased() {
 
   if (mouseButton == LEFT && gameManager.isPlay()) {
     inputControl.leftClickUtiliser = false;
-  }
-}
-
-void ClickTestEverything() {
-  for (Loot l : mapActif.AllLoot) {
-    if (dist(MousePosScreenGr().x, MousePosScreenGr().y,
-      l.pos.x, l.pos.y) <= SnToGr(l.taille)) {
-      println("Loot clicked : " + l.nom);
-    }
   }
 }

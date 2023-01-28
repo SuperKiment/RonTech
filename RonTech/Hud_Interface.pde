@@ -1,5 +1,6 @@
 HUD hud;
-boolean debug = true;
+boolean consoleDisplay = false;
+boolean infosDisplay = false;
 
 enum TitleMode {
   Title, Options, Credits;
@@ -17,6 +18,9 @@ class HUD {
   }
 
   void Display() {
+    
+    outilsManager.Display();
+    
     if (gameManager.isPlay()) {
       //Interface de jeu
     }
@@ -31,8 +35,56 @@ class HUD {
       title.Display();
     }
 
-    if (debug) {
+    if (consoleDisplay) {
       console.Display();
+    }
+
+
+    //=======================================================INFOS
+
+    if (infosDisplay && gameManager.isPlay()) {
+      try {
+        for (Entity e : mapActif.entManager.getEntity()) {
+
+          String[] keys = loadStrings("key-binding.options");
+          push();
+          textAlign(CORNER);
+          for (int i=0; i<keys.length; i++) {
+            String line = keys[i];
+            text(line, 0, 200+i*15);
+          }
+
+          text("Outil : " + gameManager.outil.toString(), 0, 200+keys.length*15+30);
+          pop();
+
+          if (e.isDisplay()) {
+            push();
+            stroke(255);
+            strokeWeight(1);
+            float xPos = GrToSn(e.getPos().x)+camera.translate.x;
+            float yPos = GrToSn(e.getPos().y)+camera.translate.y;
+
+            fill(0, 0, 0, 0);
+            rect(xPos, yPos, 100, 100);
+
+            translate(xPos, yPos);
+            textAlign(CORNER);
+            rectMode(CORNER);
+            noStroke();
+            textSize(10);
+            fill(0, 0, 0, 100);
+
+            String info = getObjectClassName(e)+" / pos : "+e.getPos();
+            rect(-50, -60, info.length()*5, 10);
+            fill(255);
+            text(info, -50, -52);
+
+            pop();
+          }
+        }
+      }
+      catch (Exception e) {
+      }
     }
   }
 
@@ -191,10 +243,10 @@ class InventoryHUD {
         push();
         translate(tailleCase * x + tailleCase/2, tailleCase * y + tailleCase/2);
         rect(0, 0, tailleCase * 9 / 10, tailleCase * 9 / 10, 10);
-        
+
         if (player.inventaire.grille[x][y] != null) {
 
-          Loot loot = player.inventaire.grille[x][y];        //Dans l'inv
+          Loot loot = (Loot)player.inventaire.grille[x][y];        //Dans l'inv
           loot.DisplayOnScreen(0, 0);
         }
         pop();
@@ -211,7 +263,7 @@ class InventoryHUD {
 
     if (x < nbCasesX && y < nbCasesY) {
 
-      Loot l = player.inventaire.grille[x][y];
+      Loot l = (Loot)player.inventaire.grille[x][y];
       if (l != null) {
         println("coord sur inventory : " + x, y + " / Loot : " + l.nom + " : jeté");
         LootItem(l, x, y);
@@ -230,12 +282,12 @@ class InventoryHUD {
 
     println("coord jeté : " + posJete);
     l.setPos(posJete.x, posJete.y);
-    mapActif.AllLoot.add(l);
+    mapActif.entManager.addEntity(l);
     player.inventaire.grille[x][y] = null;
   }
 
   void Update() {
-    player = camera.focus;
+    player = (Player)camera.focus;
 
     nbCasesX = player.inventaire.grille.length;
     nbCasesY = player.inventaire.grille[0].length;

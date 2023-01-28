@@ -1,80 +1,23 @@
-interface Entity {
-  PVector getPos();
-}
-
-
-
-
-
-class Player implements Entity {
-  PVector pos;
-
-  Player(int x, int y) {
-    pos = new PVector(x, y);
-  }
-  Player() {
-    pos = new PVector(int(random(0, 10)), int(random(0, 10)));
-  }
-
-  PVector getPos() {
-    return pos;
-  }
-}
-
-
-
-
-
-
-class Enemy implements Entity {
-  PVector pos;
-
-  Enemy(int x, int y) {
-    pos = new PVector(x, y);
-  }
-  Enemy() {
-    pos = new PVector(int(random(0, 10)), int(random(0, 10)));
-  }
-
-  PVector getPos() {
-    return pos;
-  }
-}
-
-
-
-
-
-void DetectCollisions(ArrayList<Entity> array1, ArrayList<Entity> array2) {
-  int[] 
-}
-
-
-
+ArrayList<Entity> AllEntities;
 
 
 void setup() {
-  ArrayList<Entity> AllPlayers = new ArrayList<Entity>();
-  ArrayList<Entity> AllEnemies = new ArrayList<Entity>();
 
-  AllPlayers.add(new Player());
+  size(1000, 1000);
+  background(0);
 
-  for (int i=0; i<10; i++) {
-    AllPlayers.add(new Player());
+  AllEntities = new ArrayList<Entity>();
+
+  AllEntities.add(new Player(200, 200));
+  AllEntities.add(new Enemy(400, 220));
+  AllEntities.add(new Enemy(400, 320, 100));
+}
+
+void draw() {
+  background(0);
+
+  for (Entity e : AllEntities) {
+    e.Update();
+    e.Display();
   }
-
-  for (int i=0; i<10; i++) {
-    AllEnemies.add(new Enemy());
-  }
-
-
-  for (Entity e : AllPlayers) {
-    println(e.getClass(), e.getPos());
-  }
-  
-  for (Entity e : AllEnemies) {
-    println(e.getClass(), e.getPos());
-  }
-
-  DetectCollisions(AllPlayers, AllEnemies);
 }

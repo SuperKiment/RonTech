@@ -1,9 +1,8 @@
-class Projectile implements Attack {
+class Projectile extends Entity implements Attack{
 
-  PVector pos, ori, baseSpeed;
+  PVector ori, baseSpeed;
   float damage = 5, speed = 0.00001, taille = 0.5,
     countdown = 0, timeOnStart, timeLimit = 2000;
-  boolean mort = false;
   color couleur = color(255, 0, 0);
   Entity origine;
 
@@ -25,7 +24,7 @@ class Projectile implements Attack {
     ajout.add(baseSpeed);
     pos.add(ajout);
 
-    if (millis() - timeOnStart >= timeLimit) mort = true;
+    if (millis() - timeOnStart >= timeLimit) isMort = true;
 
     CollisionMur();
   }
@@ -39,32 +38,14 @@ class Projectile implements Attack {
     pop();
   }
 
-  PVector getPos() {
-    return pos;
-  }
-
-  float getTaille() {
-    return taille;
-  }
-
-  boolean isMort() {
-    return mort;
-  }
-
   void CollisionMur() {
-    for (Solide m : mapActif.AllSolides) {
-      if (dist(pos.x, pos.y, m.pos.x, m.pos.y) < taille / 2 + m.taille / 2) {
-        mort = true;
-        mapActif.AllParticles.add(new Particles(int(damage/2), pos.copy()));
-      }
-    }
 
-    for (Enemy e : mapActif.AllEnemies) {
-      if (dist(pos.x, pos.y, e.pos.x, e.pos.y) < taille / 2 + e.taille / 2) {
-        mort = true;
-        e.GetDamage(damage);
-
-        mapActif.AllParticles.add(new Particles(int(damage), pos.copy()));
+    for (Entity e : mapActif.entManager.getEntity()) {
+      if (dist(pos.x, pos.y, e.getPos().x, e.getPos().y) < taille / 2 + e.getTaille() / 2 &&
+        !getObjectClassName(e).equals("Player") && !getObjectClassName(e).equals("Projectile")) {
+        isMort = true;
+        //e.GetDamage(damage);
+        mapActif.entManager.addParticles(new Particles(int(damage/2), pos.copy()));
       }
     }
   }

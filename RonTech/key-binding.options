@@ -1,0 +1,12 @@
+up : z
+down : s
+left : q
+right : d
+inventory : b
+infos : i
+console : c
+mapZoom : +
+mapDeZoom : -
+liaisonModule : m
+switchCamera : l
+play : p

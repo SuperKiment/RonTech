@@ -1,8 +1,5 @@
-class Enemy implements Entity, Damageable {
-  float HP, baseHP = 200, taille, tempsDepl;
-  PVector pos, posC;
-  boolean isDisplay = true, isMort = false;
-  //la aussi
+class Enemy extends Entity implements Damageable {
+  PVector posC;
 
   Enemy() {
     Constructor();
@@ -17,7 +14,9 @@ class Enemy implements Entity, Damageable {
   void Constructor() {
     pos = new PVector();
     taille = mapActif.tailleCase*5;
+    baseHP = 200;
     HP = baseHP;
+    moduleManager = new ModuleManager(this);
   }
 
   void Display() {
@@ -31,6 +30,7 @@ class Enemy implements Entity, Damageable {
   }
 
   void Update() {
+    CollisionEntity(this, taille, pos);
     Collisions();
     RandomMvt();
   }
@@ -39,10 +39,6 @@ class Enemy implements Entity, Damageable {
   }
 
   void RandomMvt() {
-  }
-
-  PVector getPos() {
-    return pos;
   }
 
   //INTERFACE DAMAGEABLE
@@ -55,10 +51,6 @@ class Enemy implements Entity, Damageable {
     if (HP > baseHP) HP = baseHP;
   }
 
-  float GetHP() {
-    return HP;
-  }
-
   void DisplayHealthBar() {
     if (HP < baseHP) {
       push();
@@ -67,14 +59,14 @@ class Enemy implements Entity, Damageable {
       float tailleXbase = baseHP*1.5;
       float tailleX = HP*1.5;
       float tailleY = taille/2;
-      
+
       if (tailleY > mapActif.tailleCase/2) tailleY = mapActif.tailleCase/2;
       else if (tailleY < mapActif.tailleCase/5) tailleY = mapActif.tailleCase/5;
-      
+
       if (tailleY <= 5) tailleY = 5;
-      
+
       float y = GrToSn(taille)*0.75;
-      
+
       translate(0, -y);
 
       fill(0);

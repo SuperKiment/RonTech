@@ -32,17 +32,14 @@ class Map {
 
     entManager = new EntityManager();
 
+
+
     mapLoader = new MapLoader();
     mapLoader.LoadMap();
     mapLoader.LoadEntities();
 
-    int xP = 20, yP = 20;
-    Player player = new Player(xP, yP);
-    player.controllable = true;
-    player.name = "Player0";
-    entManager.addPlayer(player);
 
-    println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
+
 
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
@@ -54,41 +51,20 @@ class Map {
   void Display() {
     try {
 
-      DisplayGrille(entManager.getPlayer(0));
+      DisplayGrille(camera.focus);
 
-
-      for (Solide m : entManager.getSolide()) {
-        if (m.isDisplay) {
-          m.Display();
-        }
-      }
-
-      for (Player p : entManager.getPlayer()) {
-        if (p.isDisplay) {
-          p.Display();
-        }
-      }
-
-      for (Enemy e : entManager.getEnemy()) {
-        if (e.isDisplay) {
-          e.Display();
-        }
-      }
-
-      for (Loot l : entManager.getLoot()) {
-        if (l.isDisplay) {
-          l.Display();
-        }
-      }
-
+      //Try pr ttes les entités
       try {
-        for (Attack a : entManager.getAttack()) {
-          a.Display();
+        for (Entity e : entManager.getEntity()) {
+          if (e.isDisplay()) {
+            e.Display();
+          }
         }
       }
       catch (Exception e) {
       }
 
+      //Try pr les particles
       try {
         for (Particles p : entManager.getParticles()) {
           p.Display();
@@ -107,38 +83,18 @@ class Map {
 
   void Update() {
 
-    for (Loot l : entManager.getLoot()) {
-      l.Update();
-    }
-
-    for (Solide s : entManager.getSolide()) {
-      s.Update();
-    }
 
     try {
-      for (int i=0; i<entManager.getAttack().size(); i++) {
-        Attack a = entManager.getAttack().get(i);
-        a.Update();
-        if (a.isMort()) entManager.getAttack().remove(i);
+      for (int i=0; i<entManager.getEntity().size(); i++) {
+        Entity e = entManager.getEntity().get(i);
+
+        e.Update();
+
+        if (e.isMort()) entManager.getEntity().remove(i);
       }
     }
     catch(Exception e) {
       println("FUCK");
-      entManager.getAttack().clear();
-    }
-
-    for (int i=0; i<entManager.getEnemy().size(); i++) {
-      Enemy e = entManager.getEnemy().get(i);
-      e.Update();
-      if (e.isMort) entManager.getEnemy().remove(i);
-    }
-
-    for (Player p : entManager.getPlayer()) {
-      p.Update();
-
-      if (inputControl.leftClickUtiliser) {
-        p.LeftClick();
-      }
     }
   }
 
@@ -146,24 +102,17 @@ class Map {
 
   //Update le isDisplay de chaque entité
   void UpdateDisplay() {
-    if (camera != null) {
-      for (Loot l : entManager.getLoot()) {
-        if (camera.isOnScreen(l, entManager.getPlayer().get(0))) {
-          l.isDisplay = true;
-        } else l.isDisplay = false;
-      }
+    try {
+      if (camera != null) {
 
-      for (Solide m : AllSolides) {
-        if (camera.isOnScreen(m, AllPlayers.get(0))) {
-          m.isDisplay = true;
-        } else m.isDisplay = false;
+        for (Entity e : entManager.getEntity()) {
+          if (camera.isOnScreen(e)) {
+            e.setIsDisplay(true);
+          } else e.setIsDisplay(false);
+        }
       }
-
-      for (Player p : AllPlayers) {
-        if (camera.isOnScreen(p, AllPlayers.get(0))) {
-          p.isDisplay = true;
-        } else p.isDisplay = false;
-      }
+    }
+    catch (Exception e) {
     }
   }
 
@@ -236,28 +185,21 @@ class Map {
         s.taille = solide.getFloat("taille");
         s.couleur = solide.getInt("couleur");
 
-        AllSolides.add(s);
+        entManager.addEntity(s);
       }
     }
 
     void SaveEntities() {
-      JSONObject JSONAllEntities = new JSONObject();
-      JSONArray JSONAllSolides = new JSONArray();
+      JSONArray JSONAllEntities = new JSONArray();
 
-      for (int i=0; i<AllSolides.size(); i++) {
-        Solide s = AllSolides.get(i);
-        JSONObject json = new JSONObject();
+      for (int i=0; i<entManager.getEntity().size(); i++) {
+        Entity s = entManager.getEntity().get(i);
+        JSONObject json = s.getJSON(s);
 
-        json.setFloat("pos.x", s.pos.x);
-        json.setFloat("pos.y", s.pos.y);
-        json.setFloat("taille", s.taille);
-        json.setInt("couleur", s.couleur);
-
-        JSONAllSolides.setJSONObject(i, json);
+        JSONAllEntities.setJSONObject(i, json);
       }
 
-      JSONAllEntities.setJSONArray("Solide", JSONAllSolides);
-      saveJSONObject(JSONAllEntities, basePath + "entities.json");
+      saveJSONArray(JSONAllEntities, basePath + "entities.json");
       println("Map Saved", mapName, "at", basePath, ":");
       println(JSONAllEntities);
     }
@@ -267,96 +209,49 @@ class Map {
 
   class EntityManager {
 
-    ArrayList<Player> AllPlayers;
-    ArrayList<Solide> AllSolides;
-    ArrayList<Loot> AllLoots;
-    ArrayList<Attack> AllAttacks;
     ArrayList<Entity> AllEntities;
-    ArrayList<Enemy> AllEnemies;
     ArrayList<Particles> AllParticles;
 
-
     EntityManager() {
-      AllPlayers = new ArrayList<Player>();
-      AllSolides = new ArrayList<Solide>();
-      AllLoots = new ArrayList<Loot>();
-      AllAttacks = new ArrayList<Attack>();
       AllEntities = new ArrayList<Entity>();
-      AllEnemies = new ArrayList<Enemy>();
       AllParticles = new ArrayList<Particles>();
     }
 
-    ArrayList<Solide> getSolide() {
-      return AllSolides;
-    }
-    Solide getSolide(int no) {
-      return AllSolides.get(no);
-    }
-
-    ArrayList<Player> getPlayer() {
-      return AllPlayers;
-    }
-    Player getPlayer(int no) {
-      return AllPlayers.get(no);
-    }
-
-    ArrayList<Loot> getLoot() {
-      return AllLoots;
-    }
-    Loot getLoot(int no) {
-      return AllLoots.get(no);
-    }
-
-    ArrayList<Attack> getAttack() {
-      return AllAttacks;
-    }
-    Attack getAttack(int no) {
-      return AllAttacks.get(no);
-    }
+    //Entity
 
     ArrayList<Entity> getEntity() {
       return AllEntities;
     }
-    Entity getEntiti(int no) {
+
+    Entity getEntity(int no) {
       return AllEntities.get(no);
     }
 
-    ArrayList<Enemy> getEnemy() {
-      return AllEnemies;
+    void addEntity(Entity e) {
+      getEntity().add(e);
     }
-    Enemy getEnemy(int no) {
-      return AllEnemies.get(no);
+    void addEntity(int index, Entity e) {
+      getEntity().add(index, e);
     }
+
+    //Particles
 
     ArrayList<Particles> getParticles() {
       return AllParticles;
     }
-    Particles getParticle(int no) {
+
+    Particles getParticles(int no) {
       return AllParticles.get(no);
     }
 
+    void addParticles(Particles p) {
+      getParticles().add(p);
+    }
 
+    //Autres
 
-    void addSolide(Solide e) {
-      getSolide().add(e);
-    }
-    void addPlayer(Player e) {
-      getPlayer().add(e);
-    }
-    void addEnemy(Enemy e) {
-      getEnemy().add(e);
-    }
-    void addParticles(Particles e) {
-      getParticles().add(e);
-    }
-    void addLoot(Loot e) {
-      getLoot().add(e);
-    }
-    void addEntity(Entity e) {
-      getEntity().add(e);
-    }
-    void addAttack(Attack e) {
-      getAttack().add(e);
+    Entity getPlayer() {
+      return getEntity(0);
     }
   }
 
@@ -373,9 +268,28 @@ class Map {
 
 
   void addParticles(int puissance, PVector p) {
-    AllParticles.add(new Particles(puissance, p));
+    entManager.addParticles(new Particles(puissance, p));
   }
 
   void addPlayer() {
   }
+}
+
+
+
+
+
+
+
+
+void SetupMap(String nameMap) {
+  mapActif = new Map(nameMap);
+
+  int xP = 20, yP = 20;
+  Player player = new Player(xP, yP);
+  player.controllable = true;
+  player.name = "Player0";
+  mapActif.entManager.addEntity(0, player);
+
+  println("Map ajout d'un player en", xP, yP+ ", controllable :", player.controllable);
 }

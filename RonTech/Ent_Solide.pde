@@ -1,7 +1,6 @@
-class Solide implements Entity {
+class Solide extends Entity {
 
-  PVector pos;
-  float taille = 4;
+
   color couleur;
 
   Solide() {
@@ -14,9 +13,9 @@ class Solide implements Entity {
   void Constructor(float x, float y) {
     pos = new PVector(x, y);
     couleur = color(#98A3AD);
-  }
-
-  void Update() {
+    taille = 4;
+    isStatic = true;
+    moduleManager = new ModuleManager(this);
   }
 
   void Display() {
@@ -25,11 +24,5 @@ class Solide implements Entity {
     translate(GrToSn(pos.x), GrToSn(pos.y));
     ellipse(0, 0, GrToSn(taille), GrToSn(taille));
     pop();
-  }
-
-  //INTERFACE ENTITY
-  boolean isDisplay = false;
-  PVector getPos() {
-    return pos;
   }
 }

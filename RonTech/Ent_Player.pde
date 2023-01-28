@@ -1,14 +1,11 @@
-class Player implements Entity, Damageable {
+class Player extends Entity implements Damageable {
 
-  PVector pos, vel, dirCible, dir, acc;
+  PVector dirCible;
   boolean controllable = false;
-  float speed = 5, rotSpeed = 0.1, taille = 1;
+  float speed = 5, taille = 1;
   String name = "";
-  float HP = 100, stamina = 100;
+  float HP = 100, stamina = 100, baseHP = 100;
   Inventaire inventaire;
-
-  ArrayList<IModule> AllModules = new ArrayList<IModule>();
-  int maxModules = 8;
 
   Player() {
     Constructor();
@@ -23,36 +20,33 @@ class Player implements Entity, Damageable {
     pos = new PVector();
     vel = new PVector();
     dirCible = new PVector();
-    dir = new PVector();
-    acc = new PVector();
     inventaire = new Inventaire();
+    moduleManager = new ModuleManager(this);
   }
 
   void Display() {
 
-    for (IModule m : AllModules) {
-      m.Display();
+    console.add(moduleManager.AllModules.size());
+    
+    if (mapActif != null) {
+
+      push();
+      translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
+
+      ellipse(0, 0, GrToSn(taille), GrToSn(taille));
+
+      pop();
     }
-
-    push();
-    translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
-
-    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
-
-    pop();
   }
 
   void Update() {
+    CollisionEntity(this, taille, pos);
     Deplacement();
     RecupLoot();
 
-    for (int i = 0; i < AllModules.size(); i++) {
-      IModule m = AllModules.get(i);
-      m.Update(this);
+    moduleManager.Update();
 
-      if (inputControl.space) {
-      }
-    }
+    if (inputControl.leftClickUtiliser) LeftClick();
   }
 
   void Deplacement() {
@@ -60,36 +54,10 @@ class Player implements Entity, Damageable {
 
     vel = dirCible;
     vel.setMag(speed * mapActif.timeThreadUpdate/timeFactor);
-    
+
     pos.add(vel);
-
-    CollisionSolide();
   }
-
-  void CollisionSolide() {
-    try {
-      for (Solide m : mapActif.AllSolides) {
-        if (dist(pos.x, pos.y, m.pos.x, m.pos.y) < taille / 2 + m.taille / 2) {
-          PVector colOri = new PVector(pos.x - m.pos.x, pos.y - m.pos.y);
-          colOri.setMag(speed * time.getDeltaFrames());
-
-          pos.add(colOri);
-        }
-      }
-    }
-    catch (Exception e) {
-    }
-  }
-
-  boolean IsOnPlayer(float x, float y) {
-    float tailleCase = mapActif.tailleCase;
-    if (x >= pos.x * tailleCase - taille / 2 &&
-      x <= pos.x * tailleCase + taille / 2 &&
-      y >= pos.y * tailleCase - taille / 2 &&
-      y <= pos.y * tailleCase + taille / 2) {
-      return true;
-    } else return false;
-  }
+  
 
   String Print() {
     String pr = name;
@@ -100,48 +68,29 @@ class Player implements Entity, Damageable {
 
   void RecupLoot() {
 
-    for (int i = 0; i < mapActif.AllLoot.size(); i++) {
-      Loot l = mapActif.AllLoot.get(i);
+    for (int i = 0; i < mapActif.entManager.getEntity().size(); i++) {
+      if (getObjectClassName(mapActif.entManager.getEntity(i)).equals("Loot")) {
 
-      if (isTouch(this, l)) {
-        inventaire.add(l);
-        mapActif.AllLoot.remove(i);
+        Entity l = mapActif.entManager.getEntity(i);
+
+        if (isTouch(this, l)) {
+          inventaire.add(l);
+          mapActif.entManager.getEntity().remove(i);
+        }
       }
     }
   }
 
   void LeftClick() {
-    for (IModule m : AllModules) {
-      m.Utiliser();
-    }
+    moduleManager.Utiliser();
   }
 
-  void addModule(IModule m, OnModule om) {
-    if (AllModules.size() < maxModules) {
-      m.setOri((AllModules.size()-1) * (TWO_PI/maxModules));
-      om.setModule(m, this);
-      m.setOnModule(om);
-      AllModules.add(m);
-    } else {
-      println("Pla Impossible d'ajouter le module");
-    }
-  }
-
-  //INTERFACE ENTITY
-  boolean isDisplay = false;
-  PVector getPos() {
-    return pos;
-  }
 
   //INTERFACE DAMAGEABLE
   void GetDamage(float damage) {
     HP -= damage;
 
     camera.Shake(5);
-  }
-
-  float GetHP() {
-    return HP;
   }
 
   void DisplayHealthBar() {
@@ -159,12 +108,9 @@ class Player implements Entity, Damageable {
 
 
 
-
-
-
 class Inventaire {
 
-  Loot[][] grille;
+  Entity[][] grille;
 
   Inventaire() {
     Constructor();
@@ -174,7 +120,7 @@ class Inventaire {
     grille = new Loot[5][5];
   }
 
-  void add(Loot l) {
+  void add(Entity l) {
     boolean added = false;
 
     for (int x = 0; x < grille.length; x++) {
@@ -182,7 +128,7 @@ class Inventaire {
         if (grille[x][y] == null) {
           grille[x][y] = l;
           added = true;
-          println("ajout a l'inventaire en " + x, y + " de " + l.nom);
+          println("ajout a l'inventaire en " + x, y + " de " + getObjectClassName(l));
           break;
         }
         if (added) break;
@@ -192,7 +138,7 @@ class Inventaire {
 
     if (!added) {
       println("Pas de place dans l'inventaire");
-      mapActif.AllLoot.add(l);
+      mapActif.entManager.addEntity(l);
     }
   }
 }
@@ -211,12 +157,13 @@ class Inventaire {
 
 
 
-class Loot implements Entity {
+class Loot extends Entity {
 
   String nom;
   PVector pos, posC;
   float speed, taille;
   color couleur;
+  boolean isDisplay = false;
 
 
   Loot() {
@@ -276,8 +223,39 @@ class Loot implements Entity {
   }
 
   //INTERFACE ENTITY
-  boolean isDisplay = false;
+
   PVector getPos() {
     return pos;
+  }
+
+  PVector getVel() {
+    return new PVector();
+  }
+
+  boolean isMort() {
+    return false;
+  }
+
+  boolean isDisplay() {
+    return isDisplay;
+  }
+
+  void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  JSONObject getJSON() {
+    JSONObject json = new JSONObject();
+
+    json.setString("Class", getObjectClassName(this));
+    json.setFloat("pos.x", pos.x);
+    json.setFloat("pos.y", pos.y);
+    json.setFloat("taille", taille);
+
+    return json;
+  }
+
+  float getTaille() {
+    return taille;
   }
 }

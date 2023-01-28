@@ -11,4 +11,18 @@ NON JKE VEUX PAS RIG TU M45AS LAISSE AVEC TA MERDE CONNARD
 Ok ce que je suis en train de faire est de tout uniformiser de manière violente genre vraiment
 Je sais pas si ça va fonctionner tho
 Bonne chance gros
+
+On est en bonne voie
+
+Choisis :
+  Soit tu fais une grille ac ttes les entités et tu récup les données à partir de la grille,
+  Soit tu fais un Arraylist avec les entités qui sont isDisplay et tu update que celles là
+  /shrug
+  pr l'instant je pars sur la première
+  
+  Okay ça fonctionne
+
+Réctifie la distance de rendu qui focus sur le player et pas sur le focus ok
+
+Onpeut faire un site où plein de gens mettent leurs créations et en font grâce à une création de classe, un arraylist de classes je pense c'est possible
 */

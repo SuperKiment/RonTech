@@ -83,16 +83,6 @@ class Map {
 
   void Update() {
 
-    if (!getObjectClassName(entManager.getPlayer()).equals("Player")) {
-      for (int i=0; i<entManager.getEntity().size(); i++) {
-        Entity e = entManager.getEntity(i);
-        if (getObjectClassName(e).equals("Player")) {
-          Player p = (Player)e;
-          entManager.getEntity().remove(i);
-          entManager.getEntity().add(0, p);
-        }
-      }
-    }
 
     try {
       for (int i=0; i<entManager.getEntity().size(); i++) {
@@ -204,7 +194,7 @@ class Map {
 
       for (int i=0; i<entManager.getEntity().size(); i++) {
         Entity s = entManager.getEntity().get(i);
-        JSONObject json = s.getJSON();
+        JSONObject json = s.getJSON(s);
 
         JSONAllEntities.setJSONObject(i, json);
       }

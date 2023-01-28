@@ -1,65 +1,104 @@
-class Entity {
-  PVector pos, vel;
-  float baseHP = 50, HP = 50, taille = 1;
-  boolean isDisplay = false,
+static public class Entity {
+  public PVector pos, vel;
+  public float baseHP = 50, HP = 50, taille = 1;
+  public int nbModules = 8;
+  public boolean isDisplay = false,
     isMort = false,
     isModule = false,
     isStatic = false;
+  public ModuleManager moduleManager;
 
-  Entity() {
-    pos = new PVector(5, 5);
-    vel = new PVector();
+  public Entity() {
   }
 
-  void Update() {
+  public void Update() {
   }
 
-  void Display() {
-    push();
-    translate(GrToSn(pos.x), GrToSn(pos.y));
-    ellipse(0, 0, GrToSn(taille), GrToSn(taille));
-    pop();
+  public void Display() {
   }
 
-  PVector getPos() {
+  //GET
+
+  public PVector getPos() {
     return pos;
   }
 
-  PVector getVel() {
+  public PVector getVel() {
     return vel;
   }
 
-  float getTaille() {
+  public float getTaille() {
     return taille;
   }
 
-  float GetHP() {
+  public float GetHP() {
     return HP;
   }
 
-  boolean isMort() {
-    return false;
+  public float GetBaseHP() {
+    return baseHP;
   }
 
-  boolean isDisplay() {
+  public boolean isMort() {
+    return isMort;
+  }
+
+  public boolean isDisplay() {
     return isDisplay;
   }
 
-  void setIsDisplay(boolean b) {
-    isDisplay = b;
+  public int getNbModules() {
+    return nbModules;
   }
 
-  JSONObject getJSON() {
+  public JSONObject getJSON(Entity me) {
     JSONObject json = new JSONObject();
 
-    json.setString("Class", getObjectClassName(this));
+    json.setString("Class", getObjectClassName(me));
     json.setFloat("pos.x", pos.x);
     json.setFloat("pos.y", pos.y);
     json.setFloat("taille", taille);
     json.setFloat("HP", HP);
     json.setFloat("baseHP", baseHP);
+    json.setInt("nbModules", nbModules);
+    json.setBoolean("isMort", isMort);
+    json.setBoolean("isStatic", isStatic);
 
     return json;
+  }
+
+  //SET
+
+  public void setIsDisplay(boolean b) {
+    isDisplay = b;
+  }
+
+  public void setPos(PVector p) {
+    pos = p.copy();
+  }
+
+  public void setVel(PVector p) {
+    vel = p.copy();
+  }
+
+  public void setTaille(float t) {
+    taille = t;
+  }
+
+  public void setHP(float h) {
+    HP = h;
+  }
+
+  public void setBaseHP(float h) {
+    baseHP = h;
+  }
+
+  public void setMort(boolean b) {
+    isMort = b;
+  }
+
+  public void setNbModules(int n) {
+    nbModules = n;
   }
 }
 
@@ -100,5 +139,5 @@ interface OnModule {
   void Utiliser();
   void Display();
   void Update();
-  void setModule(IModule m, Entity p);
+  void setModule(ModuleSocle m, Entity p);
 }

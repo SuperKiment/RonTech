@@ -30,13 +30,7 @@ void setup() {
   console = new Console();
 
   fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
-
-  /*
-  mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Tourelle());
-   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
-   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
-   mapActif.AllPlayers.get(0).addModule(new ModuleSocleTourelle(mapActif.AllPlayers.get(0)), new Bouclier());
-   */
+  
   mapActif.entManager.getEntity().add(new Loot());
   mapActif.entManager.getEntity().add(new Loot(2, 6));
   mapActif.entManager.getEntity().add(new Loot(2, 7, "epee"));
@@ -45,7 +39,11 @@ void setup() {
   mapActif.entManager.getEntity().add(new Enemy(15, 25, 2));
   mapActif.entManager.getEntity().add(new Enemy(15, 30, 0.1));
 
-  mapActif.entManager.addEntity(new ModuleSocle());
+  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 10));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 11));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 12));
+  mapActif.entManager.addEntity(new ModuleSocle(15, 13));
 
   println("==============");
   println("RONTECH SETUP END");

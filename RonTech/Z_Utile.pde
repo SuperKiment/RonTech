@@ -44,7 +44,7 @@ PVector MousePosScreenGr() {
   return SnToGr(MousePosScreen());
 }
 
-String getObjectClassName(Object o) {
+static String getObjectClassName(Object o) {
   return split(o.getClass().getName(), '$')[1];
 }
 
@@ -68,25 +68,34 @@ boolean IsOnEntity(Entity e, float x, float y) {
 
 
 void CollisionEntity(Entity me, float taille, PVector pos) {
-  try {
-    for (Entity e : mapActif.entManager.getEntity()) {
+  if (!getObjectClassName(me).equals("EntityOnMouse")) {
+    try {
+      for (Entity e : mapActif.entManager.getEntity()) {
+        if (!getObjectClassName(e).equals("EntityOnMouse")) {
 
-      float d = dist(pos.x, pos.y, e.getPos().x, e.getPos().y);
+          float d = dist(pos.x, pos.y, e.getPos().x, e.getPos().y);
 
-      if (e != me && d < (taille + e.getTaille()) / 2) {
+          if (e != me && d < (taille + e.getTaille()) / 2) {
+            ModuleSocle m = new ModuleSocle();
+            if (e.isModule) m = (ModuleSocle)e;
 
-        PVector colOri = new PVector(pos.x - e.getPos().x, pos.y - e.getPos().y);
-        float mag = -(d - (taille + e.getTaille())/2);
+            if (m.liaison == null || m.liaison != me) {
 
-        //console.add("Collision : "+getObjectClassName(me)+" / "+getObjectClassName(e)+" / pos : "+e.getPos());
+              PVector colOri = new PVector(pos.x - e.getPos().x, pos.y - e.getPos().y);
+              float mag = -(d - (taille + e.getTaille())/2);
 
-        colOri.setMag(mag);
+              //console.add("Collision : "+getObjectClassName(me)+" / "+getObjectClassName(e)+" / pos : "+e.getPos());
 
-        pos.add(colOri);
+              colOri.setMag(mag);
+
+              pos.add(colOri);
+            }
+          }
+        }
       }
     }
-  }
-  catch (Exception e) {
-    println("Collision fail");
+    catch (Exception e) {
+      println("Collision fail");
+    }
   }
 }

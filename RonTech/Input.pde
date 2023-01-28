@@ -49,10 +49,9 @@ class InputControl {
   }
 }
 
+
+
 //=================OUTILS
-
-
-
 
 
 
@@ -62,6 +61,17 @@ class OutilsManager {
 
   OutilsManager() {
     clickedModule = null;
+  }
+
+  void Display() {
+    if (clickedModule != null) {
+      push();
+      stroke(#20C4E3);
+
+      line(mouseX, mouseY, GrToSn(clickedModule.getPos().x)+camera.translate.x, GrToSn(clickedModule.getPos().y)+camera.translate.y);
+
+      pop();
+    }
   }
 
   void Click() {
@@ -75,25 +85,78 @@ class OutilsManager {
       break;
 
     case LiaisonModule:
+      boolean clickOnEnt = false;
       for (Entity e : mapActif.entManager.getEntity()) {
         if (IsOnEntity(e, mouseX, mouseY)) {
 
+          clickOnEnt = true;
+
           if (clickedModule == null && e.isModule) {
             clickedModule = (ModuleSocle)e;
-            println("Module set");
           } else if (clickedModule != null) {
 
-            clickedModule.liaison = e;
-            println("Module en "+clickedModule.getPos()+" lié à "+e.getPos());
+            LierModuleEntity(clickedModule, e);
             clickedModule = null;
           }
         }
+      }
+      if (!clickOnEnt && clickedModule != null) {
+        LierModuleEntity(clickedModule, null);
+        clickedModule = null;
       }
       break;
 
     case Play:
       break;
     }
+  }
+
+  void LierModuleEntity(ModuleSocle m, Entity e) {
+    if (e != null) {
+      if (e.moduleManager != null) {
+
+        //Supp de l'ancienne liaison
+        if (m.liaison != null && m.liaison.moduleManager.AllModules.size() > 0) {
+          m.liaison.moduleManager.suppModule(m);
+        }
+
+        //Ajout dans l'entité
+        if (e.moduleManager.addModule(m)) {
+          //Ajout dans le module
+          m.setLiaison(e);
+        }
+      }
+    } else {
+      if (m.liaison != null && m.liaison.moduleManager.AllModules.size() > 0) {
+        m.liaison.moduleManager.suppModule(m);
+      }
+      m.liaison = null;
+    }
+  }
+}
+
+
+
+//======================ENTITY ON MOUSE
+
+
+
+class EntityOnMouse extends Entity {
+
+  EntityOnMouse() {
+    moduleManager = new ModuleManager(this);
+    moduleManager.maxModules = 1;
+  }
+
+  void Display() {
+    push();
+    translate(GrToSn(pos.x), GrToSn(pos.y));
+    ellipse(0, 0, 10, 10);
+    pop();
+  }
+
+  void Update() {
+    pos = SnToGr(MousePosScreen().copy());
   }
 }
 

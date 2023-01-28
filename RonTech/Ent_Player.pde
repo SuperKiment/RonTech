@@ -7,8 +7,6 @@ class Player extends Entity implements Damageable {
   float HP = 100, stamina = 100, baseHP = 100;
   Inventaire inventaire;
 
-  ModuleManager moduleManager;
-
   Player() {
     Constructor();
   }
@@ -24,16 +22,13 @@ class Player extends Entity implements Damageable {
     dirCible = new PVector();
     inventaire = new Inventaire();
     moduleManager = new ModuleManager(this);
-
-    moduleManager.addModule(new ModuleSocleTourelle(this), new Bouclier());
   }
 
   void Display() {
 
-
+    console.add(moduleManager.AllModules.size());
+    
     if (mapActif != null) {
-      
-      moduleManager.Display();
 
       push();
       translate(pos.x * mapActif.tailleCase, pos.y * mapActif.tailleCase);
@@ -62,30 +57,7 @@ class Player extends Entity implements Damageable {
 
     pos.add(vel);
   }
-
-/*
-  void CollisionEntity() {
-    try {
-      for (Entity m : mapActif.entManager.getEntity()) {
-        float d = dist(pos.x, pos.y, m.getPos().x, m.getPos().y);
-        if (m != this && d < (taille + m.getTaille()) / 2) {
-
-          PVector colOri = new PVector(pos.x - m.getPos().x, pos.y - m.getPos().y);
-          float mag = -(d - (taille + m.getTaille())/2);
-
-          console.add("Collision : "+getObjectClassName(this)+" / mag : "+mag);
-
-          colOri.setMag(mag);
-
-          pos.add(colOri);
-        }
-      }
-    }
-    catch (Exception e) {
-      println("Collision fail");
-    }
-  }
-  */
+  
 
   String Print() {
     String pr = name;
@@ -111,10 +83,6 @@ class Player extends Entity implements Damageable {
 
   void LeftClick() {
     moduleManager.Utiliser();
-  }
-
-  void addModule(IModule m, OnModule om) {
-    moduleManager.addModule(m, om);
   }
 
 

@@ -16,6 +16,7 @@ class Enemy extends Entity implements Damageable {
     taille = mapActif.tailleCase*5;
     baseHP = 200;
     HP = baseHP;
+    moduleManager = new ModuleManager(this);
   }
 
   void Display() {

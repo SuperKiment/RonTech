@@ -1,6 +1,6 @@
 HUD hud;
-boolean consoleDisplay = true;
-boolean infosDisplay = true;
+boolean consoleDisplay = false;
+boolean infosDisplay = false;
 
 enum TitleMode {
   Title, Options, Credits;
@@ -18,6 +18,9 @@ class HUD {
   }
 
   void Display() {
+    
+    outilsManager.Display();
+    
     if (gameManager.isPlay()) {
       //Interface de jeu
     }

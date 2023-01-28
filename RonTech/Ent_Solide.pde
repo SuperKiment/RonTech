@@ -1,6 +1,6 @@
 class Solide extends Entity {
 
-  
+
   color couleur;
 
   Solide() {
@@ -15,6 +15,7 @@ class Solide extends Entity {
     couleur = color(#98A3AD);
     taille = 4;
     isStatic = true;
+    moduleManager = new ModuleManager(this);
   }
 
   void Display() {

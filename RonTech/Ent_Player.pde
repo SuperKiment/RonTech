@@ -77,7 +77,7 @@ class Player extends Entity implements Damageable {
 
         if (isTouch(this, l)) {
           inventaire.add(l);
-          mapActif.entManager.getEntity().remove(i);
+          mapActif.entManager.RemoveEntity(i);
         }
       }
     }

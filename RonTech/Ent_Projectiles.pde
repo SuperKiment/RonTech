@@ -15,6 +15,7 @@ class Projectile extends Entity implements Attack{
     oriProj.setMag(speed);
     baseSpeed = baseVel.copy();
     timeOnStart = millis();
+    isAttack = true;
   }
 
   void Update() {

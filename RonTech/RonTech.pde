@@ -31,13 +31,13 @@ void setup() {
 
   fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
   
-  mapActif.entManager.getEntity().add(new Loot());
-  mapActif.entManager.getEntity().add(new Loot(2, 6));
-  mapActif.entManager.getEntity().add(new Loot(2, 7, "epee"));
+  mapActif.entManager.addEntity(new Loot());
+  mapActif.entManager.addEntity(new Loot(2, 6));
+  mapActif.entManager.addEntity(new Loot(2, 7, "epee"));
 
-  mapActif.entManager.getEntity().add(new Enemy(15, 20, 5));
-  mapActif.entManager.getEntity().add(new Enemy(15, 25, 2));
-  mapActif.entManager.getEntity().add(new Enemy(15, 30, 0.1));
+  mapActif.entManager.addEntity(new Enemy(15, 20, 5));
+  mapActif.entManager.addEntity(new Enemy(15, 25, 2));
+  mapActif.entManager.addEntity(new Enemy(15, 30, 0.1));
 
   mapActif.entManager.addEntity(new ModuleSocle(15, 19));
   mapActif.entManager.addEntity(new ModuleSocle(15, 19));

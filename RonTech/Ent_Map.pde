@@ -9,6 +9,7 @@ class Map {
   String mapName = "";
 
   ThreadUpdate threadUpdate;
+  ThreadUpdateIsDisplay threadUpdateIsDisplay;
   int timeThreadUpdate = 1;
 
   EntityManager entManager;
@@ -32,17 +33,15 @@ class Map {
 
     entManager = new EntityManager();
 
-
-
     mapLoader = new MapLoader();
     mapLoader.LoadMap();
     mapLoader.LoadEntities();
 
-
-
-
     threadUpdate = new ThreadUpdate();
     threadUpdate.start();
+
+    threadUpdateIsDisplay = new ThreadUpdateIsDisplay();
+    threadUpdateIsDisplay.start();
 
 
     println("Map Thread lance");
@@ -53,15 +52,19 @@ class Map {
 
       DisplayGrille(camera.focus);
 
-      //Try pr ttes les entités
-      try {
-        for (Entity e : entManager.getEntity()) {
-          if (e.isDisplay()) {
+      boolean okEnt = false;
+      while (!okEnt) {
+        //Try pr ttes les entités
+        try {
+          for (Entity e : entManager.getEntityDisplay()) {
             e.Display();
           }
+          okEnt = true;
         }
-      }
-      catch (Exception e) {
+        catch (Exception e) {
+          //println("Erreur sur Display Entités");
+          //println(e);
+        }
       }
 
       //Try pr les particles
@@ -71,10 +74,12 @@ class Map {
         }
       }
       catch(Exception e) {
-        println("cassé");
+        println("Erreur sur Display Particules");
       }
     }
     catch (Exception e) {
+      println("Erreur sur Display Map");
+      println(e);
     }
   }
 
@@ -84,13 +89,13 @@ class Map {
   void Update() {
 
     for (int i=0; i<entManager.getEntity().size(); i++) {
-      Entity e = entManager.getEntity().get(i);
+      Entity e = entManager.getEntity(i);
       try {
 
         e.Update();
 
         if (e.isMort()) {
-          println("Removed : " + e.toString(e));
+          //println("Removed : " + e.toString(e));
           entManager.getEntity().remove(i);
         }
       }
@@ -102,6 +107,17 @@ class Map {
   }
 
 
+  class ThreadUpdate extends Thread {
+
+    void run() {
+      while (true) {
+        if (gameManager.isPlay()) {
+          Update();
+        }
+        delay(timeThreadUpdate);
+      }
+    }
+  }
 
   //Update le isDisplay de chaque entité
   void UpdateDisplay() {
@@ -119,16 +135,16 @@ class Map {
     }
   }
 
-
-  class ThreadUpdate extends Thread {
+  class ThreadUpdateIsDisplay extends Thread {
 
     void run() {
       while (true) {
-        if (gameManager.isPlay()) {
-          Update();
-          UpdateDisplay();
+        UpdateDisplay();
+        entManager.AllDisplayEntities.clear();
+        for (Entity e : entManager.getEntity()) {
+          if (e.isDisplay()) entManager.AllDisplayEntities.add(e);
         }
-        delay(timeThreadUpdate);
+        delay(100);
       }
     }
   }
@@ -196,7 +212,7 @@ class Map {
       JSONArray JSONAllEntities = new JSONArray();
 
       for (int i=0; i<entManager.getEntity().size(); i++) {
-        Entity s = entManager.getEntity().get(i);
+        Entity s = entManager.getEntity(i);
         JSONObject json = s.getJSON(s);
 
         JSONAllEntities.setJSONObject(i, json);
@@ -213,11 +229,13 @@ class Map {
   class EntityManager {
 
     ArrayList<Entity> AllEntities;
+    ArrayList<Entity> AllDisplayEntities;
     ArrayList<Particles> AllParticles;
 
     EntityManager() {
       AllEntities = new ArrayList<Entity>();
       AllParticles = new ArrayList<Particles>();
+      AllDisplayEntities = new ArrayList<Entity>();
     }
 
     //Entity
@@ -226,15 +244,23 @@ class Map {
       return AllEntities;
     }
 
+    ArrayList<Entity> getEntityDisplay() {
+      return AllDisplayEntities;
+    }
+
     Entity getEntity(int no) {
       return AllEntities.get(no);
     }
 
     void addEntity(Entity e) {
-      getEntity().add(e);
+      AllEntities.add(e);
     }
     void addEntity(int index, Entity e) {
-      getEntity().add(index, e);
+      AllEntities.add(index, e);
+    }
+
+    void RemoveEntity(int i) {
+      AllEntities.remove(i);
     }
 
     //Particles

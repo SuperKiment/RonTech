@@ -5,7 +5,8 @@ static public class Entity {
   public boolean isDisplay = false,
     isMort = false,
     isModule = false,
-    isStatic = false;
+    isStatic = false,
+    isAttack = false;
   public ModuleManager moduleManager;
 
 

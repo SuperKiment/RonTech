@@ -1,6 +1,6 @@
 class Projectile extends Entity implements Attack{
 
-  PVector ori, baseSpeed;
+  PVector oriProj, baseSpeed;
   float damage = 5, speed = 0.00001, taille = 0.5,
     countdown = 0, timeOnStart, timeLimit = 2000;
   color couleur = color(255, 0, 0);
@@ -11,14 +11,14 @@ class Projectile extends Entity implements Attack{
 
     origine = e;
     pos = p.copy();
-    ori = o.copy();
-    ori.setMag(speed);
+    oriProj = o.copy();
+    oriProj.setMag(speed);
     baseSpeed = baseVel.copy();
     timeOnStart = millis();
   }
 
   void Update() {
-    PVector ajout = ori.copy();
+    PVector ajout = oriProj.copy();
     ajout.mult(mapActif.tailleCase);
     ajout.div(time.getDeltaFrames());
     ajout.add(baseSpeed);

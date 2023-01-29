@@ -72,6 +72,10 @@ static public class Entity {
     return nbModules;
   }
 
+  public String toString(Entity me) {
+    return "Entity : " + getObjectClassName(me) + " / pos : " + pos;
+  }
+
   public JSONObject getJSON(Entity me) {
     JSONObject json = new JSONObject();
 

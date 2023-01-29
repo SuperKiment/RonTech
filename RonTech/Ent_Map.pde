@@ -89,7 +89,10 @@ class Map {
 
         e.Update();
 
-        if (e.isMort()) entManager.getEntity().remove(i);
+        if (e.isMort()) {
+          println("Removed : " + e.toString(e));
+          entManager.getEntity().remove(i);
+        }
       }
       catch(Exception ex) {
         println("FUCK sur " + getObjectClassName(e) + " en " + e.getPos());

@@ -78,7 +78,7 @@ class OutilsManager {
     switch(gameManager.outil) {
     case SwitchCam:
       for (Entity e : mapActif.entManager.getEntity()) {
-        if (IsOnEntity(e, mouseX, mouseY)) {
+        if (IsMouseOnEntity(e)) {
           camera.SwitchFocus(e);
         }
       }
@@ -87,7 +87,7 @@ class OutilsManager {
     case LiaisonModule:
       boolean clickOnEnt = false;
       for (Entity e : mapActif.entManager.getEntity()) {
-        if (IsOnEntity(e, mouseX, mouseY)) {
+        if (IsMouseOnEntity(e)) {
 
           clickOnEnt = true;
 

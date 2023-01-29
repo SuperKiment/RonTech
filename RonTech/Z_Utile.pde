@@ -48,7 +48,7 @@ static String getObjectClassName(Object o) {
   return split(o.getClass().getName(), '$')[1];
 }
 
-boolean IsOnEntity(Entity e, float x, float y) {
+boolean IsMouseOnEntity(Entity e) {
   PVector dist = e.getPos().copy();
   dist.sub(MousePosScreenGr());
 
@@ -67,11 +67,16 @@ boolean IsOnEntity(Entity e, float x, float y) {
 }
 
 
+
 void CollisionEntity(Entity me, float taille, PVector pos) {
-  if (!getObjectClassName(me).equals("EntityOnMouse")) {
-    try {
-      for (Entity e : mapActif.entManager.getEntity()) {
-        if (!getObjectClassName(e).equals("EntityOnMouse")) {
+  try {
+    for (Entity e : mapActif.entManager.getEntity()) {
+      //Si l'entité est un OnMouse, ne pas prendre de collisions
+      try {
+        Attack a = (Attack) e;
+      }
+      catch (Exception exeption) {
+        if (!getObjectClassName(e).equals("EntityOnMouse") && !getObjectClassName(e).equals("Projectile")) {
 
           float d = dist(pos.x, pos.y, e.getPos().x, e.getPos().y);
 
@@ -94,8 +99,8 @@ void CollisionEntity(Entity me, float taille, PVector pos) {
         }
       }
     }
-    catch (Exception e) {
-      println("Collision fail");
-    }
+  }
+  catch (Exception e) {
+    println("Collision fail");
   }
 }

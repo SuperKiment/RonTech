@@ -66,23 +66,23 @@ class ModuleSocle extends Entity {
     isModule = true;
     couleur = color(255, 255, 255);
 
-    onModule = new OnModuleC(this, liaison);
+    onModule = new Tourelle(this, liaison);
   }
 
   void Update() {
     CollisionEntity(this, taille, pos);
-    
+
     if (liaison != null) {
       PVector cible = liaison.getPos().copy();
       cible.add(posCible);
       PVector fpos = pos.copy();
-      
+
       fpos.lerp(cible, speed);
-      
+
       PVector depl = fpos.copy();
       depl.sub(pos);
       if (depl.mag() > maxSpeed) depl.setMag(maxSpeed);
-      
+
       pos.add(depl);
     }
     if (onModule != null) onModule.Update();
@@ -252,20 +252,13 @@ class Tourelle extends OnModuleC {
   float cooldown = 250, timer = 0,
     cooldownRange = 2, imprecision = 0, nbBalles = 1;
 
-  Tourelle(ModuleSocle m, Player p) {
-    Constructor();
-    module = m;
-    pos = m.PosOnScr().copy();
-    parent = p;
-  }
-
-  Tourelle() {
-    Constructor();
+  Tourelle(ModuleSocle m, Entity p) {
+    super(m, p);
   }
 
   void Constructor() {
+    super.Constructor();
     if (imprecision == 0) imprecision = 1-(cooldown/100);
-    ori = new PVector();
   }
 
 
@@ -278,13 +271,24 @@ class Tourelle extends OnModuleC {
     }
 
     if (tir) {
-      //for (int i =0; i<nbBalles; i++) {
+      Tirer();
+    }
+  }
+
+  void Tirer() {
+    for (int i =0; i<nbBalles; i++) {
+      
       PVector parentVel = parent.getVel().copy();
+      PVector projPos = module.pos.copy();
+      PVector dirProj = ori.copy();
+      dirProj.setMag((module.getTaille()/2 + 0.5)*1.05);
+      projPos.add(dirProj);
+      
       ori.lerp(PVector.random2D(), imprecision);
-      Projectile p = new Projectile(parent, SnToGr(pos), ori, parentVel);
+      
+      Projectile p = new Projectile(parent, projPos, ori, parentVel);
       //println("Tir :", pos, ori, playerVel);
       mapActif.entManager.addEntity(p);
-      //}
     }
   }
 }
@@ -307,11 +311,8 @@ class Bouclier extends OnModuleC {
 
   float widthBouclier = 10, speed = 0.25;
 
-  Bouclier(ModuleSocle m, Player p) {
-    module = m;
-    pos = m.PosOnScr().copy();
-    ori = new PVector();
-    parent = p;
+  Bouclier(ModuleSocle m, Entity p) {
+    super(m, p);
   }
 
   Bouclier() {

@@ -44,6 +44,7 @@ class ModuleSocle extends Entity {
   PVector posCible;
   float  speed = 0.007, maxSpeed;
   Entity liaison;
+  Entity[] liaisons;//A IMPLEMENTER : AVOIR PLUSIEURS LIAISONS
   float distance = 2, ori;
   float speedRange = 1.5;
   color couleur;

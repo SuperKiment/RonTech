@@ -9,6 +9,8 @@ static public class Entity {
     isAttack = false;
   public ModuleManager moduleManager;
 
+  public Class[] interfaces = {Enemy()};
+
 
   public Entity() {
     Constructor();
@@ -23,6 +25,8 @@ static public class Entity {
     vis = new PVector();
     pos = new PVector();
     vel = new PVector();
+    
+    interfaces = new Class[50];  
   }
 
 
@@ -71,6 +75,9 @@ static public class Entity {
 
   public int getNbModules() {
     return nbModules;
+  }
+
+  public void getInterfaces() {
   }
 
   public String toString(Entity me) {

@@ -9,7 +9,7 @@ static public class Entity {
     isAttack = false;
   public ModuleManager moduleManager;
 
-  public Class[] interfaces = {Enemy()};
+
 
 
   public Entity() {
@@ -26,7 +26,7 @@ static public class Entity {
     pos = new PVector();
     vel = new PVector();
     
-    interfaces = new Class[50];  
+
   }
 
 

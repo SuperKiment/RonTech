@@ -18,9 +18,9 @@ class HUD {
   }
 
   void Display() {
-    
+
     outilsManager.Display();
-    
+
     if (gameManager.isPlay()) {
       //Interface de jeu
     }
@@ -36,8 +36,10 @@ class HUD {
     }
 
     if (consoleDisplay) {
-      console.Display();
+      console.DisplayConsole();
     }
+
+    if (console.isWriting) console.DisplayUpdateWriting();
 
 
     //=======================================================INFOS
@@ -315,21 +317,46 @@ class InventoryHUD {
 
 
 
-
 Console console;
 
 class Console {
 
   PVector pos;
   ArrayList<String> tabl;
+  ArrayList<Commande> AllCommandes;
+  ArrayList<String> HistoriqueCommandes;
   float taillePol = 15, taille;
+  boolean isWriting = false;
+  String writeString = "";
 
   Console() {
     tabl = new ArrayList<String>();
     pos = new PVector();
+    AllCommandes = new ArrayList<Commande>();
+    HistoriqueCommandes = new ArrayList<String>();
+
+    AllCommandes.add(new Commande("ping") {
+      void Action() {
+        println("Console ping");
+        tabl.add("ping");
+      }
+    }
+    );
+    
+    AllCommandes.add(new Commande("coucou") {
+      void Action() {
+        println("Console coucou");
+        tabl.add("ping");
+      }
+    }
+    );
+
+    HistoriqueCommandes.add("test");
+    HistoriqueCommandes.add("test");
+    HistoriqueCommandes.add("test");
   }
 
-  void Display() {
+  void DisplayConsole() {
     if (taille > 0) {
       push();
       rectMode(CORNER);
@@ -351,6 +378,49 @@ class Console {
     }
   }
 
+  void DisplayUpdateWriting() {
+
+    if (keyPressed && key == '\n' && writeString != "") {
+      ProcessCommande(writeString);
+    }
+
+    push();
+    rectMode(CORNER);
+    noStroke();
+    fill(0, 0, 0, 70);
+    rect(pos.x, height, width, -(HistoriqueCommandes.size()+1)*taillePol);
+
+    textSize(taillePol);
+    textAlign(LEFT);
+    fill(255);
+
+    for (int i=0; i<HistoriqueCommandes.size(); i++) {
+      text(HistoriqueCommandes.get(i), 50, height-(HistoriqueCommandes.size()-i-1)*taillePol-taillePol);
+    }
+
+    text(writeString, 50, height);
+
+    pop();
+  }
+
+  void Write(char c) {
+    writeString += c;
+  }
+
+  void ProcessCommande(String str) {
+    
+    HistoriqueCommandes.add(str);
+    for (Commande commande : AllCommandes) {
+
+      if (commande.commande.equals(str)) {
+        println("Executed", str);
+        commande.Action();
+      }
+    }
+
+    writeString = "";
+  }
+
   void add(String ajout) {
     tabl.add(ajout);
     taille = tabl.size() * taillePol;
@@ -358,5 +428,17 @@ class Console {
   void add(float ajout) {
     tabl.add(String.valueOf(ajout));
     taille = tabl.size() * taillePol;
+  }
+
+
+  class Commande {
+    String commande;
+
+    Commande(String c) {
+      commande = c;
+    }
+
+    void Action() {
+    }
   }
 }

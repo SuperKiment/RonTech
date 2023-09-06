@@ -1,6 +1,6 @@
 {"Solide": [
   {
-	"isStatic": true,
+	"isStatic": false,
 	"HP": 1,
 	"baseHP": 1,
 	"nbModules": 8,

@@ -176,6 +176,8 @@ class Map {
     PImage mapImage;
     String basePath = "Map/";
 
+    String[] entALoader = {"Solide", "Player", "onModule", "ModuleSocle", "Enemy", "Loot"};
+
     MapLoader() {
       basePath += mapName+"/";
     }
@@ -195,30 +197,46 @@ class Map {
 
     void LoadEntities() {
       JSONObject JSONAllEntities = loadJSONObject(basePath+"entities.json");
-      JSONArray JSONAllSolides = JSONAllEntities.getJSONArray("Solide");
 
-      for (int i=0; i<JSONAllSolides.size(); i++) {
-        Solide s = new Solide();
-        JSONObject solide = JSONAllSolides.getJSONObject(i);
-        s.pos = new PVector(solide.getFloat("pos.x"), solide.getFloat("pos.y"));
-        s.taille = solide.getFloat("taille");
-        s.couleur = solide.getInt("couleur");
+      for (String className : entALoader) {
+        try {
+          print("loading : "+className);
+          JSONArray array = JSONAllEntities.getJSONArray(className);
+          for (int i=0; i<array.size(); i++) {
 
-        entManager.addEntity(s);
+            if (className.equals("Solide")) {
+              Solide s = new Solide(array.getJSONObject(i));
+              entManager.addEntity(s);
+            }
+          }
+          println(" / Success ! "+array.size()+" loaded !");
+        }
+        catch(Exception e) {
+          println(" / Failed : " + e);
+        }
       }
     }
 
+
     void SaveEntities() {
-      JSONArray JSONAllEntities = new JSONArray();
+      JSONObject JSONAllEntities = new JSONObject();
 
       for (int i=0; i<entManager.getEntity().size(); i++) {
-        Entity s = entManager.getEntity(i);
-        JSONObject json = s.getJSON(s);
+        Entity e = entManager.getEntity(i);
+        JSONObject json = e.getJSON(e);
+        String className = getObjectClassName(e);
 
-        JSONAllEntities.setJSONObject(i, json);
+        JSONArray entityArray = JSONAllEntities.getJSONArray(className);
+        if (entityArray == null) {
+          entityArray = new JSONArray();
+          JSONAllEntities.setJSONArray(className, entityArray);
+        }
+        entityArray.setJSONObject(entityArray.size(), json);
+
+        JSONAllEntities.setJSONArray(className, entityArray);
       }
 
-      saveJSONArray(JSONAllEntities, basePath + "entities.json");
+      saveJSONObject(JSONAllEntities, basePath + "entities.json");
       println("Map Saved", mapName, "at", basePath, ":");
       println(JSONAllEntities);
     }
@@ -245,6 +263,7 @@ class Map {
     }
 
     ArrayList<Entity> getEntityDisplay() {
+      //println(AllDisplayEntities.size());
       return AllDisplayEntities;
     }
 

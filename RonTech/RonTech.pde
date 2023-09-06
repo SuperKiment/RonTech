@@ -24,24 +24,17 @@ void setup() {
   time = new Time();
   hud = new HUD();
 
-  SetupMap("map1");
+  SetupMap("mapNoise");
   camera = new Camera();
 
   console = new Console();
 
-  fichiersLoader = new FichiersLoader("Loaders/", "loader.loader");
+  fichiersLoader = new FichiersLoader("Loaders/", "index.loader");
   
   mapActif.entManager.addEntity(new Loot());
   mapActif.entManager.addEntity(new Loot(2, 6));
   mapActif.entManager.addEntity(new Loot(2, 7, "epee"));
 
-  mapActif.entManager.addEntity(new Enemy(15, 20, 5));
-  mapActif.entManager.addEntity(new Enemy(15, 25, 2));
-  mapActif.entManager.addEntity(new Enemy(15, 30, 0.1));
-
-  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
-  mapActif.entManager.addEntity(new ModuleSocle(15, 19));
 
   println("==============");
   println("RONTECH SETUP END");
@@ -49,7 +42,7 @@ void setup() {
 }
 
 void draw() {
-  //background(#27813D);
+  background(50);
 
   gameManager.PreUpdate();
 

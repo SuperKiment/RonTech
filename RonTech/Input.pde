@@ -167,48 +167,55 @@ class EntityOnMouse extends Entity {
 
 
 void keyPressed() {
-  inputControl.setInput(key, true);
+  if (key == inputControl.keys.get("writing")) {
+    println("fez");
+    console.isWriting = !console.isWriting;
+  }
 
-  if (key == inputControl.keys.get("inventory")) {
+  if (!console.isWriting) {
+    inputControl.setInput(key, true);
 
-    if (gameManager.isPlay()) {
-      gameManager.setInventory();
-      println("inv");
-    } else if (gameManager.isInventory()) {
-      gameManager.setPlay();
-      println("play");
+    if (key == inputControl.keys.get("inventory")) {
+
+      if (gameManager.isPlay()) {
+        gameManager.setInventory();
+        println("inv");
+      } else if (gameManager.isInventory()) {
+        gameManager.setPlay();
+        println("play");
+      }
     }
-  }
 
-  if (key == inputControl.keys.get("console")) {
-    if (consoleDisplay) {
-      consoleDisplay = false;
-    } else consoleDisplay = true;
-    println("Console Display : "+consoleDisplay);
-  }
-  if (key == inputControl.keys.get("infos")) {
-    if (infosDisplay) {
-      infosDisplay = false;
-    } else infosDisplay = true;
-    println("Infos Display : "+infosDisplay);
-  }
+    if (key == inputControl.keys.get("console")) {
+      consoleDisplay = !consoleDisplay;
+      println("Console Display : "+consoleDisplay);
+    }
 
-  if (key == inputControl.keys.get("mapZoom") || key == inputControl.keys.get("mapDeZoom")) mapActif.Zoom(key);
-  //if (key == 'l') mapActif.mapLoader.SaveEntities();
-  /*
+    if (key == inputControl.keys.get("infos")) {
+      infosDisplay = !infosDisplay;
+      println("Infos Display : "+infosDisplay);
+    }
+
+    if (key == inputControl.keys.get("mapZoom") || key == inputControl.keys.get("mapDeZoom")) mapActif.Zoom(key);
+    if (key == 'l') mapActif.mapLoader.SaveEntities();
+    /*
   if (key == 'l') {
-   mapActif = new Map("map2");
-   }
-   */
+     mapActif = new Map("map2");
+     }
+     */
 
-  if (key == inputControl.keys.get("liaisonModule")) {
-    gameManager.outil = Outil.LiaisonModule;
-  }
-  if (key == inputControl.keys.get("switchCamera")) {
-    gameManager.outil = Outil.SwitchCam ;
-  }
-  if (key == inputControl.keys.get("play")) {
-    gameManager.outil = Outil.Play;
+    if (key == inputControl.keys.get("liaisonModule")) {
+      gameManager.outil = Outil.LiaisonModule;
+    }
+    if (key == inputControl.keys.get("switchCamera")) {
+      gameManager.outil = Outil.SwitchCam ;
+    }
+    if (key == inputControl.keys.get("play")) {
+      gameManager.outil = Outil.Play;
+    }
+  } else {
+    if (key != inputControl.keys.get("writing") && key != '\n')
+      console.Write(key);
   }
 }
 

@@ -10,6 +10,10 @@ class Solide extends Entity {
     Constructor(x, y);
   }
 
+  Solide(JSONObject json) {
+    super(json);
+  }
+
   void Constructor(float x, float y) {
     super.Constructor();
     pos = new PVector(x, y);

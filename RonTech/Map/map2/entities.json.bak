@@ -1,18 +1,23 @@
 {"Solide": [
   {
-    "pos.x": 10,
+	"isStatic": true,
+	"HP": 1,
+	"baseHP": 1,
+	"nbModules": 8,
+	"isMort": false,
+    "pos.x": 11,
     "pos.y": 5,
     "taille": 4,
     "couleur": -6773843
   },
   {
-    "pos.x": 10,
+    "pos.x": 12,
     "pos.y": 10,
     "taille": 4,
     "couleur": -6773843
   },
   {
-    "pos.x": 10,
+    "pos.x": 13,
     "pos.y": 7,
     "taille": 4,
     "couleur": -6773843

@@ -24,5 +24,18 @@ Choisis :
 
 Réctifie la distance de rendu qui focus sur le player et pas sur le focus ok
 
-Onpeut faire un site où plein de gens mettent leurs créations et en font grâce à une création de classe, un arraylist de classes je pense c'est possible
+?/?/?  Onpeut faire un site où plein de gens mettent leurs créations et en font grâce à une création de classe, un arraylist de classes je pense c'est possible
+
+4/09/23 lmao non
+
+Faut ajouter des filtres de commandes genre des groupements de tourelles pour par ex n'utiliser que les tourelles ou que les fours
+Pk les particules ne marchent pas ?
+
+T'as encore hestya à faire btw
+
+6/09 à 2am : j'ai fait la console et la possibilité de mettre des commandes et de les executer
+bonne chance avec ça lmao
+
+6/09 mais soir : Commencé à réparer le load des entitiés par json
+C'est compliqué faut trouver comment on initialise une entité par string ou un truc similaire
 */

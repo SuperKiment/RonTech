@@ -20,13 +20,23 @@ static public class Entity {
     Constructor();
     pos = new PVector(x, y);
   }
+  
+  public Entity(JSONObject json) {
+    Constructor();
+    pos = new PVector(json.getFloat("pos.x"), json.getFloat("pos.y"));
+    isStatic = json.getBoolean("isStatic");
+    taille = json.getFloat("taille");
+    HP = json.getFloat("HP");
+    baseHP = json.getFloat("baseHP");
+    nbModules = json.getInt("nbModules");
+    isMort = json.getBoolean("isMort");
+    
+  }
 
   public void Constructor() {
     vis = new PVector();
     pos = new PVector();
     vel = new PVector();
-    
-
   }
 
 
@@ -87,15 +97,21 @@ static public class Entity {
   public JSONObject getJSON(Entity me) {
     JSONObject json = new JSONObject();
 
-    json.setString("Class", getObjectClassName(me));
-    json.setFloat("pos.x", pos.x);
-    json.setFloat("pos.y", pos.y);
-    json.setFloat("taille", taille);
-    json.setFloat("HP", HP);
-    json.setFloat("baseHP", baseHP);
-    json.setInt("nbModules", nbModules);
-    json.setBoolean("isMort", isMort);
-    json.setBoolean("isStatic", isStatic);
+    try {
+      json.setString("Class", getObjectClassName(me));
+      json.setFloat("pos.x", me.pos.x);
+      json.setFloat("pos.y", me.pos.y);
+      json.setFloat("taille", me.taille);
+      json.setFloat("HP", me.HP);
+      json.setFloat("baseHP", me.baseHP);
+      json.setInt("nbModules", me.nbModules);
+      json.setBoolean("isMort", me.isMort);
+      json.setBoolean("isStatic", me.isStatic);
+    }
+    catch(Exception e) {
+            println("fuck "+json.get("Class"));
+
+    }
 
     return json;
   }
@@ -154,7 +170,7 @@ interface IModule {
 
   void Utiliser();
   void setOri(float o);
-  void setOnModule(OnModule om);
+  void setOnModule(InterfaceOnModule om);
 
   int getTaille();
   PVector getPos();
@@ -168,7 +184,7 @@ interface Attack {
   boolean isMort();
 }
 
-interface OnModule {
+interface InterfaceOnModule {
   void Utiliser();
   void Display();
   void Update();

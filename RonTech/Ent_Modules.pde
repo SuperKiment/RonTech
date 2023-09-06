@@ -40,6 +40,10 @@ class ModuleManager {
 
 //=========================================================================================
 
+/*
+Le ModuleSocle est le socle qui contient la tourelle et qui gère les liaisons
+Il récup aussi l'utilisation pour pouvoir avoir n'importe quoi dessus genre un four ou une tourelle etc.
+*/
 class ModuleSocle extends Entity {
   PVector posCible;
   float  speed = 0.007, maxSpeed;
@@ -48,7 +52,7 @@ class ModuleSocle extends Entity {
   float distance = 2, ori;
   float speedRange = 1.5;
   color couleur;
-  OnModule onModule;
+  InterfaceOnModule onModule;
 
   ModuleSocle() {
     Constructor();
@@ -142,7 +146,7 @@ class ModuleSocle extends Entity {
     ori = o;
   }
 
-  void setOnModule(OnModule om) {
+  void setOnModule(InterfaceOnModule om) {
     onModule = om;
   }
 
@@ -174,21 +178,21 @@ class ModuleSocle extends Entity {
 
 
 
-class OnModuleC implements OnModule {
+class OnModule implements InterfaceOnModule {
 
   ModuleSocle module;
   PVector pos, ori, oriC;
   float taille = 0.5, widthCanon = 10, speed = 1;
   Entity parent;
 
-  OnModuleC(ModuleSocle m, Entity p) {
+  OnModule(ModuleSocle m, Entity p) {
     Constructor();
     module = m;
     pos = m.PosOnScr().copy();
     parent = p;
   }
 
-  OnModuleC() {
+  OnModule() {
     Constructor();
   }
 
@@ -248,7 +252,7 @@ class OnModuleC implements OnModule {
 
 
 
-class Tourelle extends OnModuleC {
+class Tourelle extends OnModule {
 
   float cooldown = 250, timer = 0,
     cooldownRange = 2, imprecision = 0, nbBalles = 1;
@@ -308,7 +312,7 @@ class Tourelle extends OnModuleC {
 
 
 
-class Bouclier extends OnModuleC {
+class Bouclier extends OnModule {
 
   float widthBouclier = 10, speed = 0.25;
 

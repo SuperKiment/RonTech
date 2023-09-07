@@ -59,6 +59,8 @@ class OutilsManager {
 
   ModuleSocle clickedModule;
 
+  float liaisonRange = 6;
+
   OutilsManager() {
     clickedModule = null;
   }
@@ -91,15 +93,20 @@ class OutilsManager {
 
           clickOnEnt = true;
 
+          //Si c'est le premier click
           if (clickedModule == null && e.isModule) {
             clickedModule = (ModuleSocle)e;
           } else if (clickedModule != null) {
-
-            LierModuleEntity(clickedModule, e);
-            clickedModule = null;
+            if (PVector.sub(clickedModule.pos, e.pos).mag() <= liaisonRange) {
+              //Si c'est le second click
+              LierModuleEntity(clickedModule, e);
+              clickedModule = null;
+            } else hudAlerteManager.add("Trop loin !");
           }
         }
       }
+
+      //Délier un module
       if (!clickOnEnt && clickedModule != null) {
         LierModuleEntity(clickedModule, null);
         clickedModule = null;

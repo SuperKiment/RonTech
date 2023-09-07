@@ -1,46 +1,86 @@
-{"Solide": [
-  {
-	"isStatic": false,
-	"HP": 1,
-	"baseHP": 1,
-	"nbModules": 8,
-	"isMort": false,
-    "pos.x": 11,
-    "pos.y": 5,
-    "taille": 4,
-    "couleur": -6773843
-  },
-  {
-	"isStatic": true,
-	"HP": 1,
-	"baseHP": 1,
-	"nbModules": 8,
-	"isMort": false,
-    "pos.x": 12,
-    "pos.y": 10,
-    "taille": 4,
-    "couleur": -6773843
-  },
-  {
-	"isStatic": true,
-	"HP": 1,
-	"baseHP": 1,
-	"nbModules": 8,
-	"isMort": false,
-    "pos.x": 13,
-    "pos.y": 7,
-    "taille": 4,
-    "couleur": -6773843
-  },
-  {
-	"isStatic": true,
-	"HP": 1,
-	"baseHP": 1,
-	"nbModules": 8,
-	"isMort": false,
-    "pos.x": 20,
-    "pos.y": 13,
-    "taille": 4,
-    "couleur": -6773843
-  }
-]}
+{
+  "Player": [{
+    "pos.x": 9.32139778137207,
+    "pos.y": 14.349715232849121,
+    "isStatic": false,
+    "taille": 1,
+    "HP": 50,
+    "isMort": false,
+    "Class": "Player",
+    "baseHP": 50,
+    "nbModules": 8
+  }],
+  "ModuleSocle": [{
+    "pos.x": 7.178027629852295,
+    "pos.y": 12.67724609375,
+    "isStatic": false,
+    "taille": 1,
+    "HP": 50,
+    "isMort": false,
+    "Class": "ModuleSocle",
+    "baseHP": 50,
+    "nbModules": 8
+  }],
+  "Solide": [
+    {
+      "pos.x": 11,
+      "pos.y": 5,
+      "isStatic": false,
+      "taille": 4,
+      "HP": 1,
+      "isMort": false,
+      "Class": "Solide",
+      "baseHP": 1,
+      "nbModules": 8
+    },
+    {
+      "pos.x": 12,
+      "pos.y": 10,
+      "isStatic": true,
+      "taille": 4,
+      "HP": 1,
+      "isMort": false,
+      "Class": "Solide",
+      "baseHP": 1,
+      "nbModules": 8
+    },
+    {
+      "pos.x": 13,
+      "pos.y": 7,
+      "isStatic": true,
+      "taille": 4,
+      "HP": 1,
+      "isMort": false,
+      "Class": "Solide",
+      "baseHP": 1,
+      "nbModules": 8
+    },
+    {
+      "pos.x": 20,
+      "pos.y": 13,
+      "isStatic": true,
+      "taille": 4,
+      "HP": 1,
+      "isMort": false,
+      "Class": "Solide",
+      "baseHP": 1,
+      "nbModules": 8
+    }
+  ],
+  "Loot": [
+    {"Class": "Loot"},
+    {"Class": "Loot"},
+    {"Class": "Loot"}
+  ],
+  "Projectile": [{
+    "pos.x": 2.4263253211975098,
+    "pos.y": 40.07791519165039,
+    "isStatic": false,
+    "taille": 1,
+    "HP": 50,
+    "isMort": false,
+    "Class": "Projectile",
+    "baseHP": 50,
+    "nbModules": 8
+  }]
+}

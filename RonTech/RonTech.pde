@@ -23,6 +23,7 @@ void setup() {
   gameManager.optionsManager.Setup("options.options");
   time = new Time();
   hud = new HUD();
+  hudAlerteManager = new HUDAlerteManager();
 
   SetupMap("mapNoise");
   camera = new Camera();
@@ -30,10 +31,12 @@ void setup() {
   console = new Console();
 
   fichiersLoader = new FichiersLoader("Loaders/", "index.loader");
-  
+
   mapActif.entManager.addEntity(new Loot());
   mapActif.entManager.addEntity(new Loot(2, 6));
   mapActif.entManager.addEntity(new Loot(2, 7, "epee"));
+
+  mapActif.entManager.addEntity(new ModuleSocle(15, 15));
 
 
   println("==============");
@@ -56,8 +59,10 @@ void draw() {
     }
 
     mapActif.Display();
+    hudAlerteManager.DisplayUpdate();
     pop();
   }
+
 
   gameManager.PostUpdate();
 
@@ -66,7 +71,7 @@ void draw() {
 
   //console.add(mapActif.AllPlayers.get(0).vel.toString());
 
-  console.add("Objet en [0] Entité (Should be Player) : "+getObjectClassName(mapActif.entManager.getPlayer()));
+  console.add("Objet en [0] Entité (Should be Player) : "+getObjectClassName(mapActif.entManager.getPlayer())+" " +mapActif.entManager.getPlayer().pos);
 
   hud.Display();
 }

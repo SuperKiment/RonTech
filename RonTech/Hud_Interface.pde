@@ -1,4 +1,5 @@
 HUD hud;
+HUDAlerteManager hudAlerteManager;
 boolean consoleDisplay = false;
 boolean infosDisplay = false;
 
@@ -335,25 +336,53 @@ class Console {
     AllCommandes = new ArrayList<Commande>();
     HistoriqueCommandes = new ArrayList<String>();
 
+    //COMMANDES
+
     AllCommandes.add(new Commande("ping") {
-      void Action() {
+      boolean Action(String comm) {
         println("Console ping");
         tabl.add("ping");
-      }
-    }
-    );
-    
-    AllCommandes.add(new Commande("coucou") {
-      void Action() {
-        println("Console coucou");
-        tabl.add("ping");
+        return true;
       }
     }
     );
 
-    HistoriqueCommandes.add("test");
-    HistoriqueCommandes.add("test");
-    HistoriqueCommandes.add("test");
+    AllCommandes.add(new Commande("coucou") {
+      boolean Action(String comm) {
+        println("Console coucou");
+        tabl.add("ping");
+        return true;
+      }
+    }
+    );
+
+    AllCommandes.add(new Commande("summon") {
+      boolean Action(String comm) {
+
+        String[] instructions = split(comm, ' ');
+
+        switch(instructions[1]) {
+        case "module":
+          if (instructions.length == 4) {
+
+            ModuleSocle m = new ModuleSocle(int(instructions[2]), int(instructions[3]));
+            mapActif.entManager.addEntity(m);
+            return true;
+          }
+          return false;
+
+        case "enemy":
+          break;
+        }
+
+        Entity e = new Entity();
+
+        mapActif.entManager.addEntity(e);
+
+        return true;
+      }
+    }
+    );
   }
 
   void DisplayConsole() {
@@ -385,6 +414,7 @@ class Console {
     }
 
     push();
+    translate(0, -10);
     rectMode(CORNER);
     noStroke();
     fill(0, 0, 0, 70);
@@ -408,13 +438,17 @@ class Console {
   }
 
   void ProcessCommande(String str) {
-    
+
     HistoriqueCommandes.add(str);
+
+    String comm = split(str, ' ')[0];
+
     for (Commande commande : AllCommandes) {
 
-      if (commande.commande.equals(str)) {
-        println("Executed", str);
-        commande.Action();
+      if (commande.commande.equals(comm)) {
+        if (commande.Action(str)) {
+          println("Executed", str);
+        }
       }
     }
 
@@ -438,7 +472,82 @@ class Console {
       commande = c;
     }
 
-    void Action() {
+    boolean Action(String comm) {
+      return true;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+//======================================================================
+
+
+
+
+
+class HUDAlerteManager {
+
+  ArrayList<HUDAlerte> AllHUDAlerte;
+  float hauteur = 50;
+
+  HUDAlerteManager() {
+    AllHUDAlerte = new ArrayList<HUDAlerte>();
+  }
+
+  void DisplayUpdate() {
+
+    push();
+
+    translate(
+      camera.focus.pos.x * mapActif.tailleCase
+      ,
+      camera.focus.pos.y * mapActif.tailleCase
+      - camera.focus.taille * mapActif.tailleCase/2
+      );
+
+    for (int i=0; i<AllHUDAlerte.size(); i++) {
+      HUDAlerte h = AllHUDAlerte.get(i);
+      push();
+      translate(0, -hauteur*((millis() - h.timer)/h.timeTillDeath));
+      h.Display();
+      pop();
+      if (h.mort) AllHUDAlerte.remove(i);
+    }
+
+    pop();
+  }
+
+  void add(String str) {
+    AllHUDAlerte.add(new HUDAlerte(str));
+  }
+
+  class HUDAlerte {
+    String text;
+    float timer, timeTillDeath = 2000;
+    boolean mort;
+    color couleur = color(255);
+
+    HUDAlerte(String str) {
+      timer = millis();
+      text = str;
+    }
+
+    void Display() {
+      if (millis() - timer > timeTillDeath) mort = true;
+
+      push();
+      textAlign(CENTER);
+      textSize(15);
+      fill(couleur, 255*(1-(millis() - timer)/timeTillDeath));
+      text(text, 0, 0);
+      pop();
     }
   }
 }

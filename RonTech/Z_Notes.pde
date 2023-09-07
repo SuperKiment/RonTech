@@ -37,5 +37,5 @@ T'as encore hestya à faire btw
 bonne chance avec ça lmao
 
 6/09 mais soir : Commencé à réparer le load des entitiés par json
-C'est compliqué faut trouver comment on initialise une entité par string ou un truc similaire
+C'est compliqué faut trouver comment on initialise une entité par string ou un truc similaire (en suspens)
 */

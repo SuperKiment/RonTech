@@ -208,6 +208,24 @@ class Map {
               Solide s = new Solide(array.getJSONObject(i));
               entManager.addEntity(s);
             }
+            
+            /*
+            
+            if (className.equals("onModule")) {
+              OnModule s = new OnModule(array.getJSONObject(i));
+              entManager.addEntity(s);
+            }
+            
+            if (className.equals("ModuleSocle")) {
+              Solide s = new Solide(array.getJSONObject(i));
+              entManager.addEntity(s);
+            }
+            
+            if (className.equals("Enemy")) {
+              Solide s = new Solide(array.getJSONObject(i));
+              entManager.addEntity(s);
+            }
+            */
           }
           println(" / Success ! "+array.size()+" loaded !");
         }
